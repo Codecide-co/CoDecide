@@ -89,6 +89,7 @@ CokeDecide/
 git clone https://github.com/Zerik-Official/CokeDecide.git
 cd CokeDecide
 git checkout dev
+git pull origin dev
 
 # Frontend
 cd apps/frontend
