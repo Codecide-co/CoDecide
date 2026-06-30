@@ -98,8 +98,10 @@ npm run dev
 
 # Backend
 cd apps/backend
+python -m venv venv        # create virtual environment (optional but recommended)
+.\venv\Scripts\activate     # Windows — on Linux/macOS: source venv/bin/activate
 pip install -r requirements.txt
-flask run
+python run.py               # starts on http://localhost:5000
 ```
 
 ## Team
