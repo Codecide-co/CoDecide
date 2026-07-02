@@ -1,0 +1,46 @@
+trigger:
+  branches:
+    include:
+      - main
+      - dev
+
+pr:
+  branches:
+    include:
+      - main
+      - dev
+
+pool:
+  vmImage: ubuntu-latest
+
+jobs:
+  - job: frontend
+    displayName: Frontend
+    steps:
+      - checkout: self
+      - task: NodeTool@0
+        inputs:
+          versionSpec: "20.x"
+        displayName: Install Node.js
+      - script: npm install
+        displayName: Install dependencies
+        workingDirectory: apps/frontend
+      - script: npm run build
+        displayName: Build
+        workingDirectory: apps/frontend
+
+  - job: backend
+    displayName: Backend
+    steps:
+      - checkout: self
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: "3.12"
+          addToPath: true
+        displayName: Install Python
+      - script: pip install -r requirements.txt
+        displayName: Install dependencies
+        workingDirectory: apps/backend
+      - script: python -c "from app import create_app; app = create_app(); print('App created OK')"
+        displayName: Verify app factory
+        workingDirectory: apps/backend
