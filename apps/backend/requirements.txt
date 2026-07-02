@@ -2,8 +2,11 @@ flask
 flask-sqlalchemy
 flask-migrate
 flask-pymongo
+flask-jwt-extended
 pymongo
 pymysql
 python-dotenv
 flask-babel
 colorama
+marshmallow
+bcrypt
