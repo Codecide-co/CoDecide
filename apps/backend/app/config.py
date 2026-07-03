@@ -12,5 +12,16 @@ class Config:
     )
     SQLALCHEMY_TRACK_MODIFICATIONS: bool = False
 
-    MONGO_URI: str = os.getenv("MONGO_URI", "mongodb://localhost:27017/cokedecide")
-    MONGO_DB_NAME: str = os.getenv("MONGO_DB_NAME", "cokedecide")
+    MONGO_URI: str = os.getenv(
+        "MONGO_URI",
+        "mongodb://localhost:27017/cokedecide"
+    )
+    MONGO_DB_NAME: str = os.getenv(
+        "MONGO_DB_NAME",
+        "cokedecide"
+    )
+
+    JWT_SECRET_KEY: str = os.getenv(
+        "JWT_SECRET_KEY",
+        "jwt-secret-key"
+    )
