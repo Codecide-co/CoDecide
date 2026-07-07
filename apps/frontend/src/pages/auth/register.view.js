@@ -7,7 +7,7 @@ export function initRegisterView() {
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
-
+    
     const user = {
       name: document.getElementById("name").value.trim(),
       email: document.getElementById("email").value.trim(),
@@ -16,13 +16,15 @@ export function initRegisterView() {
       tower: document.getElementById("tower").value.trim(),
     };
 
+    const passwordConfirm = document.getElementById("confirm-password").value
+
+    if(user.password !== passwordConfirm ){
+      alert ("The passwords do not match")
+      return
+    }
+
     try {
       const newUser = await register(user);
-
-      console.log("Usuario creado:", newUser);
-
-      alert("Registro exitoso :D");
-
       form.reset();
     } catch (error) {
       alert(error.message);
@@ -32,51 +34,51 @@ export function initRegisterView() {
 
 export function RegisterView() {
   return `
-<section id="auth-card">
+<section>
 
-  <header id="auth-header">
+  <header>
     <h2>Create Account</h2>
     <p>Join your community and start reporting incidents.</p>
   </header>
 
   <form id="register-form">
 
-    <div class="form-group">
+    <div>
       <label for="name">Full Name</label>
       <input id="name" name="name" type="text" placeholder="John Doe" required>
     </div>
 
-    <div class="form-group">
+    <div>
       <label for="email">Email Address</label>
       <input id="email" name="email" type="email" placeholder="email@example.com" required>
     </div>
 
     <div>
-      <div class="form-group">
+      <div>
         <label for="tower">Tower</label>
         <input id="tower" name="tower" type="text" placeholder="A" required>
       </div>
 
-      <div class="form-group">
+      <div>
         <label for="apartment">Apartment</label>
         <input id="apartment" name="apartment" type="text" placeholder="302" required>
       </div>
     </div>
 
-    <div class="form-group">
+    <div>
       <label for="password">Password</label>
       <div class="password-field">
         <input id="password" name="password" type="password" placeholder="••••••••" required>
       </div>
-      <small class="input-error"></small>
+      <small id="input-error-register"></small>
     </div>
 
-    <div class="form-group">
+    <div">
       <label for="confirmPassword">
         Confirm Password
       </label>
       <div class="password-field">
-        <input id="confirmPassword" name="confirmPassword" type="password" placeholder="••••••••" required>
+        <input id="confirm-password" name="confirmPassword" type="password" placeholder="••••••••" required>
       </div>
       <small id="passwordMatch"></small>
     </div>
@@ -88,10 +90,9 @@ export function RegisterView() {
     </button>
   </form>
 
-  <div class="auth-footer">
+  <div>
     <p>Already have an account? <a href="#" id="go-login">Log In</a></p>
   </div>
-
 </section>
 `;
 }
