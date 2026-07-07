@@ -15,6 +15,14 @@
       "apartment": "404",
       "tower": "B",
       "id": "853s8Jze3_E"
+    },
+    {
+      "name": "gustavo",
+      "email": "gus@test.com",
+      "password": "123",
+      "apartment": "404",
+      "tower": "F",
+      "id": "bp1CYZWkobk"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
