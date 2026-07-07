@@ -13,11 +13,7 @@ export function initLoginView() {
 
     try {
       const user = await login(email, password);
-
-      console.log("Usuario logueado:", user);
-
-      alert("Welcome" + user.name);
-
+      alert("Welcome " + user.name);
       form.reset();
     } catch (error) {
       alert(error.message);
@@ -27,22 +23,21 @@ export function initLoginView() {
 
 export function LoginView() {
   return `
-    <section id="auth-card">
+    <section>
 
-    <header id="auth-header">
+    <header">
         <h2>Log In</h2>
         <p>Sign in to your account to access the platform.</p>
     </header>
 
     <form id="login-form" novalidate>
 
-        <div id="form-group">
+        <div>
             <label for="email">Email Address</label>
             <input id="email" name="email" type="email" placeholder="email@example.com" required>
-            <small id="isnput-error"></small>
         </div>
 
-        <div id="form-group">
+        <div>
             <label for="password">Password</label>
             <div id="password-field">
                 <input id="password" name="password" type="password" placeholder="••••••••" required>
@@ -50,18 +45,17 @@ export function LoginView() {
                     Show
                 </button>
             </div>
-            <small id="input-error"></small>
         </div>
 
-        <div id="login-error" id="server-error"></div>
+        <div id="login-error"></div>
 
-        <button id="login-btn" id="btn btn-primary" type="submit">
+        <button id="login-btn" type="submit">
             Log In
         </button>
 
     </form>
 
-    <div id="auth-footer">
+    <div>
         <p>Don't have an account? <a href="#" id="go-register">Sign Up</a></p>
     </div>
 
