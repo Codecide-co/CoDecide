@@ -32,7 +32,10 @@ class User(db.Model):
 
     # Relaciones
     reports: Mapped[list["Report"]] = relationship(
-        "Report", back_populates="author", lazy="selectin"
+        "Report", back_populates="author", lazy="selectin", foreign_keys="Report.user_id"
+    )
+    assigned_reports: Mapped[list["Report"]] = relationship(
+        "Report", back_populates="assignee", lazy="selectin", foreign_keys="Report.assigned_to"
     )
     comments: Mapped[list["Comment"]] = relationship(
         "Comment", back_populates="author", lazy="selectin"

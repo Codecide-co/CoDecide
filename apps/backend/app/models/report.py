@@ -38,7 +38,12 @@ class Report(db.Model):
     )
 
     # Relaciones
-    author: Mapped["User"] = relationship("User", back_populates="reports")
+    author: Mapped["User"] = relationship(
+        "User", back_populates="reports", foreign_keys=[user_id]
+    )
+    assignee: Mapped["User | None"] = relationship(
+        "User", foreign_keys=[assigned_to]
+    )
     category: Mapped["Category"] = relationship("Category", back_populates="reports")
     comments: Mapped[list["Comment"]] = relationship(
         "Comment", back_populates="report", lazy="selectin"
