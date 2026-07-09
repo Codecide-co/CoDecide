@@ -5,6 +5,110 @@
 
 ---
 
+## 🔄 ¿Qué es REST y cómo lo usa CokeDecide?
+
+**REST** significa "Transferencia de Estado Representacional". En criollo:
+
+> **Es una forma de organizar la comunicación entre el frontend y el backend usando cosas que ya existen: URLs, métodos HTTP y JSON.**
+
+REST no es un programa ni una librería. Es un **estilo de arquitectura**, como las reglas de tránsito: todos se ponen de acuerdo en cómo pedir y devolver datos.
+
+### Las reglas REST que sigue CokeDecide:
+
+### 1. Todo es un "recurso" (sustantivos, no verbos)
+
+En REST no se usan verbos en las URLs. Usás sustantivos:
+
+| ❌ Mal (no REST) | ✅ Bien (REST) |
+|-----------------|----------------|
+| `/api/createReport` | `POST /api/reports` |
+| `/api/deleteUser?id=5` | `DELETE /api/admin/users/5` |
+| `/api/getComments` | `GET /api/reports/1/comments` |
+
+Los recursos de CokeDecide son: `reports`, `users`, `categories`, `comments`, `votes`, `comunicados`, `stats`.
+
+### 2. Usás los métodos HTTP para decir qué hacer
+
+| Método | Acción | Ejemplo en CokeDecide |
+|--------|--------|----------------------|
+| `GET` | Leer / listar | `GET /api/reports` → trae todos los reportes |
+| `POST` | Crear | `POST /api/reports` → crea un reporte nuevo |
+| `PATCH` | Actualizar parcialmente | `PATCH /api/reports/5/status` → cambia solo el estado |
+| `DELETE` | Borrar | `DELETE /api/admin/users/3` → borra un usuario |
+
+### 3. Las URLs tienen jerarquía (anidadas)
+
+```
+/api/reports                  → todos los reportes
+/api/reports/5                → el reporte con ID 5
+/api/reports/5/vote           → votar el reporte 5
+/api/reports/5/comments       → comentarios del reporte 5
+/api/reports/5/status         → estado del reporte 5
+/api/admin/users              → usuarios (solo admin)
+/api/admin/reports/5/assign   → asignar reporte 5 (solo admin)
+```
+
+Esto se lee como **"dentro de reports, el 5, sus comentarios"**.
+
+### 4. Las respuestas son siempre JSON
+
+REST no mezcla HTML con datos. Todo lo que devuelve CokeDecide es JSON puro:
+
+```json
+{
+  "id": 5,
+  "title": "Fuga de gas",
+  "status": "open",
+  "tracking_number": "CD-F1G2H3J4",
+  "created_at": "2026-07-09T12:00:00"
+}
+```
+
+El frontend agarra ese JSON y decide cómo mostrarlo (como tarjeta, lista, etc.).
+
+### 5. Sin estado (stateless)
+
+Cada pedido que llega al backend contiene **toda la información necesaria**. El backend no recuerda nada de pedidos anteriores. Por eso en cada request mandás el token:
+
+```
+POST /api/reports
+Authorization: Bearer TOKEN_123   ← el backend no "recuerda" quién sos
+{ "title": "..." }                 ← todo lo necesario está acá
+```
+
+### Cómo se ve REST en el código de CokeDecide:
+
+```python
+# routes/reports.py
+
+@reports_bp.route("", methods=["GET"])           # GET  /api/reports      → listar
+@reports_bp.route("", methods=["POST"])          # POST /api/reports      → crear
+@reports_bp.route("/<int:report_id>", methods=["GET"])  # GET /api/reports/5 → detalle
+@reports_bp.route("/<int:report_id>/vote", methods=["POST"])  # POST → votar
+@reports_bp.route("/<int:report_id>/comments", methods=["POST"])  # POST → comentar
+@reports_bp.route("/<int:report_id>/status", methods=["PATCH"])  # PATCH → cambiar estado
+```
+
+Cada línea = una operación REST sobre el recurso `reports`.
+
+### Resumen visual de REST en CokeDecide:
+
+```
+FRONTEND                          BACKEND (REST API)
+   │                                  │
+   │  GET  /api/reports               │  → devuelve lista de reportes
+   │  POST /api/reports  {datos}      │  → crea y devuelve el reporte nuevo
+   │  GET  /api/reports/5             │  → devuelve el reporte #5
+   │  POST /api/reports/5/vote {voto} │  → registra el voto
+   │  GET  /api/stats                 │  → devuelve estadísticas
+   │                                  │
+   └──────────────────────────────────┘
+         Todo es JSON, todo es sin estado,
+         todo usa métodos HTTP estándar
+```
+
+---
+
 ## 🐍 ¿Qué es Flask y dónde se usa acá?
 
 **Flask** es un "micro-framework" de Python para hacer APIs web. En criollo:
