@@ -22,7 +22,7 @@ class Category(db.Model):
 
     # Relaciones
     reports: Mapped[list["Report"]] = relationship(
-        "Report", back_populates="category", lazy="dynamic"
+        "Report", back_populates="category", lazy="selectin"
     )
 
     def to_dict(self) -> dict:

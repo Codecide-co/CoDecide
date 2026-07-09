@@ -9,8 +9,8 @@ from app.models.comment import Comment
 from app.models.report import Report
 from app.models.user import User
 from app.models.vote import Vote
-from mongo.attachment import Attachment
-from mongo.audit_log import AuditLog
+from app.mongo.attachment import Attachment
+from app.mongo.audit_log import AuditLog
 
 
 class ReportService:
@@ -71,8 +71,8 @@ class ReportService:
         reports = []
         for report in pagination.items:
             r = report.to_dict()
-            r["votes_count"] = report.votes.count()
-            r["comments_count"] = report.comments.count()
+            r["votes_count"] = len(report.votes)
+            r["comments_count"] = len(report.comments)
             reports.append(r)
 
         return {

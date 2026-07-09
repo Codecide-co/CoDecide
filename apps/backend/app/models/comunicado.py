@@ -1,26 +1,28 @@
 from datetime import datetime, timezone
 
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.extensions import db
 
 
 class Comunicado(db.Model):
     __tablename__ = "comunicados"
 
-    id: int = db.Column(db.Integer, primary_key=True)
-    title: str = db.Column(db.String(200), nullable=False)
-    body: str = db.Column(db.Text, nullable=False)
-    author_id: int = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    created_at: datetime = db.Column(
+    id: Mapped[int] = mapped_column(primary_key=True)
+    title: Mapped[str] = mapped_column(db.String(200), nullable=False)
+    body: Mapped[str] = mapped_column(db.Text, nullable=False)
+    author_id: Mapped[int] = mapped_column(db.ForeignKey("users.id"), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
         db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)
     )
-    updated_at: datetime = db.Column(
+    updated_at: Mapped[datetime] = mapped_column(
         db.DateTime,
         nullable=False,
         default=lambda: datetime.now(timezone.utc),
         onupdate=lambda: datetime.now(timezone.utc),
     )
 
-    author = db.relationship("User")
+    author: Mapped["User"] = relationship("User", back_populates="comunicados")
 
     def to_dict(self) -> dict:
         return {

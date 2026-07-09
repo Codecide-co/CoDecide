@@ -60,8 +60,8 @@ def get_report(report_id: int):
     try:
         report = ReportService.get_by_id(report_id)
         data = report.to_dict()
-        data["votes_count"] = report.votes.count()
-        data["comments_count"] = report.comments.count()
+        data["votes_count"] = len(report.votes)
+        data["comments_count"] = len(report.comments)
         data["comments"] = [
             {
                 "id": c.id,
@@ -70,7 +70,7 @@ def get_report(report_id: int):
                 "author_name": c.author.name if c.author else None,
                 "created_at": c.created_at.isoformat(),
             }
-            for c in report.comments.all()
+            for c in report.comments
         ]
         return jsonify(data), 200
     except ValueError as e:

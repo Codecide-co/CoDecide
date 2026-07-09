@@ -12,8 +12,8 @@ class Comment(db.Model):
     body: Mapped[str] = mapped_column(db.Text, nullable=False)
 
     # Foreign Keys
-    user_id: Mapped[int] = mapped_column(db.ForeignKey("users.id"), nullable=False)
-    report_id: Mapped[int] = mapped_column(db.ForeignKey("reports.id"), nullable=False)
+    user_id: Mapped[int] = mapped_column(db.ForeignKey("users.id"), nullable=False, index=True)
+    report_id: Mapped[int] = mapped_column(db.ForeignKey("reports.id"), nullable=False, index=True)
 
     # Timestamps
     created_at: Mapped[datetime] = mapped_column(

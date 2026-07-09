@@ -1,6 +1,6 @@
 from pathlib import Path
 
-GIT_DIR = Path(__file__).resolve().parent.parent.parent / ".git"
+GIT_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent / ".git"
 
 
 def get_git_commit() -> str:
