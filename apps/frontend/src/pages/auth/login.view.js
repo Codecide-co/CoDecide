@@ -1,5 +1,6 @@
-import { login } from "../../services/auth.service";
+import { login } from "@services/auth.service";
 import { validateLoginForm } from "@utils/validators"; /* Import de validaciones errores - Carlos*/
+import { AuthError } from "@services/auth.service";
 
 let isSubmitting = false;
 
@@ -52,17 +53,18 @@ export function initLoginView(onSuccess) {
 
     try {
       await login(email, password);
-      setLoading(false); /* Reincio del boton  -carlos */
       form.reset();
       if (typeof onSuccess === "function") onSuccess(); /* inserccion de condicional - carlos*/
     } catch (error) {
-      setLoading(false);
        if (error instanceof AuthError && error.status === 401) {
         loginError.textContent = "Invalid credentials";
       } else {
         loginError.textContent = "Something went wrong. Please try again.";
       }
     }
+
+    setLoading(false);       /* Reincio del boton  -carlos */
+    
   });
 
   /* validacion alternar contraseña - carlos*/
@@ -106,7 +108,6 @@ export function LoginView() {
         </div>
  
         <div id="login-error" role="alert"></div>
- |
         <button id="login-btn" type="submit">
             Log In
         </button>
