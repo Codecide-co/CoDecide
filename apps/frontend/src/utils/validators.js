@@ -19,7 +19,7 @@ export function validateLoginForm({ email, password }) {
   return { isValid: Object.keys(errors).length === 0, errors };
 }
 
-export function validateRegisterForm({ name, email, tower, apartament, password, confirmPassword }) {
+export function validateRegisterForm({ name, email, tower, apartment, password, confirmPassword }) {
   const errors = {};
 
   if (!name || !name.trim()) {
@@ -36,7 +36,7 @@ export function validateRegisterForm({ name, email, tower, apartament, password,
     errors.tower = "La torre es obligatoria";
   }
 
-  if (!apartament || !apartament.trim()) {
+  if (!apartment || !apartment.trim()) {
     errors.apartament = "El apartamento es obligatorio";
   }
 
@@ -46,7 +46,7 @@ export function validateRegisterForm({ name, email, tower, apartament, password,
     errors.password = "La contraseña debe tener al menos 6 caracteres"
   }
 
-  if (confirmPassword) {
+  if (!confirmPassword) {
     errors.confirmPassword = "Confirma tu contraseña";
   } else if (password && confirmPassword !== password) {
     errors.confirmPassword = "Las contraseñas no coinciden";
