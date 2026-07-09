@@ -1,4 +1,4 @@
-import { fetchApiData, postApiData } from "../utils/api";
+import { fetchApiData, postApiData } from "@utils/api";
 
 // Error tipado, para distinguir "credeciales invalidas (401)" 
 export class AuthError extends Error {
@@ -53,7 +53,7 @@ export async function login(email, password) {
     const user = await getUserByEmail(email);
 
     if (!user || user.password !== password) {
-        throw new Error("Credenciales invalidas", 401);
+        throw new AuthError("Credenciales invalidas", 401);
     }
 
     const token = generateMockToken(user);
