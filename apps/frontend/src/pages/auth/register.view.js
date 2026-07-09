@@ -1,4 +1,4 @@
-import { register } from "../../services/auth.service";
+import { register } from "@services/auth.service";
 import { validateRegisterForm } from "@/utils/validators";
 
 let isSubmitting = false;
@@ -74,13 +74,14 @@ export function initRegisterView(onSuccess) {
 
     try {
       await register(user);
-      setLoading(false); /* Reincio del boton  -carlos */
       form.reset();
       if (typeof onSuccess === "function") onSuccess(); /* inserccion de condicional - carlos*/
     } catch (error) {
-      setLoading(false);
       registerError.textContent = error.message || "Something went wrong. Please try again.";
     }
+    
+    setLoading(false); /* Reincio del boton  -carlos */
+
   });
 
   /* validacion alternar contraseña - carlos*/
