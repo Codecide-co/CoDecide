@@ -1,7 +1,7 @@
 from flask import Flask
 
 from app.config import Config
-from app.extensions import babel, db, jwt, migrate, mongo
+from app.extensions import db, jwt, migrate, mongo
 from app.routes import register_blueprints
 
 
@@ -13,7 +13,6 @@ def create_app() -> Flask:
     mongo.init_app(app, uri=Config.MONGO_URI)
     migrate.init_app(app, db)
     jwt.init_app(app)
-    babel.init_app(app)
 
     register_blueprints(app)
 
