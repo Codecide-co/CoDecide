@@ -32,11 +32,11 @@ echo ""
 # List of commits in this PR
 if [ -n "$PR_NUMBER" ] && [ -n "$TARGET_BRANCH" ]; then
   git fetch origin "$TARGET_BRANCH" 2>/dev/null || true
-  COMMITS=$(git log "origin/$TARGET_BRANCH..HEAD" --format="%H||%s" 2>/dev/null || true)
+  COMMITS=$(git log --no-merges "origin/$TARGET_BRANCH..HEAD" --format="%H||%s" 2>/dev/null || true)
 fi
 
 if [ -z "${COMMITS:-}" ]; then
-  COMMITS=$(git log --oneline -10 --format="%H||%s")
+  COMMITS=$(git log --no-merges --oneline -10 --format="%H||%s")
 fi
 
 # ----------------------------------------------------------------
