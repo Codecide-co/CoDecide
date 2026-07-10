@@ -1,16 +1,18 @@
-from flask import Blueprint, jsonify
+"""
+Rutas de prueba para verificar que la API está funcionando.
+"""
 
-from app.services.user_service import UserService
+from flask import Blueprint, jsonify
 
 hello_bp = Blueprint("hello", __name__)
 
 
-@hello_bp.route("/hello")
+@hello_bp.route("/hello", methods=["GET"])
 def hello() -> tuple:
+    """
+    Endpoint de prueba.
+
+    Returns:
+        tuple: Mensaje de bienvenida y código HTTP 200.
+    """
     return jsonify({"message": "Hello, CokeDecide!"}), 200
-
-
-@hello_bp.route("/hello/<name>")
-def hello_with_name(name: str) -> tuple:
-    user = UserService.greet(name)
-    return jsonify(user.to_dict()), 200
