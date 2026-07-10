@@ -24,6 +24,7 @@ class Report(db.Model):
     # Foreign Keys
     category_id: Mapped[int] = mapped_column(db.ForeignKey("categories.id"), nullable=False)
     user_id: Mapped[int] = mapped_column(db.ForeignKey("users.id"), nullable=False)
+    assigned_to: Mapped[int | None] = mapped_column(db.ForeignKey("users.id"), nullable=True)
 
     # Timestamps
     created_at: Mapped[datetime] = mapped_column(
@@ -37,13 +38,18 @@ class Report(db.Model):
     )
 
     # Relaciones
-    author: Mapped["User"] = relationship("User", back_populates="reports")
+    author: Mapped["User"] = relationship(
+        "User", back_populates="reports", foreign_keys=[user_id]
+    )
+    assignee: Mapped["User | None"] = relationship(
+        "User", foreign_keys=[assigned_to]
+    )
     category: Mapped["Category"] = relationship("Category", back_populates="reports")
     comments: Mapped[list["Comment"]] = relationship(
-        "Comment", back_populates="report", lazy="dynamic"
+        "Comment", back_populates="report", lazy="selectin"
     )
     votes: Mapped[list["Vote"]] = relationship(
-        "Vote", back_populates="report", lazy="dynamic"
+        "Vote", back_populates="report", lazy="selectin"
     )
 
     @staticmethod
