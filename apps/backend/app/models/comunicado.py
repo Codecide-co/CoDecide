@@ -5,17 +5,13 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.extensions import db
 
 
-class Comment(db.Model):
-    __tablename__ = "comments"
+class Comunicado(db.Model):
+    __tablename__ = "comunicados"
 
     id: Mapped[int] = mapped_column(primary_key=True)
+    title: Mapped[str] = mapped_column(db.String(200), nullable=False)
     body: Mapped[str] = mapped_column(db.Text, nullable=False)
-
-    # Foreign Keys
-    user_id: Mapped[int] = mapped_column(db.ForeignKey("users.id"), nullable=False, index=True)
-    report_id: Mapped[int] = mapped_column(db.ForeignKey("reports.id"), nullable=False, index=True)
-
-    # Timestamps
+    author_id: Mapped[int] = mapped_column(db.ForeignKey("users.id"), nullable=False)
     created_at: Mapped[datetime] = mapped_column(
         db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)
     )
@@ -26,16 +22,15 @@ class Comment(db.Model):
         onupdate=lambda: datetime.now(timezone.utc),
     )
 
-    # Relaciones
-    author: Mapped["User"] = relationship("User", back_populates="comments")
-    report: Mapped["Report"] = relationship("Report", back_populates="comments")
+    author: Mapped["User"] = relationship("User", back_populates="comunicados")
 
     def to_dict(self) -> dict:
         return {
             "id": self.id,
+            "title": self.title,
             "body": self.body,
-            "user_id": self.user_id,
-            "report_id": self.report_id,
+            "author_id": self.author_id,
+            "author_name": self.author.name if self.author else None,
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat(),
         }

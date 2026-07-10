@@ -16,8 +16,8 @@ class Vote(db.Model):
     )
 
     # Foreign Keys
-    user_id: Mapped[int] = mapped_column(db.ForeignKey("users.id"), nullable=False)
-    report_id: Mapped[int] = mapped_column(db.ForeignKey("reports.id"), nullable=False)
+    user_id: Mapped[int] = mapped_column(db.ForeignKey("users.id"), nullable=False, index=True)
+    report_id: Mapped[int] = mapped_column(db.ForeignKey("reports.id"), nullable=False, index=True)
 
     # Timestamp
     created_at: Mapped[datetime] = mapped_column(
