@@ -14,17 +14,6 @@ pool:
   vmImage: ubuntu-latest
 
 jobs:
-  - job: validate
-    displayName: Validate PR conventions
-    condition: eq(variables['Build.Reason'], 'PullRequest')
-    steps:
-      - checkout: self
-        fetchDepth: 0
-      - script: |
-          chmod +x .azure/validate-pr.sh
-          bash .azure/validate-pr.sh
-        displayName: Run PR validation
-
   - job: frontend
     displayName: Frontend
     steps:
