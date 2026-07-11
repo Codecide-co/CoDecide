@@ -1,5 +1,3 @@
-from app.services.auth_service import AuthService
-from app.services.report_service import ReportService
-from app.services.stats_service import StatsService
+from app.services.user_service import UserService
 
-__all__ = ["AuthService", "ReportService", "StatsService"]
+__all__ = ["UserService"]
