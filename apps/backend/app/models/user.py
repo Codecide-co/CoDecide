@@ -32,19 +32,13 @@ class User(db.Model):
 
     # Relaciones
     reports: Mapped[list["Report"]] = relationship(
-        "Report", back_populates="author", lazy="selectin", foreign_keys="Report.user_id"
-    )
-    assigned_reports: Mapped[list["Report"]] = relationship(
-        "Report", back_populates="assignee", lazy="selectin", foreign_keys="Report.assigned_to"
+        "Report", back_populates="author", lazy="dynamic"
     )
     comments: Mapped[list["Comment"]] = relationship(
-        "Comment", back_populates="author", lazy="selectin"
+        "Comment", back_populates="author", lazy="dynamic"
     )
     votes: Mapped[list["Vote"]] = relationship(
-        "Vote", back_populates="user", lazy="selectin"
-    )
-    comunicados: Mapped[list["Comunicado"]] = relationship(
-        "Comunicado", back_populates="author", lazy="selectin"
+        "Vote", back_populates="user", lazy="dynamic"
     )
 
     def to_dict(self) -> dict:
