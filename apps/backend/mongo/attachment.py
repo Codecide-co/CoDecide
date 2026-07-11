@@ -9,11 +9,7 @@ from app.extensions import mongo
 class Attachment:
     """Metadatos de archivos adjuntos almacenados en MongoDB."""
 
-    @classmethod
-    def _collection(cls):
-        if mongo.db is None:
-            raise RuntimeError("MongoDB no está conectado")
-        return mongo.db.attachments
+    collection = mongo.db.attachments
 
     @classmethod
     def create(
@@ -25,6 +21,20 @@ class Attachment:
         file_size: int,
         uploaded_by: int,
     ) -> dict:
+        """
+        Crea un registro de adjunto en MongoDB.
+
+        Args:
+            report_id: ID del reporte asociado.
+            file_name: Nombre original del archivo.
+            file_url: URL o ruta donde se almacena el archivo.
+            file_type: Tipo de archivo (image, pdf, video).
+            file_size: Tamaño del archivo en bytes.
+            uploaded_by: ID del usuario que subió el archivo.
+
+        Returns:
+            El documento insertado con su ObjectId.
+        """
         doc = {
             "report_id": report_id,
             "file_name": file_name,
@@ -34,32 +44,56 @@ class Attachment:
             "uploaded_by": uploaded_by,
             "created_at": datetime.now(timezone.utc),
         }
-        result = cls._collection().insert_one(doc)
+        result = cls.collection.insert_one(doc)
         doc["_id"] = result.inserted_id
         return doc
 
     @classmethod
     def find_by_report(cls, report_id: int) -> list[dict]:
-        if not isinstance(report_id, int):
-            raise TypeError("report_id must be an integer")
-        return list(cls._collection().find({"report_id": report_id}))
+        """
+        Busca todos los adjuntos de un reporte.
+
+        Args:
+            report_id: ID del reporte.
+
+        Returns:
+            Lista de documentos de adjuntos.
+        """
+        return list(cls.collection.find({"report_id": report_id}))
 
     @classmethod
     def find_by_id(cls, attachment_id: str) -> Optional[dict]:
+        """
+        Busca un adjunto por su ObjectId.
+
+        Args:
+            attachment_id: ObjectId del adjunto como string.
+
+        Returns:
+            El documento si existe, None de lo contrario.
+        """
         try:
-            return cls._collection().find_one({"_id": ObjectId(attachment_id)})
+            return cls.collection.find_one({"_id": ObjectId(attachment_id)})
         except Exception:
             return None
 
     @classmethod
     def delete_by_report(cls, report_id: int) -> int:
-        if not isinstance(report_id, int):
-            raise TypeError("report_id must be an integer")
-        result = cls._collection().delete_many({"report_id": report_id})
+        """
+        Elimina todos los adjuntos de un reporte.
+
+        Args:
+            report_id: ID del reporte.
+
+        Returns:
+            Número de documentos eliminados.
+        """
+        result = cls.collection.delete_many({"report_id": report_id})
         return result.deleted_count
 
     @classmethod
     def to_dict(cls, doc: dict) -> dict:
+        """Serializa un documento de adjunto a diccionario."""
         if doc is None:
             return {}
         return {
