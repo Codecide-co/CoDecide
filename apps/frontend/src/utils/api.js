@@ -1,38 +1,40 @@
-const API_URL = "http://localhost:3000";
+const API_URL = "/api";
 
-export async function fetchApiData(path) {
-  const response = await fetch(API_URL + path);
-  const data = await response.json();
+function getToken() {
+  return localStorage.getItem("token"); // guarda el token
+}
 
+// funcion interna que todas las demas HTTP llaman
+async function request(path, options = {}) {
+  const token = getToken();
+  const headers = { "Content-Type": "application/json", ...options.headers };
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`; 
+  }
+
+  const res = await fetch(API_URL + path, { ...options, headers });
+  const data = await res.json();
+
+  if (!res.ok) {
+    const error = new Error(data.error || "Something went wrong");
+    error.status = res.status;
+    throw error;
+  }
   return data;
 }
 
-export async function postApiData(path, data) {
-  const response = await fetch(API_URL + path, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-
-  return await response.json();
+export async function fetchApiData(path) {
+  return request(path);
 }
 
-export async function updateApiData(path, data) {
-  const response = await fetch(API_URL + path, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
+export async function postApiData(path, body) {
+  return request(path, { method: "POST", body: JSON.stringify(body) });
+}
 
-  return await response.json();
+export async function updateApiData(path, body) {
+  return request(path, { method: "PUT", body: JSON.stringify(body) });
 }
 
 export async function deleteApiData(path) {
-  await fetch(API_URL + path, {
-    method: "DELETE",
-  });
+  return request(path, { method: "DELETE" });
 }
