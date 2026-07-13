@@ -12,27 +12,27 @@ export class AuthError extends Error {
 // Register - M
 export async function register(user) {
   const data = await postApiData("/auth/register", user);
-  localStorage.setItem("token", data.token);
-  localStorage.setItem("currentUser", JSON.stringify(data));
+  sessionStorage.setItem("token", data.token);
+  sessionStorage.setItem("currentUser", JSON.stringify(data));
   return data;
 }
 
 // Exit - M
-export function logout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("currentUser");
+export async function logout() {
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("currentUser");
 }
 
 // Get User - M
 export function getCurrentUser() {
-    const stored = localStorage.getItem("currentUser");
+    const stored = sessionStorage.getItem("currentUser");
     return stored ? JSON.parse(stored) : null;
 }
 
 // Login - M
 export async function login(email, password) {
   const data = await postApiData("/auth/login", { email, password });
-  localStorage.setItem("token", data.token);
-  localStorage.setItem("currentUser", JSON.stringify(data));
+  sessionStorage.setItem("token", data.token);
+  sessionStorage.setItem("currentUser", JSON.stringify(data));
   return { user: data, token: data.token };
 }
