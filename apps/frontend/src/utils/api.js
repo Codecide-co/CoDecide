@@ -1,7 +1,7 @@
-const API_URL = "/api";
+const API_URL = "http://localhost:5000/api";
 
 function getToken() {
-  return localStorage.getItem("token"); // guarda el token
+  return sessionStorage.getItem("token"); // guarda el token
 }
 
 // funcion interna que todas las demas HTTP llaman
