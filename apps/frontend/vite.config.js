@@ -22,13 +22,5 @@ export default defineConfig({
       '@store': resolve(__dirname, 'src/store'),
       '@router': resolve(__dirname, 'src/router'),
     }
-  },
-  server: {
-    proxy: {
-      "/api": {
-        target: "http://localhost:5000",
-        changeOrigin: true,
-      },
-    },
-  },
+  }
 })
