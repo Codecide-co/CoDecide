@@ -27,3 +27,8 @@ class Config:
         "JWT_SECRET_KEY",
         "jwt-secret-key"
     )
+
+    CORS_ORIGINS: str = os.getenv(
+        "CORS_ORIGINS",
+        "http://localhost:5173"
+    )
