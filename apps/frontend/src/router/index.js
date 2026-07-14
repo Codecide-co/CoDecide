@@ -1,23 +1,16 @@
 import loginView from "@/views/loginView.js";
+import registerView from "@/views/registerView.js";
 import homeView from "@/views/homeView.js";
-import reservationsView from "@/views/reservationsView.js";
-import spacesView from "@/views/spacesView.js";
-import usersView from "@/views/usersView.js";
-import dashboardView from "@/views/dashboardView.js";
 import notFoundView from "@/views/notFound.js";
-import { isAuthenticated, isAdmin } from "@/utils/utils.js";
+import { isAuthenticated } from "@/utils/utils.js";
 import { navigateTo } from "@/utils/navigate.js";
 
 const routes = {
   "/": loginView,
+  "/login": loginView,
+  "/register": registerView,
   "/home": homeView,
-  "/reservations": reservationsView,
-  "/spaces": spacesView,
-  "/users": usersView,
-  "/dashboard": dashboardView,
 };
-
-const adminOnlyRoutes = ["/spaces", "/users", "/dashboard"];
 
 export { navigateTo };
 
@@ -25,43 +18,20 @@ export const router = () => {
   const app = document.querySelector("#app");
   const path = window.location.pathname;
 
-  if (path === "/") {
-    if (isAuthenticated()) {
-      history.replaceState({}, "", "/home");
-      app.innerHTML = homeView();
-      return;
-    }
-    app.innerHTML = loginView();
+  if (path === "/" && isAuthenticated()) {
+    history.replaceState({}, "", "/home");
+    app.innerHTML = homeView();
     return;
   }
 
-  if (!isAuthenticated()) {
+  if (path !== "/" && path !== "/login" && path !== "/register" && !isAuthenticated()) {
     history.replaceState({}, "", "/");
     app.innerHTML = loginView();
     return;
   }
 
-  if (adminOnlyRoutes.includes(path) && !isAdmin()) {
-    app.innerHTML = `
-      <div class="min-h-screen flex flex-col items-center justify-center bg-slate-100 gap-4">
-        <div class="bg-white rounded-xl shadow p-10 text-center max-w-sm">
-          <p class="text-5xl mb-4"><i class="fa-solid fa-ban text-red-600"></i></p>
-          <h2 class="text-2xl font-bold text-red-600 mb-2">Access denied</h2>
-          <p class="text-slate-500 mb-6">You do not have permission to access this section.</p>
-          <button id="backHome" class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition">
-            Back to home
-          </button>
-        </div>
-      </div>
-    `;
-    document.querySelector("#backHome")?.addEventListener("click", () => navigateTo("/home"));
-    return;
-  }
-
   const view = routes[path] || notFoundView;
   app.innerHTML = view();
-
-  if (path === "/") return;
 
   document.querySelectorAll("[data-link]").forEach((link) => {
     link.addEventListener("click", (e) => {
