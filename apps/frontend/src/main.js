@@ -1,4 +1,4 @@
 import "@/styles/index.css";
-import { initRouter } from "@router/index.js";
+import { router } from "@router/index";
 
-initRouter();
+router();

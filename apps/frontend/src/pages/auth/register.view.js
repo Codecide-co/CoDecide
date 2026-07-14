@@ -1,89 +1,17 @@
-import { register } from "@services/auth.service";
-import { validateRegisterForm } from "@/utils/validators";
-
-let isSubmitting = false;
+import { register } from "@store/auth.store";
+import { validateRegisterForm } from "@utils/validators";
+import { useFormSubmit } from "@helpers/form.helper";
 
 export function initRegisterView(onSuccess) {
-  const form = document.getElementById("register-form");
-
-  if (!form) return;
-
-  const nameInput = document.getElementById("name");
-  const emailInput = document.getElementById("email");
-  const towerInput = document.getElementById("tower");
-  const apartmentInput = document.getElementById("apartment");
-  const passwordInput = document.getElementById("password");
-  const confirmPasswordInput = document.getElementById("confirm-password");
-
-  const nameError = document.getElementById("name-error");
-  const emailError = document.getElementById("email-error");
-  const towerError = document.getElementById("tower-error");
-  const apartmentError = document.getElementById("apartment-error");
-  const passwordError = document.getElementById("password-error");
-  const confirmPasswordError = document.getElementById("passwordMatch");
-  const registerError = document.getElementById("register-error");
-  const submitBtn = document.getElementById("register-btn");
-
-  /* funciones de validacion - carlos */
-
-  function clearErrors() {
-    nameError.textContent = "";
-    emailError.textContent = "";
-    towerError.textContent = "";
-    apartmentError.textContent = "";
-    passwordError.textContent = "";
-    confirmPasswordError.textContent = "";
-    registerError.textContent = "";
-  }
-
-  function setLoading(loading) {
-    isSubmitting = loading;
-    submitBtn.disabled = loading;
-    submitBtn.textContent = loading ? "Creating account..." : "Create Account";
-  }
-
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    if (isSubmitting) return; /* Condicional - Carlos */
-
-    const user = {
-      name: nameInput.value.trim(),
-      email: emailInput.value.trim(),
-      password: passwordInput.value,
-      apartment: apartmentInput.value.trim(),
-      tower: towerInput.value.trim(),
-    };
-    const confirmPassword = confirmPasswordInput.value;
-
-    /* validaciones con OR - carlos  */
-
-    clearErrors();
-
-    const { isValid, errors } = validateRegisterForm({ ...user, confirmPassword });
-    if (!isValid) {
-      nameError.textContent = errors.name || "";
-      emailError.textContent = errors.email || "";
-      towerError.textContent = errors.tower || "";
-      apartmentError.textContent = errors.apartment || "";
-      passwordError.textContent = errors.password || "";
-      confirmPasswordError.textContent = errors.confirmPassword || "";
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      await register(user);
-      form.reset();
-      if (typeof onSuccess === "function") onSuccess(); /* inserccion de condicional - carlos*/
-    } catch (error) {
-      registerError.textContent = error.message || "Something went wrong. Please try again.";
-    }
-    
-    setLoading(false); /* Reincio del boton  -carlos */
+  useFormSubmit("register-form", {
+    validator: validateRegisterForm,
+    onSubmit: (values) => {
+      const { confirmPassword, ...user } = values;
+      return register(user);
+    },
+    onSuccess,
   });
 
-  /* validacion alternar contraseña - carlos*/
   function bindToggle(buttonId, input) {
     const btn = document.getElementById(buttonId);
     if (!btn) return;
@@ -94,9 +22,9 @@ export function initRegisterView(onSuccess) {
     });
   }
 
-  bindToggle("toggle-password", passwordInput);
-  bindToggle("toggle-confirm-password", confirmPasswordInput);
-  
+  bindToggle("toggle-password", document.getElementById("password"));
+  bindToggle("toggle-confirm-password", document.getElementById("confirm-password"));
+
   document.getElementById("go-login")?.addEventListener("click", (e) => {
     e.preventDefault();
     location.replace("#/login");
@@ -161,7 +89,7 @@ export function RegisterView() {
             Show
         </button>
       </div>
-      <small id="passwordMatch"></small>
+      <small id="confirmPassword-error"></small>
     </div>
 
     <div id="register-error" role="alert"></div>

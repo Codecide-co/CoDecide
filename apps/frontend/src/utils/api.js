@@ -1,15 +1,13 @@
-import { getSessionToken } from "@helpers/auth.helpers";
+import { getToken } from "@store/auth.store";
 
 const API_URL = "http://localhost:5000/api";
 
-// funcion interna que todas las demas HTTP llaman
 async function request(path, options = {}) {
-
-  const token = getSessionToken();
+  const token = getToken();
 
   const headers = { "Content-Type": "application/json", ...options.headers };
   if (token) {
-    headers["Authorization"] = `Bearer ${token}`; 
+    headers["Authorization"] = `Bearer ${token}`;
   }
 
   const res = await fetch(API_URL + path, { ...options, headers });

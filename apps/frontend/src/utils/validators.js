@@ -37,7 +37,7 @@ export function validateRegisterForm({ name, email, tower, apartment, password, 
   }
 
   if (!apartment || !apartment.trim()) {
-    errors.apartament = "El apartamento es obligatorio";
+    errors.apartment = "El apartamento es obligatorio";
   }
 
   if (!password) {

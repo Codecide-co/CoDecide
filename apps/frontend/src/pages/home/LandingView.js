@@ -21,8 +21,8 @@ return`
             </p>
 
             <div>
-                <a href="#/login">Report an Issue</a>
-                <a href="#/explore-reports">Explore Reports</a>
+                <a href="/login" data-link>Report an Issue</a>
+                <a href="/explore-reports" data-link>Explore Reports</a>
             </div>
         </section>
 
@@ -164,7 +164,7 @@ return`
                     build a safer, smarter, and more 
                     connected community.
                 </p>
-                <a href="#/login">Get Started</a>
+                <a href="/login" data-link>Get Started</a>
             </article>
         </section>
 
