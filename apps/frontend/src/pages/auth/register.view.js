@@ -1,6 +1,7 @@
 import { register } from "@store/auth.store";
 import { validateRegisterForm } from "@utils/validators";
 import { useFormSubmit } from "@helpers/form.helper";
+import { navigateTo } from "@/utils/navigate.js";
 
 export function initRegisterView(onSuccess) {
   useFormSubmit("register-form", {
@@ -27,7 +28,7 @@ export function initRegisterView(onSuccess) {
 
   document.getElementById("go-login")?.addEventListener("click", (e) => {
     e.preventDefault();
-    location.replace("#/login");
+    navigateTo("/login");
   });
 }
 
@@ -100,7 +101,7 @@ export function RegisterView() {
   </form>
 
   <div>
-    <p>Already have an account? <a href="#/login" id="go-login">Log In</a></p>
+    <p>Already have an account? <a href="/login" id="go-login">Log In</a></p>
   </div>
 </section>
 `;
