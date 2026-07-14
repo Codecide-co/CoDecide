@@ -1,12 +1,13 @@
 import loginView from "@/views/loginView.js";
 import registerView from "@/views/registerView.js";
 import homeView from "@/views/homeView.js";
+import { LandingView } from "@pages/home/LandingView";
 import notFoundView from "@/views/notFound.js";
 import { isAuthenticated } from "@/utils/utils.js";
 import { navigateTo } from "@/utils/navigate.js";
 
 const routes = {
-  "/": loginView,
+  "/": LandingView,
   "/login": loginView,
   "/register": registerView,
   "/home": homeView,
@@ -18,15 +19,14 @@ export const router = () => {
   const app = document.querySelector("#app");
   const path = window.location.pathname;
 
-  if (path === "/" && isAuthenticated()) {
-    history.replaceState({}, "", "/home");
-    app.innerHTML = homeView();
+  if (path === "/") {
+    app.innerHTML = LandingView();
     return;
   }
 
-  if (path !== "/" && path !== "/login" && path !== "/register" && !isAuthenticated()) {
+  if (!isAuthenticated() && path !== "/login" && path !== "/register") {
     history.replaceState({}, "", "/");
-    app.innerHTML = loginView();
+    app.innerHTML = LandingView();
     return;
   }
 
