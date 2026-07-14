@@ -4,6 +4,7 @@
  */
 export const saveSession = (user) => {
   sessionStorage.setItem("currentUser", JSON.stringify(user));
+    sessionStorage.setItem("token", user.token);
 };
 
 /** User data, obtained from sessionStorage */
