@@ -1,6 +1,7 @@
 import { login } from "@store/auth.store";
 import { validateLoginForm } from "@utils/validators";
 import { useFormSubmit } from "@helpers/form.helper";
+import { navigateTo } from "@/utils/navigate.js";
 
 export function initLoginView(onSuccess) {
   useFormSubmit("login-form", {
@@ -11,7 +12,7 @@ export function initLoginView(onSuccess) {
 
   document.getElementById("go-register")?.addEventListener("click", (e) => {
     e.preventDefault();
-    location.replace("#/register");
+    navigateTo("/register");
   });
 
   const togglePasswordBtn = document.getElementById("toggle-password");
@@ -60,7 +61,7 @@ export function LoginView() {
     </form>
 
     <div>
-      <p>Don't have an account? <a href="#/register" id="go-register">Sign Up</a></p>
+      <p>Don't have an account? <a href="/register" id="go-register">Sign Up</a></p>
     </div>
 
     </section>`;
