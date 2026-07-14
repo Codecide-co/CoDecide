@@ -22,7 +22,7 @@ return`
 
             <div>
                 <a href="/login" data-link>Report an Issue</a>
-                <a href="/explore-reports" data-link>Explore Reports</a>
+                <a href="#explore-reports" data-link>Explore Reports</a>
             </div>
         </section>
 
