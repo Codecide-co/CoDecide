@@ -1,4 +1,5 @@
-import { fetchApiData, postApiData } from "@utils/api";
+import { postApiData } from "@utils/api";
+import { saveSession, removeSession } from "@helpers/auth.helpers";
 
 // Error tipado, para distinguir "credeciales invalidas (401)" 
 export class AuthError extends Error {
@@ -12,27 +13,18 @@ export class AuthError extends Error {
 // Register - M
 export async function register(user) {
   const data = await postApiData("/auth/register", user);
-  sessionStorage.setItem("token", data.token);
-  sessionStorage.setItem("currentUser", JSON.stringify(data));
+  saveSession(data);
   return data;
 }
 
 // Exit - M
 export async function logout() {
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("currentUser");
-}
-
-// Get User - M
-export function getCurrentUser() {
-    const stored = sessionStorage.getItem("currentUser");
-    return stored ? JSON.parse(stored) : null;
+  removeSession();
 }
 
 // Login - M
 export async function login(email, password) {
   const data = await postApiData("/auth/login", { email, password });
-  sessionStorage.setItem("token", data.token);
-  sessionStorage.setItem("currentUser", JSON.stringify(data));
-  return { user: data, token: data.token };
+  saveSession(data);
+  return data
 }
