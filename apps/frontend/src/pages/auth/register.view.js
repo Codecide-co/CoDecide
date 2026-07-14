@@ -81,7 +81,6 @@ export function initRegisterView(onSuccess) {
     }
     
     setLoading(false); /* Reincio del boton  -carlos */
-
   });
 
   /* validacion alternar contraseña - carlos*/
@@ -97,6 +96,11 @@ export function initRegisterView(onSuccess) {
 
   bindToggle("toggle-password", passwordInput);
   bindToggle("toggle-confirm-password", confirmPasswordInput);
+  
+  document.getElementById("go-login")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    location.replace("#/login");
+  });
 }
 
 export function RegisterView() {
@@ -168,7 +172,7 @@ export function RegisterView() {
   </form>
 
   <div>
-    <p>Already have an account? <a href="#" id="go-login">Log In</a></p>
+    <p>Already have an account? <a href="#/login" id="go-login">Log In</a></p>
   </div>
 </section>
 `;
