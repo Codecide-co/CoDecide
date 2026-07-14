@@ -21,6 +21,7 @@ export default defineConfig({
       '@layout': resolve(__dirname, 'src/layout'),
       '@store': resolve(__dirname, 'src/store'),
       '@router': resolve(__dirname, 'src/router'),
+      '@helpers': resolve(__dirname, 'src/helpers'),
     }
   }
 })

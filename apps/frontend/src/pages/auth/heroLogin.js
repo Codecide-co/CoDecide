@@ -1,8 +1,7 @@
 export function viewHeroLogin(){
   return`
-  <main>
   <section>
-    <div>
+    <div class="information-login">
       <span>
         Community • Transparency • Participation
       </span>
@@ -40,5 +39,4 @@ export function viewHeroLogin(){
       </div>
     </div>
   </section>
-</main>`
-}
+`}
