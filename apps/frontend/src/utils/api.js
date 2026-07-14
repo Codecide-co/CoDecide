@@ -1,12 +1,12 @@
-const API_URL = "http://localhost:5000/api";
+import { getSessionToken } from "@helpers/auth.helpers";
 
-function getToken() {
-  return sessionStorage.getItem("token"); // guarda el token
-}
+const API_URL = "http://localhost:5000/api";
 
 // funcion interna que todas las demas HTTP llaman
 async function request(path, options = {}) {
-  const token = getToken();
+
+  const token = getSessionToken();
+
   const headers = { "Content-Type": "application/json", ...options.headers };
   if (token) {
     headers["Authorization"] = `Bearer ${token}`; 
