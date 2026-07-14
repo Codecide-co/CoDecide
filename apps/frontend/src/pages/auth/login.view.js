@@ -67,6 +67,11 @@ export function initLoginView(onSuccess) {
     
   });
 
+  document.getElementById("go-register")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    location.replace("#/register");
+  });
+
   /* validacion alternar contraseña - carlos*/
   const togglePasswordBtn = document.getElementById("toggle-password");
   if (togglePasswordBtn) {
@@ -81,9 +86,8 @@ export function initLoginView(onSuccess) {
 
 export function LoginView() {
   return `
-    <section>
- 
-    <header>
+  <section>
+  <header>
         <h2>Log In</h2>
         <p>Sign in to your account to access the platform.</p>
     </header>
@@ -115,7 +119,7 @@ export function LoginView() {
     </form>
  
     <div>
-        <p>Don't have an account? <a href="#" id="go-register">Sign Up</a></p>
+      <p>Don't have an account? <a href="#/register" id="go-register">Sign Up</a></p>    
     </div>
  
     </section>`;
