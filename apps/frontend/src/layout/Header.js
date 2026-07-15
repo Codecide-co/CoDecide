@@ -15,3 +15,12 @@ export function HeaderLanding() {
   </header>
 `;
 }
+
+export function HeaderHome() {
+  return`
+  <header class="header-home flex flex-row justify-between items-center p-6">
+    <a id="button-home" class="header-logo" href="/" data-link>CoDecide</a>
+    <a id="button-notification" class="notification-logo" href="/" data-link>🔔</a>
+  </header>
+  `
+}
