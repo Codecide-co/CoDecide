@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "./root.css";
-@import "./Auth.css";
+@import "./auth.css";
 @import "./FooterLanding.css";
 @import "./HeaderLanding.css";
 @import "./Landing.css";

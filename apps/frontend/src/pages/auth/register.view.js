@@ -34,73 +34,54 @@ export function initRegisterView(onSuccess) {
 
 export function RegisterView() {
   return `
-<section>
-
-  <header>
-    <h2>Create Account</h2>
-    <p>Join your community and start reporting incidents.</p>
+<section class="auth-form-section">
+  <header class="auth-form-header">
+    <h2 class="auth-form-title">Create Account</h2>
+    <p class="auth-form-desc">Join your community and start reporting incidents.</p>
   </header>
-
-  <form id="register-form" novalidate>
-
-    <div>
-      <label for="name">Full Name</label>
-      <input id="name" name="name" type="text" placeholder="John Doe">
-      <small id="name-error"></small>
+  <form id="register-form" class="auth-form" novalidate>
+    <div class="auth-form-group">
+      <label class="auth-form-label" for="name">Full Name</label>
+      <input class="auth-form-input" id="name" name="name" type="text" placeholder="John Doe">
+      <small class="auth-form-error" id="name-error"></small>
     </div>
-
-    <div>
-      <label for="email">Email Address</label>
-      <input id="email" name="email" type="email" placeholder="email@example.com">
-      <small id="email-error"></small>
+    <div class="auth-form-group">
+      <label class="auth-form-label" for="email">Email Address</label>
+      <input class="auth-form-input" id="email" name="email" type="email" placeholder="email@example.com">
+      <small class="auth-form-error" id="email-error"></small>
     </div>
-
-    <div>
-      <div>
-        <label for="tower">Tower</label>
-        <input id="tower" name="tower" type="text" placeholder="A">
-        <small id="tower-error"></small>
+    <div class="auth-form-grid">
+      <div class="auth-form-group">
+        <label class="auth-form-label" for="tower">Tower</label>
+        <input class="auth-form-input" id="tower" name="tower" type="text" placeholder="A">
+        <small class="auth-form-error" id="tower-error"></small>
       </div>
-
-      <div>
-        <label for="apartment">Apartment</label>
-        <input id="apartment" name="apartment" type="text" placeholder="302">
-        <small id="apartment-error"></small>
+      <div class="auth-form-group">
+        <label class="auth-form-label" for="apartment">Apartment</label>
+        <input class="auth-form-input" id="apartment" name="apartment" type="text" placeholder="302">
+        <small class="auth-form-error" id="apartment-error"></small>
       </div>
     </div>
-
-    <div>
-      <label for="password">Password</label>
-      <div class="password-field">
-        <input id="password" name="password" type="password" placeholder="••••••••">
-        <button type="button" id="toggle-password" aria-label="Show password">
-            Show
-        </button>
+    <div class="auth-form-group">
+      <label class="auth-form-label" for="password">Password</label>
+      <div class="auth-password-field">
+        <input class="auth-form-input" id="password" name="password" type="password" placeholder="••••••••">
+        <button type="button" class="auth-form-toggle" id="toggle-password" aria-label="Show password">Show</button>
       </div>
-      <small id="password-error"></small>
+      <small class="auth-form-error" id="password-error"></small>
     </div>
-
-    <div>
-      <label for="confirmPassword">
-        Confirm Password
-      </label>
-      <div class="password-field">
-        <input id="confirm-password" name="confirmPassword" type="password" placeholder="••••••••">
-        <button type="button" id="toggle-confirm-password" aria-label="Show password">
-            Show
-        </button>
+    <div class="auth-form-group">
+      <label class="auth-form-label" for="confirmPassword">Confirm Password</label>
+      <div class="auth-password-field">
+        <input class="auth-form-input" id="confirm-password" name="confirmPassword" type="password" placeholder="••••••••">
+        <button type="button" class="auth-form-toggle" id="toggle-confirm-password" aria-label="Show password">Show</button>
       </div>
-      <small id="confirmPassword-error"></small>
+      <small class="auth-form-error" id="confirmPassword-error"></small>
     </div>
-
-    <div id="register-error" role="alert"></div>
-
-    <button id="register-btn" type="submit">
-      Create Account
-    </button>
+    <div class="auth-form-error-global" id="register-error" role="alert"></div>
+    <button class="auth-form-submit" id="register-btn" type="submit">Create Account</button>
   </form>
-
-  <div>
+  <div class="auth-form-footer">
     <p>Already have an account? <a href="/login" id="go-login">Log In</a></p>
   </div>
 </section>

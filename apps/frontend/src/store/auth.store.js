@@ -1,27 +1,8 @@
 import { postApiData } from "@utils/api";
-
-const STORAGE_KEY = "currentUser";
-
-function loadSession() {
-  try {
-    return JSON.parse(sessionStorage.getItem(STORAGE_KEY));
-  } catch {
-    return null;
-  }
-}
-
-function saveSession(user) {
-  sessionStorage.setItem(STORAGE_KEY, JSON.stringify(user));
-  if (user?.token) sessionStorage.setItem("token", user.token);
-}
-
-function clearSession() {
-  sessionStorage.removeItem(STORAGE_KEY);
-  sessionStorage.removeItem("token");
-}
+import { saveSession, removeSession, getSession, getSessionToken } from "@helpers/auth.helpers";
 
 const state = {
-  user: loadSession(),
+  user: getSession(),
   subscribers: new Set(),
 };
 
@@ -61,10 +42,10 @@ export async function register(user) {
 }
 
 export function logout() {
-  clearSession();
+  removeSession();
   authStore.user = null;
 }
 
 export function getToken() {
-  return authStore.user?.token || null;
+  return getSessionToken();
 }
