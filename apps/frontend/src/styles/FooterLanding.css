@@ -1,26 +1,45 @@
-@import "./root.css";
-
 .footer-landing {
-  background-color: var(--color-navy);
+  background: linear-gradient(180deg, #0D1B2A, #1B263B);
   color: var(--color-text-white);
-  padding: 2rem;
+  padding: 2.5rem 2rem;
   text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.footer-landing ul {
+.footer-list {
   display: flex;
   justify-content: center;
-  gap: 2rem;
+  gap: 2.5rem;
   list-style: none;
+  flex-wrap: wrap;
 }
 
-.footer-landing a {
-  color: var(--color-text-white);
+.footer-link {
+  color: rgba(255, 255, 255, 0.6);
   text-decoration: none;
-  font-size: 0.9rem;
-  transition: opacity 0.2s;
+  font-size: 0.85rem;
+  transition: all 0.25s;
+  padding: 0.5rem;
+  display: inline-block;
+  position: relative;
 }
 
-.footer-landing a:hover {
-  opacity: 0.7;
+.footer-link::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: #60A5FA;
+  transition: all 0.3s;
+  transform: translateX(-50%);
+}
+
+.footer-link:hover {
+  color: white;
+}
+
+.footer-link:hover::after {
+  width: 60%;
 }

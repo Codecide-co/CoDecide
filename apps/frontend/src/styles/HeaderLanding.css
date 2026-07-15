@@ -1,39 +1,48 @@
-@import "./root.css";
-
 .header-landing {
-  background-color: var(--color-navy);
+  background-color: rgba(13, 27, 42, 0.6);
   color: var(--color-text-white);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   padding: 1rem 2rem;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  position: fixed;
+  font-weight: bold;
+  width: 100%;
+  z-index: 1000;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.header-landing #btn-home {
+.header-logo {
   background: none;
   border: none;
   color: var(--color-text-white);
-  font-weight: 700;
-  font-size: 1.25rem;
+  font-weight: 800;
+  font-size: 1.35rem;
   cursor: pointer;
-}
-
-.header-landing nav ul {
-  display: flex;
-  gap: 1.5rem;
-  list-style: none;
-}
-
-.header-landing nav a {
-  color: var(--color-text-white);
   text-decoration: none;
-  font-size: 0.9rem;
-  transition: opacity 0.2s;
+  letter-spacing: -0.5px;
 }
 
-.header-landing nav a:hover {
-  opacity: 0.7;
+.header-nav-link {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  padding: 0.5rem 0.85rem;
+  border-radius: 8px;
+}
+
+.header-nav-link:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.header-nav-cta {
+  background: linear-gradient(135deg, #2563EB, #60A5FA);
+  color: white;
+  font-weight: 600;
+}
+
+.header-nav-cta:hover {
+  background: linear-gradient(135deg, #1D4EDB, #3B82F6);
+  box-shadow: 0 4px 15px rgba(37,99,235,0.3);
 }
