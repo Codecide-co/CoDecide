@@ -28,41 +28,30 @@ export function initLoginView(onSuccess) {
 
 export function LoginView() {
   return `
-  <section>
-  <header>
-        <h2>Log In</h2>
-        <p>Sign in to your account to access the platform.</p>
+  <section class="auth-form-section">
+    <header class="auth-form-header">
+      <h2 class="auth-form-title">Log In</h2>
+      <p class="auth-form-desc">Sign in to your account to access the platform.</p>
     </header>
-
-    <form id="login-form" novalidate>
-
-        <div>
-            <label for="email">Email Address</label>
-            <input id="email" name="email" type="email" placeholder="email@example.com">
-            <small id="email-error"></small>
+    <form id="login-form" class="auth-form" novalidate>
+      <div class="auth-form-group">
+        <label class="auth-form-label" for="email">Email Address</label>
+        <input class="auth-form-input" id="email" name="email" type="email" placeholder="email@example.com">
+        <small class="auth-form-error" id="email-error"></small>
+      </div>
+      <div class="auth-form-group">
+        <label class="auth-form-label" for="password">Password</label>
+        <div class="auth-password-field">
+          <input class="auth-form-input" id="password" name="password" type="password" placeholder="••••••••">
+          <button type="button" class="auth-form-toggle" id="toggle-password" aria-label="Show password">Show</button>
         </div>
-
-        <div>
-            <label for="password">Password</label>
-            <div id="password-field">
-                <input id="password" name="password" type="password" placeholder="••••••••">
-                <button type="button" id="toggle-password" aria-label="Show password">
-                    Show
-                </button>
-            </div>
-            <small id="password-error"></small>
-        </div>
-
-        <div id="login-error" role="alert"></div>
-        <button id="login-btn" type="submit">
-            Log In
-        </button>
-
+        <small class="auth-form-error" id="password-error"></small>
+      </div>
+      <div class="auth-form-error-global" id="login-error" role="alert"></div>
+      <button class="auth-form-submit" id="login-btn" type="submit">Log In</button>
     </form>
-
-    <div>
+    <div class="auth-form-footer">
       <p>Don't have an account? <a href="/register" id="go-register">Sign Up</a></p>
     </div>
-
-    </section>`;
+  </section>`;
 }

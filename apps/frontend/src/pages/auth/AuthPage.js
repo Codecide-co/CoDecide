@@ -6,7 +6,7 @@ import { HeaderLanding } from "@/layout/Header";
 export function AuthView(formName) {
   return `
   ${HeaderLanding()}
-  <section class="auth-page">
+  <section class="auth-page flex flex-col lg:flex-row">
     <div class="auth-hero">${viewHeroLogin()}</div>
     <div class="auth-form-container" id="auth-dynamic">
       ${formName === "register" ? RegisterView() : LoginView()}
