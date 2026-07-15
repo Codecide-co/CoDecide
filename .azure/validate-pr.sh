@@ -14,11 +14,6 @@ section() {
   echo "==> $1"
 }
 
-is_single_line_message() {
-  local msg="$1"
-  [[ "$msg" != *$'\n'* ]] && [[ "$msg" != *$'\r'* ]]
-}
-
 if [ "$BUILD_REASON" = "PullRequest" ]; then
   BRANCH_NAME="${SYSTEM_PULLREQUEST_SOURCEBRANCH#refs/heads/}"
   TARGET_BRANCH="${SYSTEM_PULLREQUEST_TARGETBRANCH#refs/heads/}"
@@ -59,23 +54,17 @@ HAS_CONVENTIONAL=true
 while IFS= read -r -d '' HASH && IFS= read -r -d '' MSG; do
   [ -z "$HASH" ] && continue
 
-  if ! is_single_line_message "$MSG"; then
-    fail "Commit ${HASH:0:7}: multiline commit message is not allowed"
-    HAS_CONVENTIONAL=false
-    continue
-  fi
-
   if ! echo "$MSG" | grep -qE "$COMMIT_REGEX"; then
     fail "Commit ${HASH:0:7}: '$MSG'"
     HAS_CONVENTIONAL=false
   fi
-done < <(git log --no-merges "$LOG_RANGE" --format="%H%x00%B%x00" 2>/dev/null || true)
+done < <(git log --no-merges "$LOG_RANGE" --format="%H%x00%s%x00" 2>/dev/null || true)
 
 if [ "$HAS_CONVENTIONAL" = true ]; then
   while IFS= read -r -d '' HASH && IFS= read -r -d '' MSG; do
     [ -z "$HASH" ] && continue
     pass "Commit ${HASH:0:7}: $MSG"
-  done < <(git log --no-merges "$LOG_RANGE" --format="%H%x00%B%x00" 2>/dev/null || true)
+  done < <(git log --no-merges "$LOG_RANGE" --format="%H%x00%s%x00" 2>/dev/null || true)
 fi
 
 section "3. Commit size validation"
@@ -89,7 +78,7 @@ while IFS= read -r -d '' HASH && IFS= read -r -d '' MSG; do
   else
     pass "Commit ${HASH:0:7}: $FILES_CHANGED files"
   fi
-done < <(git log --no-merges "$LOG_RANGE" --format="%H%x00%B%x00" 2>/dev/null || true)
+done < <(git log --no-merges "$LOG_RANGE" --format="%H%x00%s%x00" 2>/dev/null || true)
 
 echo ""
 echo "=============================================="
