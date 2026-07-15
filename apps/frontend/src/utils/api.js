@@ -19,6 +19,15 @@ export async function postApiData(path, data) {
   return await response.json();
 }
 
+export async function postFormData(path, formData) {
+  const response = await fetch(API_URL + path, {
+    method: "POST",
+    body: formData,
+  });
+
+  return await response.json();
+}
+
 export async function updateApiData(path, data) {
   const response = await fetch(API_URL + path, {
     method: "PUT",
