@@ -1,0 +1,15 @@
+/* ===== FOOTER HOME ===== */
+nav.bg-\[var\(--color-navy\)\] ul li a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+nav.bg-\[var\(--color-navy\)\] ul li a img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  vertical-align: middle;
+}
