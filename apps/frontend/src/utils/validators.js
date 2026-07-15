@@ -54,3 +54,29 @@ export function validateRegisterForm({ name, email, tower, apartment, password, 
 
   return { isValid: Object.keys(errors).length === 0, errors };
 }
+
+export const DESCRIPTION_MAX_LENGTH = 500;
+
+export function validateReportForm({ title, description, categoryId }) {
+  const errors = {};
+
+  if (!title || !title.trim()) {
+    errors.title = "Title is required";
+  } else if (title.trim().length < 5) {
+    errors.title = "Title must be at least 5 characters";
+  }
+
+  if (!description || !description.trim()) {
+    errors.description = "Description is required";
+  } else if (description.trim().length < 20) {
+    errors.description = "Description must be at least 20 characters";
+  } else if (description.length > DESCRIPTION_MAX_LENGTH) {
+    errors.description = `Description must be under ${DESCRIPTION_MAX_LENGTH} characters`;
+  }
+
+  if (!categoryId) {
+    errors.category = "Please select a category";
+  }
+
+  return { isValid: Object.keys(errors).length === 0, errors };
+}

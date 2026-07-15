@@ -1,6 +1,8 @@
 import loginView from "@/views/loginView.js";
 import registerView from "@/views/registerView.js";
 import homeView from "@/views/homeView.js";
+import createReportView from "@/views/createReportView.js";
+import reportSuccessView from "@/views/reportSuccessView.js";
 import { LandingView } from "@pages/home/LandingView";
 import notFoundView from "@/views/notFound.js";
 import { isAuthenticated, isAdmin } from "@/utils/utils.js";
@@ -11,6 +13,8 @@ const routes = {
   "/login": loginView,
   "/register": registerView,
   "/home": homeView,
+  "/reports/create": createReportView,
+  "/reports/success": reportSuccessView,
 };
 
 const adminOnlyRoutes = ["/admin"];
