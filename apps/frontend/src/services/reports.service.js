@@ -20,5 +20,5 @@ function mockCreateReport(formData) {
 
 export async function createReport(formData) {
   if (USE_MOCK) return mockCreateReport(formData);
-  return postFormData("/api/reports", formData);
+  return postFormData("/reports", formData);
 }

@@ -1,81 +1,125 @@
-# Backend Architecture
+# Backend - CokeDecide
+
+Backend documentation.
+
+---
+
+## Index
+
+- [Overview](#overview)
+- [Structure](#structure)
+- [Layer responsibilities](#layer-responsibilities)
+- [Coding standards](#coding-standards)
+- [Running the backend](#running-the-backend)
+- [Endpoints](api/)
+- [Database (MySQL/SQLite)](#database-mysqlsqlite)
+- [MongoDB](#mongodb)
+- [Request flow](#request-flow)
+- [Security](#security)
+- [Notes](#notes)
+
+---
 
 ## Overview
 
-RESTful API built with **Flask** (Python). Uses **MySQL** for relational data (users, reports, categories, votes, comments) and **MongoDB** for document storage (attachments metadata, audit logs, activity history).
+REST API built with **Flask** (Python). Uses **MySQL** for relational data (users, reports, categories, votes, comments) and **MongoDB** for document storage (attachment metadata, audit logs, activity history).
 
 All Python code must include **type hints** and **docstrings**.
 
-## Directory Structure
+---
+
+## Structure
 
 ```
-app/
-├── __init__.py           # Application factory (create_app)
-├── config.py             # Environment-based configuration (dev, prod, test)
-├── extensions.py         # Flask extensions initialization (SQLAlchemy, PyMongo, Migrate)
-├── models/               # SQLAlchemy ORM models
-│   ├── user.py           # User model (id, name, email, password, role, apt, tower)
-│   ├── report.py         # Report model (title, description, category, status, evidence)
-│   ├── category.py       # Category model (name, type: infrastructure|coexistence)
-│   ├── comment.py        # Comment model (body, author, report, timestamps)
-│   └── vote.py           # Vote model (user, report, vote_type: up|down)
-├── routes/               # Flask Blueprints (controllers)
-│   ├── auth.py           # POST /login, /register, /logout, /me
-│   ├── reports.py        # CRUD /reports, PATCH /reports/:id/status
-│   ├── comunicados.py    # CRUD /comunicados
-│   ├── stats.py          # GET /stats (metrics, charts)
-│   └── admin.py          # Admin-only endpoints
-├── services/             # Business logic layer
-│   ├── auth_service.py   # Password hashing, JWT generation/validation
-│   ├── report_service.py # Report creation, status transitions, voting logic
-│   └── stats_service.py  # Aggregation queries, metrics computation
-├── schemas/              # Request/response serialization and validation
-│   ├── auth_schema.py    # Marshmallow schemas for login/register payloads
-│   ├── report_schema.py  # Report creation, update, listing serializers
-│   └── user_schema.py    # User profile serialization
-├── middleware/            # Request interceptors (decorators)
-│   └── auth.py           # @login_required, @admin_required decorators
-mongo/                    # MongoDB models/schemas
-│   ├── __init__.py
-│   ├── attachment.py     # Image/file metadata stored in MongoDB
-│   └── audit_log.py      # Activity and audit trail
-migrations/               # Flask-Migrate (Alembic) migration files
-requirements.txt
-run.py                    # Development server entry point
+apps/backend/
+├── run.py                          # Entry point
+├── requirements.txt                # Dependencies
+├── .env.example                    # Config template
+│
+└── app/
+    ├── __init__.py                 # App factory (create_app)
+    ├── config.py                   # Environment config
+    ├── extensions.py               # Extension init (SQLAlchemy, JWT, etc.)
+    ├── constants.py                # Constants
+    │
+    ├── models/                     # SQLAlchemy models (tables)
+    │   ├── user.py                 # Users
+    │   ├── report.py               # Reports
+    │   ├── category.py             # Categories
+    │   ├── comment.py              # Comments
+    │   ├── vote.py                 # Votes
+    │   └── comunicado.py           # Official announcements
+    │
+    ├── routes/                     # Endpoints (blueprints)
+    │   ├── hello.py                # Health check
+    │   ├── auth.py                 # Authentication
+    │   ├── reports.py              # Reports CRUD
+    │   ├── comunicados.py          # Announcements
+    │   ├── stats.py                # Statistics
+    │   └── admin.py                # Administration
+    │
+    ├── services/                   # Business logic
+    │   ├── auth_service.py
+    │   ├── report_service.py
+    │   └── stats_service.py
+    │
+    ├── schemas/                    # Marshmallow validation
+    │   ├── auth_schema.py
+    │   ├── report_schema.py
+    │   └── user_schema.py
+    │
+    ├── middleware/                  # Security decorators
+    │   └── auth.py                 # @login_required, @admin_required
+    │
+    ├── mongo/                      # MongoDB models
+    │   ├── attachment.py           # File metadata
+    │   └── audit_log.py            # Audit trail
+    │
+    └── utils/
+        ├── git.py                  # Current Git commit
+        └── logger.py               # Logging
+
+migrations/                         # Alembic migrations
+instance/
+└── cokedecide.db                   # Local SQLite DB (development)
 ```
 
-## Layer Responsibilities
+---
 
-### `models/` (SQLAlchemy)
+## Layer responsibilities
+
+### models/ (SQLAlchemy)
 - Define database tables as Python classes
 - Include relationships, indexes, and constraints
-- Each model in its own file named after the entity
+- One model per file, named after the entity
 
-### `routes/` (Blueprints)
+### routes/ (Blueprints)
 - Handle HTTP requests and return responses
 - Validate input through schemas before passing to services
-- Never contain business logic — delegate to services
+- Never contain business logic -- delegate to services
 - One blueprint per resource domain
 
-### `services/`
+### services/
 - Contain all business logic
 - Orchestrate models, external calls, and transactions
 - Raise custom exceptions for error handling
 
-### `schemas/` (Marshmallow)
+### schemas/ (Marshmallow)
 - Serialize/deserialize request and response data
 - Validate payload structure and types
 - Ensure consistent API contract
 
-### `middleware/`
+### middleware/
 - Decorator functions for cross-cutting concerns
 - Authentication, authorization, request logging
 
-### `mongo/`
+### mongo/
 - Schemas and helpers for MongoDB document operations
 - Used for non-relational data: file metadata, audit logs
 
-## Coding Standards
+---
+
+## Coding standards
 
 ### Type Hints
 Every function signature must include type annotations:
@@ -93,14 +137,14 @@ Every module, class, and function must have a docstring:
 ```python
 def create_report(title: str, description: str, user_id: int, ...) -> Report:
     """
-    Create a new report.
+    Creates a new report.
 
     Validates the category, assigns a tracking number, and
-    persists the report to the database.
+    persists the report in the database.
 
     Args:
-        title: Report title (max 200 chars).
-        description: Detailed description of the issue.
+        title: Report title (max. 200 chars).
+        description: Detailed problem description.
         user_id: ID of the reporting user.
         category_id: ID of the assigned category.
 
@@ -113,32 +157,176 @@ def create_report(title: str, description: str, user_id: int, ...) -> Report:
     """
 ```
 
-## API Endpoints
+---
 
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| POST | `/api/auth/register` | Register a new user | No |
-| POST | `/api/auth/login` | Login, returns JWT | No |
-| GET | `/api/auth/me` | Get current user profile | Yes |
-| GET | `/api/reports` | List reports (filters, pagination) | Yes |
-| POST | `/api/reports` | Create a report | Yes |
-| GET | `/api/reports/:id` | Get report detail | Yes |
-| PATCH | `/api/reports/:id/status` | Update report status | Admin |
-| POST | `/api/reports/:id/vote` | Vote on a report | Yes |
-| POST | `/api/reports/:id/comments` | Add a comment | Yes |
-| GET | `/api/stats` | Get community metrics | Yes |
-| GET | `/api/comunicados` | List official announcements | No |
-| POST | `/api/comunicados` | Publish an announcement | Admin |
+## Running the backend
 
-## Database Design
+```bash
+cd apps/backend
+pip install -r requirements.txt
+cp .env.example .env
+flask db upgrade
+python run.py
+```
 
-### MySQL (relational)
-- `users` — residents and admins
-- `reports` — infrastructure and coexistence issues
-- `categories` — report classification
-- `comments` — threaded discussion on reports
-- `votes` — community voting on reports
+Server at `http://localhost:5000`.
 
-### MongoDB (documents)
-- `attachments` — image/file metadata linked to reports
-- `audit_logs` — immutable activity trail for transparency
+---
+
+## Endpoints
+
+Detailed per-domain documentation in [api/](api/):
+
+| File | Base URL |
+|------|----------|
+| [hello.md](api/hello.md) | `/api` |
+| [auth.md](api/auth.md) | `/api/auth` |
+| [reports.md](api/reports.md) | `/api/reports` |
+| [comunicados.md](api/comunicados.md) | `/api/comunicados` |
+| [stats.md](api/stats.md) | `/api/stats` |
+| [admin.md](api/admin.md) | `/api/admin` |
+
+---
+
+## Database (MySQL/SQLite)
+
+### users
+
+| Field | Type | Description |
+|-------|------|-------------|
+| id | Integer PK | Unique ID |
+| name | String(100) | Full name |
+| email | String(120) UNIQUE | Email address |
+| password_hash | String(255) | Encrypted password |
+| role | Enum(resident, admin) | User role |
+| apartment | String(20) | Apartment number |
+| tower | String(10) | Tower |
+| created_at | DateTime | Registration date |
+| updated_at | DateTime | Last modification |
+
+### categories
+
+| Field | Type | Description |
+|-------|------|-------------|
+| id | Integer PK | Unique ID |
+| name | String(100) | Category name |
+| type | Enum(infrastructure, coexistence) | Type |
+| description | String(255) | Optional description |
+| created_at | DateTime | Creation date |
+
+### reports
+
+| Field | Type | Description |
+|-------|------|-------------|
+| id | Integer PK | Unique ID |
+| title | String(200) | Report title |
+| description | Text | Description |
+| status | Enum(open, in_progress, resolved, closed) | Current status |
+| tracking_number | String(20) UNIQUE | Tracking number (CD-XXXXXXXX) |
+| location | String(255) | Problem location |
+| category_id | Integer FK | Category |
+| user_id | Integer FK | Report author |
+| assigned_to | Integer FK nullable | Assigned user |
+| created_at | DateTime | Creation date |
+| updated_at | DateTime | Last modification |
+
+### comments
+
+| Field | Type | Description |
+|-------|------|-------------|
+| id | Integer PK | Unique ID |
+| body | Text | Comment content |
+| user_id | Integer FK | Author |
+| report_id | Integer FK | Associated report |
+| created_at | DateTime | Creation date |
+| updated_at | DateTime | Last modification |
+
+### votes
+
+| Field | Type | Description |
+|-------|------|-------------|
+| id | Integer PK | Unique ID |
+| vote_type | Enum(up, down) | Vote type |
+| user_id | Integer FK | Voter |
+| report_id | Integer FK | Voted report |
+| created_at | DateTime | Creation date |
+
+One user can only vote once per report (UniqueConstraint).
+
+### comunicados
+
+| Field | Type | Description |
+|-------|------|-------------|
+| id | Integer PK | Unique ID |
+| title | String(200) | Announcement title |
+| body | Text | Content |
+| author_id | Integer FK | Publishing admin |
+| created_at | DateTime | Creation date |
+| updated_at | DateTime | Last modification |
+
+---
+
+## MongoDB
+
+### attachments
+
+Stores metadata of files attached to reports.
+
+Fields: report_id, file_name, file_url, file_type (image, pdf, video), file_size, uploaded_by, created_at.
+
+### audit_logs
+
+Immutable activity log for traceability.
+
+Fields: user_id, action (create, update, delete, status_change), entity_type (report, comment, user), entity_id, details, ip_address, created_at.
+
+---
+
+## Request flow
+
+```
+Frontend (React)
+    │
+    ▼
+Route (routes/*.py)      → Receives URL, applies middleware (token)
+    │
+    ▼
+Schema (schemas/*.py)    → Validates input data
+    │
+    ▼
+Service (services/*.py)  → Business logic, orchestrates models
+    │
+    ▼
+Model (models/*.py)      → Persists or queries DB
+    │
+    ▼
+JSON Response            → Returns to frontend
+```
+
+Example: "Juan creates a report"
+1. Frontend calls `POST /api/reports` with token + data
+2. `middleware/auth.py` verifies token, sets `request.current_user`
+3. `schemas/report_schema.py` validates title, description, category_id
+4. `services/report_service.py` finds category, creates report, logs to audit
+5. Returns created report with tracking_number
+
+---
+
+## Security
+
+- **JWT**: A token is received on login. Must be sent on every request as `Authorization: Bearer <token>`.
+- **Passwords**: Encrypted with bcrypt/werkzeug.
+- **Roles**:
+  - `resident` - create reports, vote, comment, view stats
+  - `admin` - change statuses, assign reports, delete users, view audit logs, publish announcements
+
+---
+
+## Notes
+
+- SQLite for development, MySQL for production (change DATABASE_URL in .env)
+- MongoDB must be running on localhost:27017 for attachments and audit_logs
+- `/logout` does not invalidate the token (blacklist pending)
+- Tracking numbers format: `CD-XXXXXXXX`
+- Dates in UTC
+- Python 3.10+ with type hints

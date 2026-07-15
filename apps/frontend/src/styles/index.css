@@ -1,5 +1,9 @@
-/* @import "tailwindcss"; */
-@import "./auth.css";
+@import "tailwindcss";
+@import "./root.css";
+@import "./Auth.css";
+@import "./FooterLanding.css";
+@import "./HeaderLanding.css";
+@import "./Landing.css";
 
 * {
     padding: 0;
@@ -7,63 +11,6 @@
     box-sizing: border-box;
 }
 
-/* :root {
-    --text: white;
-    --bg: black;
-    --bg-2: linear-gradient(90deg, #ff4d4d, #ff8c42, #ffd166, #7bd389, #4cc9f0, #8b5cf6);
-    --purple: #8b5cf6;
+html {
+    scroll-behavior: smooth;
 }
-
-body {
-    min-height: 100vh;
-    background-color: black;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: Arial, sans-serif;
-}
-
-main {
-    width: min(90vw, 480px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
-    text-align: center;
-}
-
-.welcome {
-    font-size: 2rem;
-    font-weight: 700;
-    line-height: 1.2;
-}
-
-.member-name {
-    color: var(--purple);
-}
-
-.click-me {
-    border: none;
-    border-radius: 999px;
-    padding: 0.9rem 1.6rem;
-    min-width: 140px;
-    color: white;
-    font-weight: 700;
-    cursor: pointer;
-    background: var(--bg-2);
-    background-size: 300% 300%;
-    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.15);
-    transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
-}
-
-.click-me:hover {
-    transform: translateY(-3px) scale(1.03);
-    box-shadow: 0 14px 30px rgba(255, 255, 255, 0.25);
-    filter: brightness(1.08);
-}
-
-.click-me:active {
-    transform: scale(0.97);
-} */

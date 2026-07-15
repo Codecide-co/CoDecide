@@ -1,0 +1,26 @@
+@import "./root.css";
+
+.footer-landing {
+  background-color: var(--color-navy);
+  color: var(--color-text-white);
+  padding: 2rem;
+  text-align: center;
+}
+
+.footer-landing ul {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  list-style: none;
+}
+
+.footer-landing a {
+  color: var(--color-text-white);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: opacity 0.2s;
+}
+
+.footer-landing a:hover {
+  opacity: 0.7;
+}

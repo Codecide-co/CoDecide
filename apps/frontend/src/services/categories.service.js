@@ -18,5 +18,5 @@ function mockGetCategories() {
 
 export async function getCategories() {
   if (USE_MOCK) return mockGetCategories();
-  return fetchApiData("/api/categories");
+  return fetchApiData("/categories");
 }
