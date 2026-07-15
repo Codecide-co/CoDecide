@@ -6,10 +6,10 @@ import { navigateTo } from "@/utils/navigate.js";
 export default function loginView() {
   setTimeout(() => initLoginView(() => navigateTo("/home")), 0);
   return `
-    ${HeaderLanding()}
-    <section class="auth-page">
-      <div class="auth-hero">${viewHeroLogin()}</div>
-      <div class="auth-form-container">${LoginView()}</div>
-    </section>
-  `;
+  ${HeaderLanding()}
+  <section class="auth-page flex flex-col lg:flex-row">
+    <div class="auth-hero">${viewHeroLogin()}</div>
+    <div class="auth-form-container">${LoginView()}</div>
+  </section>
+`;
 }
