@@ -22,6 +22,7 @@ class ReportService:
         user_id: int,
         category_id: int,
         location: Optional[str] = None,
+        is_anonymous: bool = False,
     ) -> Report:
         category = db.session.get(Category, category_id)
         if not category:
@@ -33,6 +34,7 @@ class ReportService:
             user_id=user_id,
             category_id=category_id,
             location=location,
+            is_anonymous=is_anonymous,
             tracking_number=Report.generate_tracking_number(),
         )
         db.session.add(report)
@@ -43,7 +45,7 @@ class ReportService:
             action="create",
             entity_type="report",
             entity_id=report.id,
-            details={"title": title, "category_id": category_id},
+            details={"title": title, "category_id": category_id, "is_anonymous": is_anonymous},
         )
 
         return report
