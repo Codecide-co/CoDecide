@@ -4,6 +4,32 @@ Base URL: `/api/auth`
 
 ---
 
+## Roles
+
+El sistema tiene dos roles de usuario:
+
+| Rol | Descripcion |
+|-----|-------------|
+| `resident` | Usuario comun que puede crear reportes, votar y comentar |
+| `admin` | Usuario administrador que puede gestionar reportes, usuarios y categorias |
+
+Los endpoints que requieren rol `admin` estan marcados con **Auth: Bearer (admin)**.
+
+---
+
+## Endpoints
+
+| Metodo | Ruta | Auth | Descripcion |
+|--------|------|------|-------------|
+| POST | `/register` | No | Registra un nuevo usuario |
+| POST | `/login` | No | Inicia sesion y retorna un token JWT |
+| GET | `/me` | Bearer | Obtiene el perfil del usuario autenticado |
+| PATCH | `/me` | Bearer | Actualiza el perfil del usuario autenticado |
+| POST | `/change-password` | Bearer | Cambia la contrasena del usuario |
+| POST | `/logout` | Bearer | Cierra la sesion del usuario |
+
+---
+
 ## POST /register
 
 Registra un nuevo usuario.
@@ -93,6 +119,51 @@ Obtiene el perfil del usuario autenticado.
   "updated_at": "2026-07-11T12:00:00"
 }
 ```
+
+---
+
+## PATCH /me
+
+Actualiza el perfil del usuario autenticado.
+
+**Auth:** `Authorization: Bearer <token>`
+
+**Request Body:**
+
+| Campo | Tipo | Requerido | Descripcion |
+|-------|------|-----------|-------------|
+| name | string | no | 2-100 caracteres |
+| apartment | string | no | Maximo 20 caracteres |
+| tower | string | no | Maximo 10 caracteres |
+
+**Response 200:** Objeto del usuario actualizado
+
+**Errors:** 400 (validacion)
+
+---
+
+## POST /change-password
+
+Cambia la contrasena del usuario autenticado.
+
+**Auth:** `Authorization: Bearer <token>`
+
+**Request Body:**
+
+| Campo | Tipo | Requerido | Descripcion |
+|-------|------|-----------|-------------|
+| current_password | string | si | Contrasena actual |
+| new_password | string | si | Minimo 6 caracteres |
+
+**Response 200:**
+
+```json
+{
+  "message": "Password updated successfully"
+}
+```
+
+**Errors:** 400 (contrasena actual incorrecta o validacion)
 
 ---
 
