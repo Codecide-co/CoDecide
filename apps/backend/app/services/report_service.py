@@ -82,6 +82,7 @@ class ReportService:
         status: Optional[str] = None,
         category_id: Optional[int] = None,
         user_id: Optional[int] = None,
+        current_user_id: Optional[int] = None,
     ) -> dict:
         """
         List reports with optional filters and pagination.
@@ -92,6 +93,7 @@ class ReportService:
             status: Filter by status (open, in_progress, resolved, closed).
             category_id: Filter by category ID.
             user_id: Filter by author ID.
+            current_user_id: ID of the requesting user (for user_vote field).
 
         Returns:
             dict: Paginated response with reports, total, page, per_page, and pages.
@@ -116,6 +118,13 @@ class ReportService:
             r["upvotes"] = sum(1 for v in report.votes if v.vote_type == "up")
             r["downvotes"] = sum(1 for v in report.votes if v.vote_type == "down")
             r["comments_count"] = len(report.comments)
+            if current_user_id:
+                user_vote = Vote.query.filter_by(
+                    user_id=current_user_id, report_id=report.id
+                ).first()
+                r["user_vote"] = user_vote.vote_type if user_vote else None
+            else:
+                r["user_vote"] = None
             reports.append(r)
 
         return {
@@ -243,7 +252,7 @@ class ReportService:
         upvotes = Vote.query.filter_by(report_id=report_id, vote_type="up").count()
         downvotes = Vote.query.filter_by(report_id=report_id, vote_type="down").count()
 
-        return {"upvotes": upvotes, "downvotes": downvotes}
+        return {"upvotes": upvotes, "downvotes": downvotes, "user_vote": vote_type}
 
     @staticmethod
     def add_comment(report_id: int, user_id: int, body: str) -> Comment:
