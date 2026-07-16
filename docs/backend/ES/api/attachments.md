@@ -26,3 +26,9 @@ Obtiene los metadatos de un archivo adjunto.
 ```
 
 **Errors:** 404 (archivo no encontrado)
+
+---
+
+## Subida
+
+Actualmente **no existe un endpoint de subida**. Los archivos se almacenan en el sistema de archivos del servidor y se referencian mediante `file_url`. El endpoint GET solo recupera metadatos de MongoDB. Un endpoint de subida de archivos esta planificado para una version futura.

@@ -183,6 +183,7 @@ Detailed per-domain documentation in [api/](api/):
 | [auth.md](api/auth.md) | `/api/auth` |
 | [reports.md](api/reports.md) | `/api/reports` |
 | [comunicados.md](api/comunicados.md) | `/api/comunicados` |
+| [categories.md](api/categories.md) | `/api/categories` |
 | [stats.md](api/stats.md) | `/api/stats` |
 | [admin.md](api/admin.md) | `/api/admin` |
 | [attachments.md](api/attachments.md) | `/api/attachments` |

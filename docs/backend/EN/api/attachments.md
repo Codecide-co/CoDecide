@@ -26,3 +26,9 @@ Retrieves attachment metadata.
 ```
 
 **Errors:** 404 (attachment not found)
+
+---
+
+## Upload
+
+There is currently **no upload endpoint**. Files are stored on the server filesystem and referenced by `file_url`. The GET endpoint only retrieves metadata from MongoDB. A file upload endpoint is planned for a future release.
