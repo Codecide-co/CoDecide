@@ -187,6 +187,7 @@ Detailed per-domain documentation in [api/](api/):
 | [stats.md](api/stats.md) | `/api/stats` |
 | [admin.md](api/admin.md) | `/api/admin` |
 | [attachments.md](api/attachments.md) | `/api/attachments` |
+| [env.md](env.md) | — |
 
 ---
 

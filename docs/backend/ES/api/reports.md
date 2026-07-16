@@ -19,6 +19,8 @@ Lista reportes con filtros y paginacion.
 | status | string | no | Filtrar por estado: open, in_progress, resolved, closed |
 | category_id | int | no | Filtrar por categoria |
 | user_id | int | no | Filtrar por autor |
+| date_from | string | no | Fecha ISO (ej. `2026-01-01`). Reportes creados desde esa fecha |
+| date_to | string | no | Fecha ISO (ej. `2026-06-30`). Reportes creados hasta esa fecha |
 
 **Response 200:** Lista de reportes (array)
 

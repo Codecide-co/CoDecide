@@ -19,6 +19,8 @@ Lists reports with filters and pagination.
 | status | string | no | Filter by status: open, in_progress, resolved, closed |
 | category_id | int | no | Filter by category |
 | user_id | int | no | Filter by author |
+| date_from | string | no | ISO date (e.g. `2026-01-01`). Reports created on or after this date |
+| date_to | string | no | ISO date (e.g. `2026-06-30`). Reports created on or before this date |
 
 **Response 200:** Paginated list of reports
 

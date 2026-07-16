@@ -50,3 +50,10 @@ class Config:
         "CORS_ORIGINS",
         "http://localhost:5173"
     )
+
+    UPLOAD_FOLDER: str = os.getenv(
+        "UPLOAD_FOLDER",
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "uploads")
+    )
+
+    MAX_CONTENT_LENGTH: int = int(os.getenv("MAX_FILE_SIZE_MB", "16")) * 1024 * 1024
