@@ -10,6 +10,7 @@ Base URL: `/api/stats`
 |--------|------|------|-------------|
 | GET | `/` | Bearer | Obtiene metricas comunitarias |
 | GET | `/reports-over-time` | Bearer | Obtiene reportes creados por dia |
+| GET | `/top-voted-reports` | Bearer | Obtiene los reportes mas votados |
 
 ---
 
@@ -37,6 +38,7 @@ Obtiene metricas comunitarias.
     "2": 50
   },
   "resolved_today": 3,
+  "avg_resolution_time": 48.5,
   "total_votes": 200,
   "total_comments": 75,
   "active_users": 10,
@@ -69,6 +71,43 @@ Obtiene la cantidad de reportes creados por dia en un periodo.
   {
     "date": "2026-07-02",
     "count": 3
+  }
+]
+```
+
+---
+
+## GET /top-voted-reports
+
+Obtiene los reportes mas votados ordenados por total de votos.
+
+**Auth:** `Authorization: Bearer <token>`
+
+**Query Params:**
+
+| Parametro | Tipo | Requerido | Descripcion |
+|-----------|------|-----------|-------------|
+| limit | int | no | Numero de reportes a retornar (default: 5) |
+
+**Response 200:**
+
+```json
+[
+  {
+    "id": 1,
+    "title": "Fuga de gas",
+    "tracking_number": "CD-F1G2H3J4",
+    "upvotes": 10,
+    "downvotes": 2,
+    "total_votes": 12
+  },
+  {
+    "id": 2,
+    "title": "Ruido",
+    "tracking_number": "CD-A1B2C3D4",
+    "upvotes": 8,
+    "downvotes": 1,
+    "total_votes": 9
   }
 ]
 ```
