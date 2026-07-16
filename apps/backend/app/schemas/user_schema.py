@@ -1,7 +1,15 @@
+"""
+Marshmallow schemas for user data serialization.
+
+Defines schemas for user profile and summary responses.
+"""
+
 from marshmallow import Schema, fields, validate
 
 
 class UserProfileSchema(Schema):
+    """Schema for full user profile responses."""
+
     id = fields.Integer()
     name = fields.String()
     email = fields.Email()
@@ -13,6 +21,8 @@ class UserProfileSchema(Schema):
 
 
 class UserSummarySchema(Schema):
+    """Schema for summarized user data (e.g., in lists)."""
+
     id = fields.Integer()
     name = fields.String()
     apartment = fields.String()
