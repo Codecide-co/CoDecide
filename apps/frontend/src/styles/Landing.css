@@ -3,7 +3,7 @@
   min-height: 100vh;
   color: var(--color-text-white);
   position: relative;
-  background: url('../../public/city-hero.jfif') center/cover no-repeat;
+  background: url('../../public/city-hero.jpeg') center/cover no-repeat;
   padding: 20px;
 }
 

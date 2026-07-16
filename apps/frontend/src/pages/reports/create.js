@@ -109,15 +109,14 @@ export function initCreateReportView(onSuccess) {
 
     setLoading(true);
 
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("description", description);
-    formData.append("category", categoryId);
-    formData.append("anonymous", anonymousInput.checked);
-    fileUpload.getFiles().forEach((file) => formData.append("photos", file));
+    const payload = {
+      title,
+      description,
+      category_id: parseInt(categoryId, 10),
+    };
 
     try {
-      const report = await createReport(formData);
+      const report = await createReport(payload);
       setLoading(false);
       form.reset();
       if (typeof onSuccess === "function") onSuccess(report);

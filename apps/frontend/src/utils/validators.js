@@ -7,13 +7,13 @@ export function validateLoginForm({ email, password }) {
   const errors = {};
 
   if (!email || !email.trim()) {
-    errors.email = "El correo es obligatorio";
+    errors.email = "An email address is required";
   } else if (!isValidEmail(email)) {
-    errors.email = "Ingresa un correo válido";
+    errors.email = "Enter a valid email address";
   }
 
   if (!password) {
-    errors.password = "La contraseña es obligatoria";
+    errors.password = "The password is required";
   }
 
   return { isValid: Object.keys(errors).length === 0, errors };
@@ -23,33 +23,33 @@ export function validateRegisterForm({ name, email, tower, apartment, password, 
   const errors = {};
 
   if (!name || !name.trim()) {
-    errors.name = "El nombre es obligatorio";
+    errors.name = "The name is required";
   }
 
   if (!email || !email.trim()) {
-    errors.email = "El correo es obligatorio";
+    errors.email = "An email address is required";
   } else if (!isValidEmail(email)) {
-    errors.email = "Ingresa un correo válido";
+    errors.email = "Enter a valid email address";
   }
 
   if (!tower || !tower.trim()) {
-    errors.tower = "La torre es obligatoria";
+    errors.tower = "The tower is required";
   }
 
   if (!apartment || !apartment.trim()) {
-    errors.apartment = "El apartamento es obligatorio";
+    errors.apartment = "The apartment is required";
   }
 
   if (!password) {
-    errors.password = "La contraseña es obligatoria";
+    errors.password = "The password is required";
   } else if (password.length < 6) {
-    errors.password = "La contraseña debe tener al menos 6 caracteres"
+    errors.password = "The password must be at least 6 characters long"
   }
 
   if (!confirmPassword) {
-    errors.confirmPassword = "Confirma tu contraseña";
+    errors.confirmPassword = "Confirm your password";
   } else if (password && confirmPassword !== password) {
-    errors.confirmPassword = "Las contraseñas no coinciden";
+    errors.confirmPassword = "The passwords do not match ";
   }
 
   return { isValid: Object.keys(errors).length === 0, errors };
