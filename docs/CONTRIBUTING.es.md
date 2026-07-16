@@ -5,14 +5,11 @@
 ```
 main ────────────── solo releases
   └── dev ────────── rama de integración
-        ├── frontend ── trabajo específico de frontend
-        │     ├── feature/login-form
-        │     ├── fix/report-card-height
-        │     └── refactor/router-middleware
-        └── backend ─── trabajo específico de backend
-              ├── feature/auth-jwt
-              ├── fix/pagination-offset
-              └── refactor/db-session
+        ├── feat/nueva-funcionalidad
+        ├── fix/descripcion-error
+        ├── refactor/cambio-codigo
+        ├── docs/actualizacion-docs
+        └── chore/mejora-herramientas
 ```
 
 ### Convención de Nomenclatura de Ramas
@@ -23,7 +20,7 @@ main ────────────── solo releases
 
 | Tipo | Descripción | Ejemplo |
 |------|-------------|---------|
-| `feature/` o `feat/` | Nueva funcionalidad | `feature/report-voting` |
+| `feat/` | Nueva funcionalidad | `feat/report-voting` |
 | `fix/` | Corrección de errores | `fix/login-redirect-loop` |
 | `refactor/` | Reestructuración sin cambio de comportamiento | `refactor/extract-report-service` |
 | `chore/` | Herramientas, dependencias, configuración | `chore/upgrade-vite` |
@@ -35,8 +32,8 @@ Usa **kebab-case** para la descripción. Mantenla corta pero significativa.
 
 - **Nunca hacer push directo a `main`.** Todos los cambios a `main` deben venir de un pull request.
 - **Nunca hacer push directo a `dev`.** Todos los cambios a `dev` deben venir de un pull request.
-- Las ramas `frontend` y `backend` reciben PRs desde ramas feature/fix.
-- Las ramas feature parten de `frontend` o `backend`, nunca de `dev` directamente.
+- Todas las ramas se crean directamente desde `dev`, nunca desde `main`.
+- Los nombres de rama deben usar el formato `<tipo>/<descripción>` con kebab-case.
 - Cualquier commit pusheado directamente a `main` será eliminado.
 
 ---
@@ -135,25 +132,23 @@ fix(styles): fix style
 
 ## Flujo de Pull Request
 
-1. Crea una rama feature/fix desde `frontend` o `backend`:
+1. Crea una rama desde `dev`:
 
    ```bash
-   git checkout frontend
-   git pull
-   git checkout -b feature/report-voting
+   git checkout dev
+   git pull origin dev
+   git checkout -b feat/report-voting
    ```
 
 2. Haz commits siguiendo el formato Conventional Commits.
 
-3. Pushea y abre un PR apuntando a `frontend` o `backend` (nunca a `dev` o `main`).
+3. Pushea y abre un PR apuntando a `dev` (nunca a `main` directamente).
 
 4. Asegúrate de que la descripción del PR explique **qué** y **por qué**.
 
-5. Después de revisión y aprobación, la rama se fusiona en la rama destino.
+5. Después de revisión y aprobación, la rama se fusiona en `dev`.
 
-6. Periódicamente, `frontend` y `backend` se fusionan en `dev` para pruebas de integración.
-
-7. Cuando `dev` esté estable, se abre un PR de `dev` a `main` para release.
+6. Cuando `dev` esté estable, se abre un PR de `dev` a `main` para release.
 
 ### Formato del Título del PR
 
