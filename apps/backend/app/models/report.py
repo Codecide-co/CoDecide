@@ -8,6 +8,14 @@ from app.extensions import db
 
 
 class Report(db.Model):
+    """
+    Represents a community issue report.
+
+    Reports go through a status workflow (open → in_progress → resolved → closed)
+    and support voting, comments, and attachments. Each report has a unique
+    tracking number for public reference.
+    """
+
     __tablename__ = "reports"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -22,12 +30,10 @@ class Report(db.Model):
     location: Mapped[str | None] = mapped_column(db.String(255))
     is_anonymous: Mapped[bool] = mapped_column(db.Boolean, nullable=False, default=False)
 
-    # Foreign Keys
     category_id: Mapped[int] = mapped_column(db.ForeignKey("categories.id"), nullable=False)
     user_id: Mapped[int] = mapped_column(db.ForeignKey("users.id"), nullable=False)
     assigned_to: Mapped[int | None] = mapped_column(db.ForeignKey("users.id"), nullable=True)
 
-    # Timestamps
     created_at: Mapped[datetime] = mapped_column(
         db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)
     )
@@ -38,7 +44,6 @@ class Report(db.Model):
         onupdate=lambda: datetime.now(timezone.utc),
     )
 
-    # Relaciones
     author: Mapped["User"] = relationship(
         "User", back_populates="reports", foreign_keys=[user_id]
     )
@@ -55,10 +60,24 @@ class Report(db.Model):
 
     @staticmethod
     def generate_tracking_number() -> str:
-        """Genera un número de seguimiento único para el reporte."""
+        """
+        Generate a unique tracking number for the report.
+
+        Returns:
+            str: Tracking number in CD-XXXXXXXX format.
+        """
+
         return f"CD-{uuid.uuid4().hex[:8].upper()}"
 
     def to_dict(self) -> dict:
+        """
+        Serialize the report to a dictionary.
+
+        Returns:
+            dict: Report data including computed fields like author_name,
+                category_name, and vote/comment metadata.
+        """
+        
         author_name = "Anonymous" if self.is_anonymous else (self.author.name if self.author else None)
         return {
             "id": self.id,

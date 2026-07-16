@@ -1,3 +1,10 @@
+"""
+Application configuration.
+
+Loads settings from environment variables with sensible defaults for
+development. Uses a .env file in the backend root directory.
+"""
+
 import os
 from pathlib import Path
 
@@ -7,6 +14,17 @@ load_dotenv(Path(__file__).resolve().parent.parent / '.env')
 
 
 class Config:
+    """
+    Flask application configuration class.
+
+    Attributes:
+        SECRET_KEY: Flask secret key for session signing.
+        SQLALCHEMY_DATABASE_URI: Database connection string (SQLite dev, MySQL prod).
+        MONGO_URI: MongoDB connection string.
+        JWT_SECRET_KEY: Key used to sign JWT tokens.
+        CORS_ORIGINS: Comma-separated list of allowed CORS origins.
+    """
+    
     SECRET_KEY: str = os.getenv("SECRET_KEY", "dev-secret-key")
 
     SQLALCHEMY_DATABASE_URI: str = os.getenv(

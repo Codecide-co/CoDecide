@@ -1,3 +1,6 @@
-from app.middleware.auth import admin_required, login_required
+"""
+Middleware and decorators.
 
-__all__ = ["admin_required", "login_required"]
+Provides authentication and authorization decorators
+(login_required, admin_required) for securing endpoints.
+"""

@@ -1,7 +1,23 @@
+"""
+Route blueprint registration.
+
+Imports and registers all route blueprints with the Flask application.
+"""
+
 from flask import Flask
 
 
 def register_blueprints(app: Flask) -> None:
+    """
+    Register all API route blueprints with the Flask app.
+
+    Each blueprint is imported lazily to avoid circular imports and
+    registered with its appropriate URL prefix.
+
+    Args:
+        app: The Flask application instance.
+    """
+    
     from app.routes.admin import admin_bp
     from app.routes.attachments import attachments_bp
     from app.routes.auth import auth_bp

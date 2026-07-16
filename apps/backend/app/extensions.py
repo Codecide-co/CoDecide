@@ -1,3 +1,10 @@
+"""
+Application extension instances.
+
+Initializes Flask extensions (SQLAlchemy, PyMongo, Flask-Migrate, JWT)
+without binding them to a specific app instance.
+"""
+
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 from flask_pymongo import PyMongo

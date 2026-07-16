@@ -7,6 +7,13 @@ from app.extensions import db
 
 
 class User(db.Model):
+    """
+    Represents a registered user in the system.
+
+    Users can be residents (standard) or administrators, and are associated
+    with an apartment and tower within the community.
+    """
+
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -31,7 +38,6 @@ class User(db.Model):
     )
     last_seen: Mapped[datetime | None] = mapped_column(db.DateTime, nullable=True)
 
-    # Relaciones
     reports: Mapped[list["Report"]] = relationship(
         "Report", back_populates="author", lazy="selectin", foreign_keys="Report.user_id"
     )
@@ -49,6 +55,13 @@ class User(db.Model):
     )
 
     def to_dict(self) -> dict:
+        """
+        Serialize the user to a dictionary.
+
+        Returns:
+            dict: User data excluding the password hash.
+        """
+        
         return {
             "id": self.id,
             "name": self.name,

@@ -1,3 +1,9 @@
+"""
+Application-wide constants.
+
+Centralized definitions for the application name and version number.
+"""
+
 from typing import Final
 
 APP_NAME: Final[str] = "CokeDecide"

@@ -1,5 +1,6 @@
-from app.services.auth_service import AuthService
-from app.services.report_service import ReportService
-from app.services.stats_service import StatsService
+"""
+Business logic service layer.
 
-__all__ = ["AuthService", "ReportService", "StatsService"]
+Contains service classes that encapsulate application business rules:
+AuthService, ReportService, and StatsService.
+"""

@@ -20,22 +20,33 @@ Lists reports with filters and pagination.
 | category_id | int | no | Filter by category |
 | user_id | int | no | Filter by author |
 
-**Response 200:** Array of reports
+**Response 200:** Paginated list of reports
 
 ```json
-[
-  {
-    "id": 1,
-    "title": "Gas leak",
-    "status": "open",
-    "tracking_number": "CD-F1G2H3J4",
-    "category_id": 1,
-    "user_id": 1,
-    "created_at": "2026-07-11T12:00:00",
-    "votes_count": 5,
-    "comments_count": 2
-  }
-]
+{
+  "reports": [
+    {
+      "id": 1,
+      "title": "Gas leak",
+      "status": "open",
+      "tracking_number": "CD-F1G2H3J4",
+      "category_id": 1,
+      "category_name": "Infrastructure",
+      "user_id": 1,
+      "author_name": "John Doe",
+      "is_anonymous": false,
+      "created_at": "2026-07-11T12:00:00",
+      "votes_count": 5,
+      "upvotes": 4,
+      "downvotes": 1,
+      "comments_count": 2
+    }
+  ],
+  "total": 1,
+  "page": 1,
+  "per_page": 20,
+  "pages": 1
+}
 ```
 
 ---
@@ -54,6 +65,7 @@ Creates a new report.
 | description | string | yes | Minimum 10 characters |
 | category_id | int | yes | Valid category ID |
 | location | string | no | Max 255 characters |
+| is_anonymous | bool | no | Hides the author's identity (default: false) |
 
 **Response 201:**
 
@@ -61,12 +73,15 @@ Creates a new report.
 {
   "id": 1,
   "title": "Gas leak",
-  "description": "There is a gas smell on the third floor hallway",
+  "description": "There is a gas smell in the third floor hallway",
   "status": "open",
   "tracking_number": "CD-F1G2H3J4",
   "location": "Tower A, floor 3",
   "category_id": 1,
+  "category_name": "Infrastructure",
   "user_id": 1,
+  "author_name": "John Doe",
+  "is_anonymous": false,
   "created_at": "2026-07-11T12:00:00",
   "updated_at": "2026-07-11T12:00:00"
 }
@@ -88,22 +103,50 @@ Gets report details including votes and comments.
 {
   "id": 1,
   "title": "Gas leak",
-  "description": "There is a gas smell on the third floor hallway",
+  "description": "There is a gas smell in the third floor hallway",
   "status": "open",
   "tracking_number": "CD-F1G2H3J4",
   "location": "Tower A, floor 3",
   "category_id": 1,
+  "category_name": "Infrastructure",
   "user_id": 1,
+  "author_name": "John Doe",
+  "is_anonymous": false,
   "created_at": "2026-07-11T12:00:00",
   "updated_at": "2026-07-11T12:00:00",
   "votes_count": 5,
+  "upvotes": 4,
+  "downvotes": 1,
   "comments_count": 2,
+  "attachments": [
+    {
+      "id": "abc123",
+      "file_name": "photo.jpg",
+      "file_url": "/uploads/photo.jpg",
+      "file_type": "image/jpeg",
+      "file_size": 204800,
+      "created_at": "2026-07-11T12:30:00"
+    }
+  ],
+  "status_history": [
+    {
+      "id": "log1",
+      "user_id": 2,
+      "action": "status_change",
+      "details": {
+        "from": "open",
+        "to": "in_progress",
+        "comment": "Reviewing the report"
+      },
+      "created_at": "2026-07-11T14:00:00"
+    }
+  ],
   "comments": [
     {
       "id": 1,
       "body": "I already notified the admin",
       "user_id": 2,
-      "author_name": "Jane Smith",
+      "author_name": "Maria Lopez",
       "created_at": "2026-07-11T13:00:00"
     }
   ]
@@ -125,10 +168,11 @@ Updates a report's status.
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | status | string | yes | Values: open, in_progress, resolved, closed |
+| comment | string | no | Optional comment about the change (max 500 characters) |
 
 **Response 200:** Updated report object
 
-**Errors:** 400 (invalid status)
+**Errors:** 400 (invalid status or transition not allowed)
 
 ---
 
@@ -148,15 +192,17 @@ Votes on a report (up/down).
 
 ```json
 {
-  "id": 1,
-  "vote_type": "up",
-  "user_id": 1,
-  "report_id": 1,
-  "created_at": "2026-07-11T12:00:00"
+  "upvotes": 4,
+  "downvotes": 1
 }
 ```
 
-**Errors:** 400 (duplicate or invalid vote)
+**Notes:**
+- If the user already voted with a different type (up→down or down→up), the vote is updated (upsert).
+- Users cannot vote on their own report.
+- Cannot vote twice with the same type.
+
+**Errors:** 400 (invalid vote, self-vote, or duplicate vote)
 
 ---
 
