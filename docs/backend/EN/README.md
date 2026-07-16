@@ -185,6 +185,7 @@ Detailed per-domain documentation in [api/](api/):
 | [comunicados.md](api/comunicados.md) | `/api/comunicados` |
 | [stats.md](api/stats.md) | `/api/stats` |
 | [admin.md](api/admin.md) | `/api/admin` |
+| [attachments.md](api/attachments.md) | `/api/attachments` |
 
 ---
 
@@ -200,7 +201,8 @@ Detailed per-domain documentation in [api/](api/):
 | password_hash | String(255) | Encrypted password |
 | role | Enum(resident, admin) | User role |
 | apartment | String(20) | Apartment number |
-| tower | String(10) | Tower |
+| tower | String(10) | Tower letter |
+| last_seen | DateTime | Last login time |
 | created_at | DateTime | Registration date |
 | updated_at | DateTime | Last modification |
 
@@ -220,13 +222,14 @@ Detailed per-domain documentation in [api/](api/):
 |-------|------|-------------|
 | id | Integer PK | Unique ID |
 | title | String(200) | Report title |
-| description | Text | Description |
+| description | Text | Detailed description |
 | status | Enum(open, in_progress, resolved, closed) | Current status |
-| tracking_number | String(20) UNIQUE | Tracking number (CD-XXXXXXXX) |
-| location | String(255) | Problem location |
-| category_id | Integer FK | Category |
+| tracking_number | String(12) UNIQUE | Public tracking number |
+| location | String(255) | Location within the community |
+| is_anonymous | Boolean | If true, hides the author's identity |
+| category_id | Integer FK | Report category |
 | user_id | Integer FK | Report author |
-| assigned_to | Integer FK nullable | Assigned user |
+| assigned_to | Integer FK nullable | Assigned admin |
 | created_at | DateTime | Creation date |
 | updated_at | DateTime | Last modification |
 
@@ -251,7 +254,7 @@ Detailed per-domain documentation in [api/](api/):
 | report_id | Integer FK | Voted report |
 | created_at | DateTime | Creation date |
 
-One user can only vote once per report (UniqueConstraint).
+One user can only vote once per report (UniqueConstraint). If they change their vote type (up→down or down→up), the existing vote is updated (upsert).
 
 ### comunicados
 

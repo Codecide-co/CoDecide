@@ -185,6 +185,7 @@ Documentacion detallada por dominio en [api/](api/):
 | [comunicados.md](api/comunicados.md) | `/api/comunicados` |
 | [stats.md](api/stats.md) | `/api/stats` |
 | [admin.md](api/admin.md) | `/api/admin` |
+| [attachments.md](api/attachments.md) | `/api/attachments` |
 
 ---
 
@@ -201,6 +202,7 @@ Documentacion detallada por dominio en [api/](api/):
 | role | Enum(resident, admin) | Rol del usuario |
 | apartment | String(20) | Apartamento |
 | tower | String(10) | Torre |
+| last_seen | DateTime | Ultima vez que inicio sesion |
 | created_at | DateTime | Fecha de registro |
 | updated_at | DateTime | Ultima modificacion |
 
@@ -220,13 +222,14 @@ Documentacion detallada por dominio en [api/](api/):
 |-------|------|-------------|
 | id | Integer PK | ID unico |
 | title | String(200) | Titulo del reporte |
-| description | Text | Descripcion |
+| description | Text | Descripcion detallada |
 | status | Enum(open, in_progress, resolved, closed) | Estado actual |
-| tracking_number | String(20) UNIQUE | Numero de seguimiento (CD-XXXXXXXX) |
-| location | String(255) | Ubicacion del problema |
-| category_id | Integer FK | Categoria |
+| tracking_number | String(12) UNIQUE | Numero de seguimiento publico |
+| location | String(255) | Ubicacion dentro de la comunidad |
+| is_anonymous | Boolean | Si es true, oculta la identidad del autor |
+| category_id | Integer FK | Categoria del reporte |
 | user_id | Integer FK | Autor del reporte |
-| assigned_to | Integer FK nullable | Usuario asignado |
+| assigned_to | Integer FK nullable | Admin asignado |
 | created_at | DateTime | Fecha de creacion |
 | updated_at | DateTime | Ultima modificacion |
 
@@ -251,7 +254,7 @@ Documentacion detallada por dominio en [api/](api/):
 | report_id | Integer FK | Reporte votado |
 | created_at | DateTime | Fecha de creacion |
 
-Un usuario solo puede votar una vez por reporte (UniqueConstraint).
+Un usuario solo puede votar una vez por reporte (UniqueConstraint). Si cambia de tipo de voto (up→down o down→up), el voto existente se actualiza (upsert).
 
 ### comunicados
 
