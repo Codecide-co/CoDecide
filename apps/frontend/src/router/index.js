@@ -8,6 +8,8 @@ import notFoundView from "@/views/notFound.js";
 import { isAuthenticated, isAdmin } from "@/utils/utils.js";
 import { navigateTo } from "@/utils/navigate.js";
 import profileView from "@/views/profileView.js";
+import reportsView from "@/views/reportsView.js";
+import announcementsView from "@/views/announcementsView.js";
 
 const routes = {
   "/": LandingView,
@@ -15,6 +17,8 @@ const routes = {
   "/register": registerView,
   "/home": homeView,
   "/profile": profileView,
+  "/reports": reportsView,
+  "/announcements": announcementsView,
   "/reports/create": createReportView,
   "/reports/success": reportSuccessView,
 };
@@ -32,7 +36,7 @@ export const router = () => {
     return;
   }
 
-  if (!isAuthenticated() && path !== "/login" && path !== "/register") {
+if (!isAuthenticated() && path !== "/login" && path !== "/register" && path !== "/announcements") {
     history.replaceState({}, "", "/");
     app.innerHTML = LandingView();
     return;
