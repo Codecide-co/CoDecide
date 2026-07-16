@@ -8,6 +8,8 @@
 @import "./HeaderHome.css";
 @import "./profile.css";
 @import "./sidebar.css";
+@import "./report.css";
+@import "./announcements.css";
 
 * {
     padding: 0;
