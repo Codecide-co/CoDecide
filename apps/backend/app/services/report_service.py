@@ -1,3 +1,9 @@
+"""
+Report service layer.
+
+Handles report CRUD operations, status transitions, voting, and comments.
+"""
+
 from datetime import datetime, timezone
 from typing import Optional
 
@@ -14,6 +20,7 @@ from app.mongo.audit_log import AuditLog
 
 
 class ReportService:
+    """Service for report management operations."""
 
     @staticmethod
     def create(
@@ -24,6 +31,24 @@ class ReportService:
         location: Optional[str] = None,
         is_anonymous: bool = False,
     ) -> Report:
+        """
+        Create a new report.
+
+        Args:
+            title: Report title (5-200 characters).
+            description: Detailed description (minimum 10 characters).
+            user_id: ID of the author.
+            category_id: ID of the category.
+            location: Location within the community (optional).
+            is_anonymous: Whether to hide the author's identity.
+
+        Returns:
+            Report: The newly created Report instance.
+
+        Raises:
+            ValueError: If the category is not found.
+        """
+
         category = db.session.get(Category, category_id)
         if not category:
             raise ValueError("Category not found")
@@ -58,6 +83,20 @@ class ReportService:
         category_id: Optional[int] = None,
         user_id: Optional[int] = None,
     ) -> dict:
+        """
+        List reports with optional filters and pagination.
+
+        Args:
+            page: Page number (default: 1).
+            per_page: Items per page (default: 20).
+            status: Filter by status (open, in_progress, resolved, closed).
+            category_id: Filter by category ID.
+            user_id: Filter by author ID.
+
+        Returns:
+            dict: Paginated response with reports, total, page, per_page, and pages.
+        """
+
         query = Report.query
 
         if status:
@@ -89,6 +128,19 @@ class ReportService:
 
     @staticmethod
     def get_by_id(report_id: int) -> Report:
+        """
+        Retrieve a single report by its ID.
+
+        Args:
+            report_id: The report's unique identifier.
+
+        Returns:
+            Report: The Report instance with related votes and comments.
+
+        Raises:
+            ValueError: If the report is not found.
+        """
+
         report = db.session.get(Report, report_id)
         if not report:
             raise ValueError("Report not found")
@@ -96,6 +148,25 @@ class ReportService:
 
     @staticmethod
     def update_status(report_id: int, new_status: str, admin_id: int, comment: Optional[str] = None) -> Report:
+        """
+        Transition a report to a new status.
+
+        Valid transitions: open→in_progress, open→closed, in_progress→resolved,
+        in_progress→closed, resolved→closed.
+
+        Args:
+            report_id: The report's unique identifier.
+            new_status: The target status value.
+            admin_id: ID of the admin performing the change.
+            comment: Optional explanation for the status change.
+
+        Returns:
+            Report: The updated Report instance.
+
+        Raises:
+            ValueError: If the report is not found or the transition is invalid.
+        """
+
         report = db.session.get(Report, report_id)
         if not report:
             raise ValueError("Report not found")
@@ -132,6 +203,26 @@ class ReportService:
 
     @staticmethod
     def vote(report_id: int, user_id: int, vote_type: str) -> dict:
+        """
+        Vote on a report. Supports upsert (changing vote type).
+
+        Users cannot vote on their own report. If the user already voted with a
+        different type, the existing vote is updated (upsert). Duplicate votes
+        with the same type are rejected.
+
+        Args:
+            report_id: The report's unique identifier.
+            user_id: ID of the voter.
+            vote_type: "up" or "down".
+
+        Returns:
+            dict: Updated upvotes and downvotes counts.
+
+        Raises:
+            ValueError: If the report is not found, user tries to self-vote,
+                or duplicate vote with the same type.
+        """
+
         report = db.session.get(Report, report_id)
         if not report:
             raise ValueError("Report not found")
@@ -156,6 +247,21 @@ class ReportService:
 
     @staticmethod
     def add_comment(report_id: int, user_id: int, body: str) -> Comment:
+        """
+        Add a comment to a report.
+
+        Args:
+            report_id: The report's unique identifier.
+            user_id: ID of the comment author.
+            body: Comment text (minimum 1 character).
+
+        Returns:
+            Comment: The newly created Comment instance.
+
+        Raises:
+            ValueError: If the report is not found.
+        """
+        
         report = db.session.get(Report, report_id)
         if not report:
             raise ValueError("Report not found")

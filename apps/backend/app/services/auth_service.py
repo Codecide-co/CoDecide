@@ -1,3 +1,9 @@
+"""
+Authentication service layer.
+
+Handles user registration, login, profile management, and password changes.
+"""
+
 from datetime import datetime, timezone
 from typing import Optional
 
@@ -9,6 +15,7 @@ from app.models.user import User
 
 
 class AuthService:
+    """Service for authentication and user management operations."""
 
     @staticmethod
     def register(
@@ -18,6 +25,23 @@ class AuthService:
         apartment: Optional[str] = None,
         tower: Optional[str] = None,
     ) -> dict:
+        """
+        Register a new user account.
+
+        Args:
+            name: Full name of the user (2-100 characters).
+            email: Valid email address, must be unique.
+            password: Plain text password (minimum 6 characters).
+            apartment: Apartment number (optional).
+            tower: Tower letter (optional).
+
+        Returns:
+            dict: User profile dictionary with a JWT token.
+
+        Raises:
+            ValueError: If the email is already registered.
+        """
+
         existing = User.query.filter_by(email=email).first()
         if existing:
             raise ValueError("Email already registered")
@@ -38,6 +62,20 @@ class AuthService:
 
     @staticmethod
     def login(email: str, password: str) -> dict:
+        """
+        Authenticate a user and return a JWT token.
+
+        Args:
+            email: Registered email address.
+            password: Plain text password.
+
+        Returns:
+            dict: User profile dictionary with a JWT token.
+
+        Raises:
+            ValueError: If the email or password is invalid.
+        """
+        
         user = User.query.filter_by(email=email).first()
         if not user or not check_password_hash(user.password_hash, password):
             raise ValueError("Invalid email or password")
@@ -50,6 +88,19 @@ class AuthService:
 
     @staticmethod
     def get_profile(user_id: int) -> User:
+        """
+        Retrieve a user's profile by ID.
+
+        Args:
+            user_id: The user's unique identifier.
+
+        Returns:
+            User: The SQLAlchemy User instance.
+
+        Raises:
+            ValueError: If the user is not found.
+        """
+
         user = db.session.get(User, user_id)
         if not user:
             raise ValueError("User not found")
@@ -57,6 +108,20 @@ class AuthService:
 
     @staticmethod
     def update_profile(user_id: int, **kwargs) -> User:
+        """
+        Update a user's profile fields.
+
+        Args:
+            user_id: The user's unique identifier.
+            **kwargs: Fields to update (name, apartment, tower).
+
+        Returns:
+            User: The updated SQLAlchemy User instance.
+
+        Raises:
+            ValueError: If the user is not found.
+        """
+
         user = db.session.get(User, user_id)
         if not user:
             raise ValueError("User not found")
@@ -71,6 +136,18 @@ class AuthService:
 
     @staticmethod
     def change_password(user_id: int, current_password: str, new_password: str) -> None:
+        """
+        Change a user's password after verifying the current one.
+
+        Args:
+            user_id: The user's unique identifier.
+            current_password: The user's current password for verification.
+            new_password: The new password (minimum 6 characters).
+
+        Raises:
+            ValueError: If the user is not found or the current password is incorrect.
+        """
+        
         user = db.session.get(User, user_id)
         if not user:
             raise ValueError("User not found")

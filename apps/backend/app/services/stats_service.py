@@ -1,3 +1,9 @@
+"""
+Community statistics service layer.
+
+Aggregates metrics about reports, votes, comments, and user activity.
+"""
+
 from datetime import datetime, timedelta, timezone
 
 from app.extensions import db
@@ -8,9 +14,18 @@ from app.models.vote import Vote
 
 
 class StatsService:
+    """Service for computing community-wide statistics."""
 
     @staticmethod
     def get_community_stats() -> dict:
+        """
+        Get comprehensive community metrics.
+
+        Returns:
+            dict: Aggregated statistics including total reports by status and
+                category, resolved today, votes, comments, and user activity.
+        """
+
         total_reports = Report.query.count()
         open_reports = Report.query.filter_by(status="open").count()
         in_progress = Report.query.filter_by(status="in_progress").count()
@@ -54,6 +69,13 @@ class StatsService:
 
     @staticmethod
     def get_reports_by_status() -> dict:
+        """
+        Get report counts grouped by status.
+
+        Returns:
+            dict: Mapping of status names to report counts.
+        """
+
         statuses = ["open", "in_progress", "resolved", "closed"]
         return {
             s: Report.query.filter_by(status=s).count() for s in statuses
@@ -61,6 +83,13 @@ class StatsService:
 
     @staticmethod
     def get_reports_by_category() -> list:
+        """
+        Get report counts grouped by category.
+
+        Returns:
+            list: List of dicts with category_id and count.
+        """
+
         results = (
             db.session.query(Report.category_id, db.func.count(Report.id))
             .group_by(Report.category_id)
@@ -70,6 +99,16 @@ class StatsService:
 
     @staticmethod
     def get_reports_over_time(days: int = 30) -> list:
+        """
+        Get report creation counts per day over a period.
+
+        Args:
+            days: Number of days to look back (default: 30).
+
+        Returns:
+            list: List of dicts with date and count for each day.
+        """
+        
         since = datetime.now(timezone.utc) - timedelta(days=days)
         results = (
             db.session.query(
