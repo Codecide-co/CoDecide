@@ -27,7 +27,8 @@ def list_reports():
     """
     List reports with optional filters and pagination.
 
-    Query parameters: page, per_page, status, category_id, user_id.
+    Query parameters: page, per_page, status, category_id, user_id,
+    date_from, date_to.
 
     Returns:
         tuple: JSON paginated response with reports list, HTTP 200.
@@ -38,6 +39,8 @@ def list_reports():
     status = request.args.get("status")
     category_id = request.args.get("category_id", type=int)
     user_id = request.args.get("user_id", type=int)
+    date_from = request.args.get("date_from")
+    date_to = request.args.get("date_to")
 
     result = ReportService.get_all(
         page=page,
@@ -46,6 +49,8 @@ def list_reports():
         category_id=category_id,
         user_id=user_id,
         current_user_id=request.current_user.id,
+        date_from=date_from,
+        date_to=date_to,
     )
     return jsonify(result), 200
 

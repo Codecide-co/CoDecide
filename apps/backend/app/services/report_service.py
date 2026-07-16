@@ -83,6 +83,8 @@ class ReportService:
         category_id: Optional[int] = None,
         user_id: Optional[int] = None,
         current_user_id: Optional[int] = None,
+        date_from: Optional[str] = None,
+        date_to: Optional[str] = None,
     ) -> dict:
         """
         List reports with optional filters and pagination.
@@ -94,6 +96,8 @@ class ReportService:
             category_id: Filter by category ID.
             user_id: Filter by author ID.
             current_user_id: ID of the requesting user (for user_vote field).
+            date_from: Filter reports created on or after this date (ISO format).
+            date_to: Filter reports created on or before this date (ISO format).
 
         Returns:
             dict: Paginated response with reports, total, page, per_page, and pages.
@@ -107,6 +111,10 @@ class ReportService:
             query = query.filter_by(category_id=category_id)
         if user_id:
             query = query.filter_by(user_id=user_id)
+        if date_from:
+            query = query.filter(Report.created_at >= datetime.fromisoformat(date_from))
+        if date_to:
+            query = query.filter(Report.created_at <= datetime.fromisoformat(date_to))
 
         query = query.order_by(desc(Report.created_at))
         pagination = query.paginate(page=page, per_page=per_page, error_out=False)
@@ -160,8 +168,8 @@ class ReportService:
         """
         Transition a report to a new status.
 
-        Valid transitions: open→in_progress, open→closed, in_progress→resolved,
-        in_progress→closed, resolved→closed.
+        Valid transitions: open -> in_progress, open→closed, in_progress -> resolved,
+        in_progress -> closed, resolved -> closed.
 
         Args:
             report_id: The report's unique identifier.
