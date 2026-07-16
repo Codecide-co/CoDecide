@@ -48,6 +48,7 @@ def create_report():
             user_id=request.current_user.id,
             category_id=data["category_id"],
             location=data.get("location"),
+            is_anonymous=data.get("is_anonymous", False),
         )
         return jsonify(report.to_dict()), 201
     except ValueError as e:
