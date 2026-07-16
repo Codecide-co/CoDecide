@@ -16,4 +16,4 @@ def hello() -> tuple:
         tuple: Welcome message and HTTP 200 code.
     """
     
-    return jsonify({"message": "Hello, CokeDecide!"}), 200
+    return jsonify({"message": "Hello, CoDecide!"}), 200
