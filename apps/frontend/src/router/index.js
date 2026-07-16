@@ -7,12 +7,14 @@ import { LandingView } from "@pages/home/LandingView";
 import notFoundView from "@/views/notFound.js";
 import { isAuthenticated, isAdmin } from "@/utils/utils.js";
 import { navigateTo } from "@/utils/navigate.js";
+import profileView from "@/views/profileView.js";
 
 const routes = {
   "/": LandingView,
   "/login": loginView,
   "/register": registerView,
   "/home": homeView,
+  "/profile": profileView,
   "/reports/create": createReportView,
   "/reports/success": reportSuccessView,
 };
