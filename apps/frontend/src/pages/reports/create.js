@@ -8,7 +8,7 @@ let isSubmitting = false;
 
 export function CreateReportView() {
   return `
-    <section>
+    <section class="report-page">
 
     <header>
         <h2>New Report</h2>

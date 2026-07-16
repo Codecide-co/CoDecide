@@ -285,7 +285,6 @@
 }
 
 .landing-how-item::before {
-  content: attr(data-step);
   position: absolute;
   top: -10px;
   left: 50%;
