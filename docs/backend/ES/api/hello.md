@@ -14,6 +14,6 @@ Endpoint de prueba para verificar que la API responde.
 
 ```json
 {
-  "message": "Hello, CokeDecide!"
+  "message": "Hello, CoDecide!"
 }
 ```
