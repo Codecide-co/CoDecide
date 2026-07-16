@@ -32,9 +32,9 @@
 
 <div align="center">
 
-## Badges
+## Technologies and others
 
-### Technologies and others
+### Build & Tooling
 
 <p>
   <a href="https://vite.dev/"><img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white"></a>

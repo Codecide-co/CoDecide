@@ -124,11 +124,31 @@ El frontend estará disponible en `http://localhost:5173`.
 
 1. **Frontend** — Abre `http://localhost:5173` en tu navegador
 2. **Backend salud** — `curl http://localhost:5000/api/hello`
-3. **Registrar un usuario**:
+3. **Registrar un usuario** (todos los campos opcionales incluidos):
    ```bash
    curl -X POST http://localhost:5000/api/auth/register \
      -H "Content-Type: application/json" \
-     -d '{"name":"Usuario de prueba","email":"test@example.com","password":"123456"}'
+     -d '{
+       "name": "Usuario de prueba",
+       "email": "test@example.com",
+       "password": "123456",
+       "apartment": "101",
+       "tower": "A"
+     }'
+   ```
+   Respuesta esperada (201):
+   ```json
+   {
+     "id": 1,
+     "name": "Usuario de prueba",
+     "email": "test@example.com",
+     "role": "resident",
+     "apartment": "101",
+     "tower": "A",
+     "created_at": "2026-07-16T12:00:00",
+     "updated_at": "2026-07-16T12:00:00",
+     "token": "eyJ..."
+   }
    ```
 4. **Iniciar sesión y guardar el token**:
    ```bash
@@ -136,6 +156,7 @@ El frontend estará disponible en `http://localhost:5173`.
      -H "Content-Type: application/json" \
      -d '{"email":"test@example.com","password":"123456"}'
    ```
+   La respuesta incluye el mismo objeto de usuario más un `token` JWT para autenticación.
 
 ---
 
