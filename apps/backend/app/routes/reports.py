@@ -1,6 +1,8 @@
 from flask import Blueprint, jsonify, request
 
 from app.middleware.auth import admin_required, login_required
+from app.mongo.attachment import Attachment
+from app.mongo.audit_log import AuditLog
 from app.schemas.report_schema import (
     CommentSchema,
     CreateReportSchema,
@@ -48,6 +50,7 @@ def create_report():
             user_id=request.current_user.id,
             category_id=data["category_id"],
             location=data.get("location"),
+            is_anonymous=data.get("is_anonymous", False),
         )
         return jsonify(report.to_dict()), 201
     except ValueError as e:
@@ -61,6 +64,8 @@ def get_report(report_id: int):
         report = ReportService.get_by_id(report_id)
         data = report.to_dict()
         data["votes_count"] = len(report.votes)
+        data["upvotes"] = sum(1 for v in report.votes if v.vote_type == "up")
+        data["downvotes"] = sum(1 for v in report.votes if v.vote_type == "down")
         data["comments_count"] = len(report.comments)
         data["comments"] = [
             {
@@ -71,6 +76,14 @@ def get_report(report_id: int):
                 "created_at": c.created_at.isoformat(),
             }
             for c in report.comments
+        ]
+        data["attachments"] = [
+            Attachment.to_dict(a) for a in Attachment.find_by_report(report_id)
+        ]
+        data["status_history"] = [
+            AuditLog.to_dict(log)
+            for log in AuditLog.find_by_entity("report", report_id)
+            if log.get("action") == "status_change"
         ]
         return jsonify(data), 200
     except ValueError as e:
@@ -91,6 +104,7 @@ def update_status(report_id: int):
             report_id=report_id,
             new_status=data["status"],
             admin_id=request.current_user.id,
+            comment=data.get("comment"),
         )
         return jsonify(report.to_dict()), 200
     except ValueError as e:

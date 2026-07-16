@@ -22,6 +22,7 @@ class ReportService:
         user_id: int,
         category_id: int,
         location: Optional[str] = None,
+        is_anonymous: bool = False,
     ) -> Report:
         category = db.session.get(Category, category_id)
         if not category:
@@ -33,6 +34,7 @@ class ReportService:
             user_id=user_id,
             category_id=category_id,
             location=location,
+            is_anonymous=is_anonymous,
             tracking_number=Report.generate_tracking_number(),
         )
         db.session.add(report)
@@ -43,7 +45,7 @@ class ReportService:
             action="create",
             entity_type="report",
             entity_id=report.id,
-            details={"title": title, "category_id": category_id},
+            details={"title": title, "category_id": category_id, "is_anonymous": is_anonymous},
         )
 
         return report
@@ -72,6 +74,8 @@ class ReportService:
         for report in pagination.items:
             r = report.to_dict()
             r["votes_count"] = len(report.votes)
+            r["upvotes"] = sum(1 for v in report.votes if v.vote_type == "up")
+            r["downvotes"] = sum(1 for v in report.votes if v.vote_type == "down")
             r["comments_count"] = len(report.comments)
             reports.append(r)
 
@@ -91,7 +95,7 @@ class ReportService:
         return report
 
     @staticmethod
-    def update_status(report_id: int, new_status: str, admin_id: int) -> Report:
+    def update_status(report_id: int, new_status: str, admin_id: int, comment: Optional[str] = None) -> Report:
         report = db.session.get(Report, report_id)
         if not report:
             raise ValueError("Report not found")
@@ -113,12 +117,15 @@ class ReportService:
         report.updated_at = datetime.now(timezone.utc)
         db.session.commit()
 
+        details = {"from": old_status, "to": new_status}
+        if comment:
+            details["comment"] = comment
         AuditLog.create(
             user_id=admin_id,
             action="status_change",
             entity_type="report",
             entity_id=report.id,
-            details={"from": old_status, "to": new_status},
+            details=details,
         )
 
         return report
@@ -129,12 +136,17 @@ class ReportService:
         if not report:
             raise ValueError("Report not found")
 
+        if report.user_id == user_id:
+            raise ValueError("Cannot vote on own report")
+
         existing = Vote.query.filter_by(user_id=user_id, report_id=report_id).first()
         if existing:
-            raise ValueError("Already voted on this report")
-
-        vote = Vote(user_id=user_id, report_id=report_id, vote_type=vote_type)
-        db.session.add(vote)
+            if existing.vote_type == vote_type:
+                raise ValueError("Already voted with the same type")
+            existing.vote_type = vote_type
+        else:
+            vote = Vote(user_id=user_id, report_id=report_id, vote_type=vote_type)
+            db.session.add(vote)
         db.session.commit()
 
         upvotes = Vote.query.filter_by(report_id=report_id, vote_type="up").count()

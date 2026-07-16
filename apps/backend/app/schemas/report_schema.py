@@ -6,6 +6,7 @@ class CreateReportSchema(Schema):
     description = fields.String(required=True, validate=validate.Length(min=10))
     category_id = fields.Integer(required=True)
     location = fields.String(validate=validate.Length(max=255))
+    is_anonymous = fields.Bool(missing=False)
 
 
 class UpdateReportSchema(Schema):
@@ -19,6 +20,7 @@ class StatusUpdateSchema(Schema):
         required=True,
         validate=validate.OneOf(["open", "in_progress", "resolved", "closed"]),
     )
+    comment = fields.String(validate=validate.Length(max=500))
 
 
 class VoteSchema(Schema):
