@@ -7,6 +7,13 @@ from app.extensions import db
 
 
 class Category(db.Model):
+    """
+    Represents a report category for classification.
+
+    Categories are classified by type (infrastructure or coexistence)
+    and help organize reports for filtering and statistics.
+    """
+
     __tablename__ = "categories"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -20,12 +27,18 @@ class Category(db.Model):
         db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)
     )
 
-    # Relaciones
     reports: Mapped[list["Report"]] = relationship(
         "Report", back_populates="category", lazy="selectin"
     )
 
     def to_dict(self) -> dict:
+        """
+        Serialize the category to a dictionary.
+
+        Returns:
+            dict: Category data including name, type, and description.
+        """
+
         return {
             "id": self.id,
             "name": self.name,

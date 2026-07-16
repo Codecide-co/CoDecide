@@ -6,6 +6,13 @@ from app.extensions import db
 
 
 class Comunicado(db.Model):
+    """
+    Represents an official announcement published by an admin.
+
+    Comunicados are visible to all residents and contain important
+    community information.
+    """
+
     __tablename__ = "comunicados"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -25,6 +32,13 @@ class Comunicado(db.Model):
     author: Mapped["User"] = relationship("User", back_populates="comunicados")
 
     def to_dict(self) -> dict:
+        """
+        Serialize the comunicado to a dictionary.
+
+        Returns:
+            dict: Comunicado data including title, body, author, and timestamps.
+        """
+        
         return {
             "id": self.id,
             "title": self.title,
