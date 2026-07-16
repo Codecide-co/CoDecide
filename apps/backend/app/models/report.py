@@ -20,6 +20,7 @@ class Report(db.Model):
     )
     tracking_number: Mapped[str] = mapped_column(db.String(20), unique=True, nullable=False)
     location: Mapped[str | None] = mapped_column(db.String(255))
+    is_anonymous: Mapped[bool] = mapped_column(db.Boolean, nullable=False, default=False)
 
     # Foreign Keys
     category_id: Mapped[int] = mapped_column(db.ForeignKey("categories.id"), nullable=False)
@@ -65,6 +66,7 @@ class Report(db.Model):
             "status": self.status,
             "tracking_number": self.tracking_number,
             "location": self.location,
+            "is_anonymous": self.is_anonymous,
             "category_id": self.category_id,
             "user_id": self.user_id,
             "created_at": self.created_at.isoformat(),
