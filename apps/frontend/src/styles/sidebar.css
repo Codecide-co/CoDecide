@@ -1,0 +1,64 @@
+.sidebar-home {
+  width: 220px;
+  min-height: calc(100vh - 68px);
+  background: var(--color-navy);
+  padding: 1.5rem 0;
+  flex-shrink: 0;
+  overflow: hidden;
+  transition: width 0.35s ease, padding 0.35s ease;
+}
+
+.auth-layout.collapsed .sidebar-home {
+  width: 0;
+  padding: 1.5rem 0;
+}
+
+.sidebar-home nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar-home nav ul li a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 24px;
+  color: #94A3B8;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  border-left: 3px solid transparent;
+  white-space: nowrap;
+  position: relative;
+}
+
+.sidebar-home nav ul li a:hover {
+  color: #fff;
+  background: linear-gradient(90deg, rgba(37,99,235,0.12) 0%, transparent 100%);
+  border-left-color: var(--color-blue-primary);
+}
+
+
+#sidebar-logout {
+  color: #FCA5A5;
+  margin-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding-top: 16px;
+}
+
+#sidebar-logout:hover {
+  color: #FEE2E2 !important;
+  background: linear-gradient(90deg, rgba(239,68,68,0.12) 0%, transparent 100%) !important;
+  border-left-color: #EF4444 !important;
+}
+
+.sidebar-home nav ul li a img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}

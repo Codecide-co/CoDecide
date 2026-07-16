@@ -6,7 +6,10 @@
 @import "./Landing.css";
 @import "./home.css";
 @import "./HeaderHome.css";
-@import "./FooterHome.css";
+@import "./profile.css";
+@import "./sidebar.css";
+@import "./report.css";
+@import "./announcements.css";
 
 * {
     padding: 0;

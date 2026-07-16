@@ -9,6 +9,7 @@ export function HeaderLanding() {
         <li><a class="header-nav-link" href="#explore-reports" data-link>Explore Reports</a></li>
         <li><a class="header-nav-link" href="#how-it-works" data-link>How It Works</a></li>
         <li><a class="header-nav-link" href="#about-us" data-link>About Us</a></li>
+        <li><a class="header-nav-link" href="/announcements" data-link>Announcements</a></li>
         <li><a class="header-nav-link header-nav-cta" href="/login" data-link>Login</a></li>
       </ul>
     </nav>
@@ -18,9 +19,10 @@ export function HeaderLanding() {
 
 export function HeaderHome() {
   return`
-  <header class="header-home flex flex-row justify-between items-center p-6">
+  <header class="header-home flex flex-row justify-between items-center">
+    <button id="sidebar-toggle" class="sidebar-toggle-btn">☰</button>
     <a id="button-home" class="header-logo" href="/" data-link>CoDecide</a>
-    <a id="button-notification" class="notification-logo" href="/" data-link>🔔</a>
+    <a id="button-profile" href="/profile" data-link class="header-icon"><img src="../../public/user.svg" alt="user">User</a>
   </header>
   `
 }
