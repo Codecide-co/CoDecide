@@ -6,7 +6,8 @@
 @import "./Landing.css";
 @import "./home.css";
 @import "./HeaderHome.css";
-@import "./FooterHome.css";
+@import "./profile.css";
+@import "./sidebar.css";
 
 * {
     padding: 0;
