@@ -29,6 +29,7 @@ class User(db.Model):
         default=lambda: datetime.now(timezone.utc),
         onupdate=lambda: datetime.now(timezone.utc),
     )
+    last_seen: Mapped[datetime | None] = mapped_column(db.DateTime, nullable=True)
 
     # Relaciones
     reports: Mapped[list["Report"]] = relationship(

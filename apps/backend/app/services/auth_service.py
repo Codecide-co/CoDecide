@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 from typing import Optional
 
 from flask_jwt_extended import create_access_token
@@ -40,6 +41,9 @@ class AuthService:
         user = User.query.filter_by(email=email).first()
         if not user or not check_password_hash(user.password_hash, password):
             raise ValueError("Invalid email or password")
+
+        user.last_seen = datetime.now(timezone.utc)
+        db.session.commit()
 
         token = create_access_token(identity=str(user.id))
         return {"user": user.to_dict(), "token": token}
