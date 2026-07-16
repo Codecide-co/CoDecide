@@ -45,3 +45,21 @@ def reports_over_time():
     days = request.args.get("days", 30, type=int)
     data = StatsService.get_reports_over_time(days=days)
     return jsonify(data), 200
+
+
+@stats_bp.route("/top-voted-reports", methods=["GET"])
+@login_required
+def top_voted_reports():
+    """
+    Get the top voted reports sorted by total vote count.
+
+    Query parameters:
+        limit (int): Maximum number of reports (default: 5).
+
+    Returns:
+        tuple: JSON list of top voted reports, HTTP 200.
+    """
+
+    limit = request.args.get("limit", 5, type=int)
+    data = StatsService.get_top_voted_reports(limit=limit)
+    return jsonify(data), 200

@@ -16,6 +16,7 @@ from app.schemas.report_schema import (
     VoteSchema,
 )
 from app.services.report_service import ReportService
+from app.models.vote import Vote
 
 reports_bp = Blueprint("reports", __name__, url_prefix="/api/reports")
 
@@ -44,6 +45,7 @@ def list_reports():
         status=status,
         category_id=category_id,
         user_id=user_id,
+        current_user_id=request.current_user.id,
     )
     return jsonify(result), 200
 
@@ -103,6 +105,10 @@ def get_report(report_id: int):
         data["upvotes"] = sum(1 for v in report.votes if v.vote_type == "up")
         data["downvotes"] = sum(1 for v in report.votes if v.vote_type == "down")
         data["comments_count"] = len(report.comments)
+        user_vote = Vote.query.filter_by(
+            user_id=request.current_user.id, report_id=report_id
+        ).first()
+        data["user_vote"] = user_vote.vote_type if user_vote else None
         data["comments"] = [
             {
                 "id": c.id,

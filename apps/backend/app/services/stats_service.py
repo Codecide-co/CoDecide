@@ -5,6 +5,7 @@ Aggregates metrics about reports, votes, comments, and user activity.
 """
 
 from datetime import datetime, timedelta, timezone
+from typing import Optional
 
 from app.extensions import db
 from app.models.comment import Comment
@@ -61,6 +62,7 @@ class StatsService:
                 str(cat_id): count for cat_id, count in categories
             },
             "resolved_today": resolved_today,
+            "avg_resolution_time": StatsService.get_avg_resolution_time(),
             "total_votes": total_votes,
             "total_comments": total_comments,
             "active_users": active_users,
@@ -96,6 +98,63 @@ class StatsService:
             .all()
         )
         return [{"category_id": cat_id, "count": count} for cat_id, count in results]
+
+    @staticmethod
+    def get_avg_resolution_time() -> Optional[float]:
+        """
+        Calculate the average resolution time for resolved/closed reports.
+
+        Computes the average time in hours between creation and last update
+        for reports with a final status (resolved or closed).
+
+        Returns:
+            Optional[float]: Average resolution time in hours, or None if no
+                resolved/closed reports exist.
+        """
+
+        resolved = Report.query.filter(
+            Report.status.in_(["resolved", "closed"])
+        ).all()
+
+        if not resolved:
+            return None
+
+        total_hours = 0.0
+        for r in resolved:
+            delta = r.updated_at - r.created_at
+            total_hours += delta.total_seconds() / 3600
+
+        return round(total_hours / len(resolved), 2)
+
+    @staticmethod
+    def get_top_voted_reports(limit: int = 5) -> list:
+        """
+        Get the top voted reports by total vote count.
+
+        Args:
+            limit: Maximum number of reports to return (default: 5).
+
+        Returns:
+            list: List of dicts with report id, title, tracking_number,
+                upvotes and downvotes, sorted by total votes descending.
+        """
+
+        reports = Report.query.all()
+        scored = []
+        for report in reports:
+            up = sum(1 for v in report.votes if v.vote_type == "up")
+            down = sum(1 for v in report.votes if v.vote_type == "down")
+            scored.append({
+                "id": report.id,
+                "title": report.title,
+                "tracking_number": report.tracking_number,
+                "upvotes": up,
+                "downvotes": down,
+                "total_votes": up + down,
+            })
+
+        scored.sort(key=lambda r: r["total_votes"], reverse=True)
+        return scored[:limit]
 
     @staticmethod
     def get_reports_over_time(days: int = 30) -> list:
