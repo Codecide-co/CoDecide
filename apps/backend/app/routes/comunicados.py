@@ -1,3 +1,9 @@
+"""
+Comunicado (announcement) routes.
+
+Handles listing and creating official community announcements.
+"""
+
 from flask import Blueprint, jsonify, request
 
 from app.extensions import db
@@ -9,6 +15,13 @@ comunicados_bp = Blueprint("comunicados", __name__, url_prefix="/api/comunicados
 
 @comunicados_bp.route("", methods=["GET"])
 def list_comunicados():
+    """
+    List all official announcements, newest first.
+
+    Returns:
+        tuple: JSON array of comunicados, HTTP 200.
+    """
+
     comunicados = (
         Comunicado.query.order_by(Comunicado.created_at.desc()).all()
     )
@@ -18,6 +31,15 @@ def list_comunicados():
 @comunicados_bp.route("", methods=["POST"])
 @admin_required
 def create_comunicado():
+    """
+    Create a new official announcement (admin only).
+
+    Request body must include title and body fields.
+
+    Returns:
+        tuple: JSON response with the created comunicado, HTTP 201.
+    """
+    
     data = request.get_json()
     if not data or not data.get("title") or not data.get("body"):
         return jsonify({"error": "title and body are required"}), 400

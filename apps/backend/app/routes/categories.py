@@ -1,3 +1,9 @@
+"""
+Category routes.
+
+Handles listing and creating report categories.
+"""
+
 from flask import Blueprint, jsonify, request
 from marshmallow import Schema, fields, validate
 
@@ -9,6 +15,8 @@ categories_bp = Blueprint("categories", __name__, url_prefix="/api/categories")
 
 
 class CreateCategorySchema(Schema):
+    """Marshmallow schema for validating category creation requests."""
+
     name = fields.String(required=True, validate=validate.Length(min=2, max=100))
     type = fields.String(
         required=True,
@@ -19,6 +27,13 @@ class CreateCategorySchema(Schema):
 
 @categories_bp.route("", methods=["GET"])
 def list_categories():
+    """
+    List all categories sorted by name.
+
+    Returns:
+        tuple: JSON array of categories, HTTP 200.
+    """
+
     categories = Category.query.order_by(Category.name).all()
     return jsonify([c.to_dict() for c in categories]), 200
 
@@ -26,6 +41,16 @@ def list_categories():
 @categories_bp.route("", methods=["POST"])
 @admin_required
 def create_category():
+    """
+    Create a new category (admin only).
+
+    Validates the request body against CreateCategorySchema and ensures
+    the category name is unique.
+
+    Returns:
+        tuple: JSON response with the created category, HTTP 201.
+    """
+    
     schema = CreateCategorySchema()
     errors = schema.validate(request.json)
     if errors:

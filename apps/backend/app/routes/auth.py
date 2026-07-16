@@ -1,8 +1,13 @@
+"""
+Authentication routes.
+
+Handles user registration, login, profile management, password changes, and logout.
+"""
+
 from flask import Blueprint, jsonify, request
 
 from app.middleware.auth import login_required
 from app.schemas.auth_schema import (
-    AuthResponseSchema,
     ChangePasswordSchema,
     LoginSchema,
     RegisterSchema,
@@ -15,6 +20,16 @@ auth_bp = Blueprint("auth", __name__)
 
 @auth_bp.route("/register", methods=["POST"])
 def register():
+    """
+    Register a new user account.
+
+    Request body is validated against RegisterSchema. On success, returns
+    the user profile and a JWT token.
+
+    Returns:
+        tuple: JSON response with user data and token, HTTP 201.
+    """
+
     schema = RegisterSchema()
     errors = schema.validate(request.json)
     if errors:
@@ -31,6 +46,16 @@ def register():
 
 @auth_bp.route("/login", methods=["POST"])
 def login():
+    """
+    Authenticate a user and return a JWT token.
+
+    Validates credentials against LoginSchema. Updates the user's last_seen
+    timestamp on successful login.
+
+    Returns:
+        tuple: JSON response with user data and token, HTTP 200.
+    """
+
     schema = LoginSchema()
     errors = schema.validate(request.json)
     if errors:
@@ -48,6 +73,13 @@ def login():
 @auth_bp.route("/me", methods=["GET"])
 @login_required
 def me():
+    """
+    Get the authenticated user's profile.
+
+    Returns:
+        tuple: JSON response with user data, HTTP 200.
+    """
+
     user = request.current_user
     return jsonify(user.to_dict()), 200
 
@@ -55,6 +87,15 @@ def me():
 @auth_bp.route("/me", methods=["PATCH"])
 @login_required
 def update_profile():
+    """
+    Update the authenticated user's profile fields.
+
+    Accepts partial updates for name, apartment, and tower.
+
+    Returns:
+        tuple: JSON response with updated user data, HTTP 200.
+    """
+
     schema = UpdateProfileSchema()
     errors = schema.validate(request.json)
     if errors:
@@ -71,6 +112,15 @@ def update_profile():
 @auth_bp.route("/change-password", methods=["POST"])
 @login_required
 def change_password():
+    """
+    Change the authenticated user's password.
+
+    Requires the current password for verification.
+
+    Returns:
+        tuple: JSON success message, HTTP 200.
+    """
+
     schema = ChangePasswordSchema()
     errors = schema.validate(request.json)
     if errors:
@@ -91,4 +141,14 @@ def change_password():
 @auth_bp.route("/logout", methods=["POST"])
 @login_required
 def logout():
+    """
+    Log out the authenticated user.
+
+    Note: Currently does not invalidate the JWT token (token blacklist
+    is pending implementation).
+
+    Returns:
+        tuple: JSON success message, HTTP 200.
+    """
+    
     return jsonify({"message": "Logged out successfully"}), 200

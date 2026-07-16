@@ -1,3 +1,10 @@
+"""
+Admin routes.
+
+Administrative endpoints for user management, audit logs, and report assignment.
+All endpoints require the admin role.
+"""
+
 from flask import Blueprint, jsonify, request
 
 from app.extensions import db
@@ -11,6 +18,13 @@ admin_bp = Blueprint("admin", __name__, url_prefix="/api/admin")
 @admin_bp.route("/users", methods=["GET"])
 @admin_required
 def list_users():
+    """
+    List all registered users.
+
+    Returns:
+        tuple: JSON array of user profiles, HTTP 200.
+    """
+
     users = User.query.all()
     return jsonify([u.to_dict() for u in users]), 200
 
@@ -18,6 +32,18 @@ def list_users():
 @admin_bp.route("/users/<int:user_id>", methods=["DELETE"])
 @admin_required
 def delete_user(user_id: int):
+    """
+    Delete a user from the system.
+
+    Logs the deletion in the audit trail before removing the user.
+
+    Args:
+        user_id: The user's unique identifier.
+
+    Returns:
+        tuple: JSON success message, HTTP 200.
+    """
+
     user = db.session.get(User, user_id)
     if not user:
         return jsonify({"error": "User not found"}), 404
@@ -38,6 +64,16 @@ def delete_user(user_id: int):
 @admin_bp.route("/audit-logs", methods=["GET"])
 @admin_required
 def get_audit_logs():
+    """
+    Retrieve audit log entries.
+
+    Query parameters:
+        limit (int): Maximum entries to return (default: 100).
+
+    Returns:
+        tuple: JSON array of audit log entries, HTTP 200.
+    """
+
     limit = request.args.get("limit", 100, type=int)
     logs = AuditLog.find_all(limit=limit)
     return jsonify([AuditLog.to_dict(log) for log in logs]), 200
@@ -46,6 +82,18 @@ def get_audit_logs():
 @admin_bp.route("/reports/<int:report_id>/assign", methods=["PATCH"])
 @admin_required
 def assign_report(report_id: int):
+    """
+    Assign a report to an admin user.
+
+    Request body must include a user_id field.
+
+    Args:
+        report_id: The report's unique identifier.
+
+    Returns:
+        tuple: JSON response with the updated report, HTTP 200.
+    """
+    
     from app.models.report import Report
 
     report = db.session.get(Report, report_id)

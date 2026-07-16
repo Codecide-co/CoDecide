@@ -1,3 +1,9 @@
+"""
+Report routes.
+
+Handles CRUD operations for reports, status transitions, voting, and comments.
+"""
+
 from flask import Blueprint, jsonify, request
 
 from app.middleware.auth import admin_required, login_required
@@ -6,7 +12,6 @@ from app.mongo.audit_log import AuditLog
 from app.schemas.report_schema import (
     CommentSchema,
     CreateReportSchema,
-    ReportResponseSchema,
     StatusUpdateSchema,
     VoteSchema,
 )
@@ -18,6 +23,15 @@ reports_bp = Blueprint("reports", __name__, url_prefix="/api/reports")
 @reports_bp.route("", methods=["GET"])
 @login_required
 def list_reports():
+    """
+    List reports with optional filters and pagination.
+
+    Query parameters: page, per_page, status, category_id, user_id.
+
+    Returns:
+        tuple: JSON paginated response with reports list, HTTP 200.
+    """
+
     page = request.args.get("page", 1, type=int)
     per_page = request.args.get("per_page", 20, type=int)
     status = request.args.get("status")
@@ -37,6 +51,16 @@ def list_reports():
 @reports_bp.route("", methods=["POST"])
 @login_required
 def create_report():
+    """
+    Create a new report.
+
+    Request body is validated against CreateReportSchema. Supports anonymous
+    reporting via the is_anonymous field.
+
+    Returns:
+        tuple: JSON response with the created report, HTTP 201.
+    """
+
     schema = CreateReportSchema()
     errors = schema.validate(request.json)
     if errors:
@@ -60,6 +84,18 @@ def create_report():
 @reports_bp.route("/<int:report_id>", methods=["GET"])
 @login_required
 def get_report(report_id: int):
+    """
+    Get detailed information about a specific report.
+
+    Includes votes, comments, attachments, and status history.
+
+    Args:
+        report_id: The report's unique identifier.
+
+    Returns:
+        tuple: JSON response with full report details, HTTP 200.
+    """
+
     try:
         report = ReportService.get_by_id(report_id)
         data = report.to_dict()
@@ -93,6 +129,19 @@ def get_report(report_id: int):
 @reports_bp.route("/<int:report_id>/status", methods=["PATCH"])
 @admin_required
 def update_status(report_id: int):
+    """
+    Update a report's status (admin only).
+
+    Validates the status transition and logs the change in the audit log.
+    An optional comment can be included.
+
+    Args:
+        report_id: The report's unique identifier.
+
+    Returns:
+        tuple: JSON response with the updated report, HTTP 200.
+    """
+
     schema = StatusUpdateSchema()
     errors = schema.validate(request.json)
     if errors:
@@ -114,6 +163,19 @@ def update_status(report_id: int):
 @reports_bp.route("/<int:report_id>/vote", methods=["POST"])
 @login_required
 def vote(report_id: int):
+    """
+    Vote on a report (up or down).
+
+    Supports upsert: if the user already voted with a different type, the
+    vote is updated. Self-voting is not allowed.
+
+    Args:
+        report_id: The report's unique identifier.
+
+    Returns:
+        tuple: JSON response with updated upvotes and downvotes counts, HTTP 200.
+    """
+
     schema = VoteSchema()
     errors = schema.validate(request.json)
     if errors:
@@ -134,6 +196,16 @@ def vote(report_id: int):
 @reports_bp.route("/<int:report_id>/comments", methods=["POST"])
 @login_required
 def add_comment(report_id: int):
+    """
+    Add a comment to a report.
+
+    Args:
+        report_id: The report's unique identifier.
+
+    Returns:
+        tuple: JSON response with the created comment, HTTP 201.
+    """
+    
     schema = CommentSchema()
     errors = schema.validate(request.json)
     if errors:
