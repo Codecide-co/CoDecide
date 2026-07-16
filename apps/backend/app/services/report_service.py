@@ -93,7 +93,7 @@ class ReportService:
         return report
 
     @staticmethod
-    def update_status(report_id: int, new_status: str, admin_id: int) -> Report:
+    def update_status(report_id: int, new_status: str, admin_id: int, comment: Optional[str] = None) -> Report:
         report = db.session.get(Report, report_id)
         if not report:
             raise ValueError("Report not found")
@@ -115,12 +115,15 @@ class ReportService:
         report.updated_at = datetime.now(timezone.utc)
         db.session.commit()
 
+        details = {"from": old_status, "to": new_status}
+        if comment:
+            details["comment"] = comment
         AuditLog.create(
             user_id=admin_id,
             action="status_change",
             entity_type="report",
             entity_id=report.id,
-            details={"from": old_status, "to": new_status},
+            details=details,
         )
 
         return report

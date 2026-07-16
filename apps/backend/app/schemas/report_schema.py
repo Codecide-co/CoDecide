@@ -20,6 +20,7 @@ class StatusUpdateSchema(Schema):
         required=True,
         validate=validate.OneOf(["open", "in_progress", "resolved", "closed"]),
     )
+    comment = fields.String(validate=validate.Length(max=500))
 
 
 class VoteSchema(Schema):

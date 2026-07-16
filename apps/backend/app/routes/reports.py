@@ -102,6 +102,7 @@ def update_status(report_id: int):
             report_id=report_id,
             new_status=data["status"],
             admin_id=request.current_user.id,
+            comment=data.get("comment"),
         )
         return jsonify(report.to_dict()), 200
     except ValueError as e:
