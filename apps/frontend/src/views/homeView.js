@@ -1,95 +1,140 @@
-import { authStore, logout as doLogout } from "@store/auth.store";
-import { navigateTo } from "@router/index";
-import { FooterHome } from "@/layout/Footer";
+import { authStore } from "@store/auth.store";
 import { HeaderHome } from "@/layout/Header";
+import { SidebarHome } from "@/layout/Sidebar";
+import { fetchMyReports } from "@services/reports.service";
+import { fetchApiData } from "@utils/api";
 
 export default function homeView() {
   const user = authStore.user;
 
   setTimeout(() => {
-    document.getElementById("logout-btn")?.addEventListener("click", () => {
-      doLogout();
-      navigateTo("/");
-    });
-    document.getElementById("logout-btn-footer")?.addEventListener("click", () => {
-      doLogout();
-      navigateTo("/");
-    });
+    // --- REPORTS ---
+    if (user?.id) {
+      fetchMyReports(user.id)
+        .then((reports) => {
+          const container = document.getElementById("reports-content");
+          if (!container) return;
+          if (!reports || reports.length === 0) {
+            container.innerHTML = `<p class="text-slate-400 text-sm text-center py-8">No reports yet. Create your first one!</p>`;
+            return;
+          }
+          container.innerHTML = reports
+            .map(
+              (r) => `
+          <div class="home-report-item">
+            <div class="home-report-header">
+              <span class="home-report-title">${r.title}</span>
+              <span class="home-status-badge ${r.status}">${r.status.replace("_", " ")}</span>
+            </div>
+            <span class="home-report-id">#${r.tracking_number || r.id}</span>
+          </div>
+        `,
+            )
+            .join("");
+        })
+        .catch(() => {
+          document.getElementById("reports-content").innerHTML =
+            `<p class="text-slate-400 text-sm text-center py-8">Could not load reports.</p>`;
+        });
+    }
+
+    // --- STATS ---
+    fetchApiData("/stats")
+      .then((stats) => {
+        const values = document.querySelectorAll(".home-stat-value");
+        if (values.length >= 4) {
+          values[0].textContent = stats.total_reports ?? "—";
+          values[1].textContent = stats.by_status?.resolved ?? "—";
+          values[2].textContent = stats.by_status?.in_progress ?? "—";
+          values[3].textContent = stats.by_status?.open ?? "—";
+        }
+      })
+      .catch(() => {});
+
+    // --- COMUNICADOS ---
+    fetchApiData("/comunicados")
+      .then((comunicados) => {
+        const container = document.getElementById("comunicados-content");
+        if (!container || !comunicados || comunicados.length === 0) return;
+        container.innerHTML = comunicados
+          .map(
+            (c) => `
+        <div class="home-communicado-item">
+          <div class="home-communicado-date">${new Date(c.created_at).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}</div>
+          <div class="home-communicado-title">${c.title}</div>
+          <p class="home-communicado-desc">${c.description}</p>
+        </div>
+      `,
+          )
+          .join("");
+      })
+      .catch(() => {});
   }, 0);
 
   return `
     ${HeaderHome()}
-    <main class="container-home pb-24 flex flex-col justify-center items-center">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 p-4 md:p-8 lg:p-12 max-w-7xl mx-auto">
+    <div class="auth-layout flex flex-row">
+      ${SidebarHome()}
+      <main class="container-home flex flex-row items-center justify-center">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 p-4 md:p-8 lg:p-12 max-w-7xl mx-auto">
 
-        <!-- WELCOME - full width -->
-        <section class="home-welcome md:col-span-2 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div>
-            <h2>Hi, ${user?.name || 'User'}!</h2>
-            <p class="mt-2 max-w-xl">
-              Welcome to CoDecide. Here you can report issues, 
-              track their progress, and get involved in your 
-              community.
-            </p>
-          </div>
-          <a href="/reports/create" data-link class="home-cta-btn">+ New Report</a>
-        </section>
-
-        <!-- REPORTS - left column, spans both rows -->
-        <section class="home-card md:row-span-2">
-          <h3 class="home-section-title">Reports</h3>
-          <div id="reports-content" class="space-y-2">
-
-            
-
-          </div>
-        </section>
-
-        <!-- STATS - right top -->
-        <section class="home-card">
-          <h3 class="home-section-title">Community Summary</h3>
-          <div id="stats-content" class="grid grid-cols-2 gap-3">
-            <div class="home-stat-card">
-              <div class="home-stat-value">—</div>
-              <div class="home-stat-label">Total Reports</div>
+          <!-- WELCOME -->
+          <section class="home-welcome md:col-span-2 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <h2>Hi, ${user?.name || "User"}!</h2>
+              <p class="mt-2 max-w-xl">
+                Welcome to CoDecide. Here you can report issues, 
+                track their progress, and get involved in your 
+                community.
+              </p>
             </div>
-            <div class="home-stat-card">
-              <div class="home-stat-value">—</div>
-              <div class="home-stat-label">Resolved</div>
+            <div class="flex gap-3 flex-wrap">
+              <a href="/reports/create" data-link class="home-cta-btn">+ New Report</a>
+              <a href="/reports" data-link class="home-cta-btn">View All Reports</a>
             </div>
-            <div class="home-stat-card">
-              <div class="home-stat-value">—</div>
-              <div class="home-stat-label">In Progress</div>
-            </div>
-            <div class="home-stat-card">
-              <div class="home-stat-value">—</div>
-              <div class="home-stat-label">Pending</div>
-            </div>
-          </div>
-        </section>
+          </section>
 
-        <!-- COMUNICADOS - right bottom -->
-        <section class="home-card">
-          <h3 class="home-section-title">Official Announcements</h3>
-          <div id="comunicados-content" class="grid grid-cols-1 gap-3">
-
-            <div class="home-communicado-item">
-              <div class="home-communicado-date"> EXAMPLE: 15 Jul 2026</div>
-              <div class="home-communicado-title">Nueva actualización de la plataforma</div>
-              <p class="home-communicado-desc">Hemos mejorado el sistema de notificaciones para mantenerte informado.</p>
+          <!-- REPORTS -->
+          <section class="home-card md:row-span-2">
+            <h3 class="home-section-title">My Recent Reports</h3>
+            <div id="reports-content" class="space-y-2">
+              <p class="text-slate-400 text-sm text-center py-8">Loading...</p>
             </div>
-            
-            <div class="home-communicado-item">
-              <div class="home-communicado-date"> EXAMPLE: 10 Jul 2026</div>
-              <div class="home-communicado-title"> Mantenimiento programado</div>
-              <p class="home-communicado-desc">El sistema estará en mantenimiento el próximo sábado de 2:00 AM a 4:00 AM.</p>
+          </section>
+
+          <!-- STATS -->
+          <section class="home-card">
+            <h3 class="home-section-title">Community Summary</h3>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="home-stat-card">
+                <div class="home-stat-value">—</div>
+                <div class="home-stat-label">Total Reports</div>
+              </div>
+              <div class="home-stat-card">
+                <div class="home-stat-value">—</div>
+                <div class="home-stat-label">Resolved</div>
+              </div>
+              <div class="home-stat-card">
+                <div class="home-stat-value">—</div>
+                <div class="home-stat-label">In Progress</div>
+              </div>
+              <div class="home-stat-card">
+                <div class="home-stat-value">—</div>
+                <div class="home-stat-label">Pending</div>
+              </div>
             </div>
+          </section>
 
-          </div>
-        </section>
+          <!-- COMUNICADOS -->
+          <section class="home-card">
+            <h3 class="home-section-title">Official Announcements</h3>
+            <div id="comunicados-content" class="grid grid-cols-1 gap-3">
+              <p class="text-slate-400 text-sm text-center py-8">Loading...</p>
+            </div>
+          </section>
 
-      </div>
-    </main>
-    ${FooterHome()}
+        </div>
+      </main>
+    </div>
   `;
 }
