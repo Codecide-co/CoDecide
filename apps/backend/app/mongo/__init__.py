@@ -1,4 +1,6 @@
-from app.mongo.attachment import Attachment
-from app.mongo.audit_log import AuditLog
+"""
+MongoDB document operation classes.
 
-__all__ = ["Attachment", "AuditLog"]
+Provides data access for attachment metadata and audit log entries
+stored in MongoDB.
+"""
