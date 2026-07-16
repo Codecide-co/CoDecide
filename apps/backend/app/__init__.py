@@ -5,8 +5,11 @@ Initializes the Flask app with extensions (SQLAlchemy, MongoDB, JWT, Migrate)
 and registers all route blueprints.
 """
 
+import os
+
 from flask import Flask
 from flask_cors import CORS
+from flask import send_from_directory
 
 from app.config import Config
 from app.extensions import db, jwt, migrate, mongo
@@ -27,6 +30,8 @@ def create_app() -> Flask:
     app = Flask(__name__)
     app.config.from_object(Config)
 
+    os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+
     origins = [
         origin.strip()
         for origin in Config.CORS_ORIGINS.split(",")
@@ -39,5 +44,9 @@ def create_app() -> Flask:
     jwt.init_app(app)
 
     register_blueprints(app)
+
+    @app.route("/uploads/<path:filename>")
+    def serve_upload(filename):
+        return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
 
     return app
