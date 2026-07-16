@@ -1,6 +1,8 @@
 from flask import Blueprint, jsonify, request
 
 from app.middleware.auth import admin_required, login_required
+from app.mongo.attachment import Attachment
+from app.mongo.audit_log import AuditLog
 from app.schemas.report_schema import (
     CommentSchema,
     CreateReportSchema,
@@ -72,6 +74,14 @@ def get_report(report_id: int):
                 "created_at": c.created_at.isoformat(),
             }
             for c in report.comments
+        ]
+        data["attachments"] = [
+            Attachment.to_dict(a) for a in Attachment.find_by_report(report_id)
+        ]
+        data["status_history"] = [
+            AuditLog.to_dict(log)
+            for log in AuditLog.find_by_entity("report", report_id)
+            if log.get("action") == "status_change"
         ]
         return jsonify(data), 200
     except ValueError as e:
