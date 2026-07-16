@@ -9,6 +9,7 @@ export function HeaderLanding() {
         <li><a class="header-nav-link" href="#explore-reports" data-link>Explore Reports</a></li>
         <li><a class="header-nav-link" href="#how-it-works" data-link>How It Works</a></li>
         <li><a class="header-nav-link" href="#about-us" data-link>About Us</a></li>
+        <li><a class="header-nav-link" href="/announcements" data-link>Announcements</a></li>
         <li><a class="header-nav-link header-nav-cta" href="/login" data-link>Login</a></li>
       </ul>
     </nav>
