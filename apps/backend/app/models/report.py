@@ -59,6 +59,7 @@ class Report(db.Model):
         return f"CD-{uuid.uuid4().hex[:8].upper()}"
 
     def to_dict(self) -> dict:
+        author_name = "Anonymous" if self.is_anonymous else (self.author.name if self.author else None)
         return {
             "id": self.id,
             "title": self.title,
@@ -68,7 +69,9 @@ class Report(db.Model):
             "location": self.location,
             "is_anonymous": self.is_anonymous,
             "category_id": self.category_id,
+            "category_name": self.category.name if self.category else None,
             "user_id": self.user_id,
+            "author_name": author_name,
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat(),
         }
