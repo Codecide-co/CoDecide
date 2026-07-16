@@ -72,7 +72,7 @@ section "3. Commit size validation"
 MAX_FILES=15
 while IFS= read -r -d '' HASH && IFS= read -r -d '' MSG; do
   [ -z "$HASH" ] && continue
-  FILES_CHANGED=$(git diff-tree --no-commit-id --name-only -r "$HASH" 2>/dev/null | wc -l)
+  FILES_CHANGED=$(git diff-tree --no-commit-id --name-only -r "$HASH" 2>/dev/null | wc -l) || true
   if [ "$FILES_CHANGED" -gt "$MAX_FILES" ]; then
     fail "Commit ${HASH:0:7}: $FILES_CHANGED files changed (max $MAX_FILES)"
   else
