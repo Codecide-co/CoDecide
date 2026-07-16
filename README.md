@@ -73,11 +73,10 @@ CokeDecide/
 │   ├── frontend/       # Vite + Vanilla JS SPA
 │   └── backend/        # Flask REST API (MySQL + MongoDB)
 ├── docs/
-│   ├── frontend/       # Frontend architecture docs (EN/ES)
-│   └── backend/        # Backend architecture docs (EN/ES)
-├── docs/
-│   ├── CONTRIBUTING.md     # Branch strategy, commit conventions, PR workflow (EN)
-│   └── CONTRIBUTING.es.md  # Mismo contenido en español
+│   ├── CONTRIBUTING.md      # Branch strategy, commit conventions, PR workflow (EN)
+│   ├── CONTRIBUTING.es.md   # Mismo contenido en español
+│   ├── frontend/            # Frontend architecture docs (EN/ES)
+│   └── backend/             # Backend architecture docs (EN/ES)
 ├── .gitignore
 └── README.md
 ```
@@ -86,7 +85,7 @@ CokeDecide/
 
 ```bash
 # Clone the repository and switch to dev branch
-git clone https://github.com/Zerik-Official/CokeDecide.git
+git clone https://github.com/Codecide-co/CoDecide.git
 cd CokeDecide
 git checkout dev
 git pull origin dev
