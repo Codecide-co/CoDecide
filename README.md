@@ -1,4 +1,4 @@
-<h1 align="center">CokeDecide</h1>
+<h1 align="center">CoDecide</h1>
 
 <p align="center">
   <a href="https://git-scm.com/"><img src="https://img.shields.io/badge/Monorepo-111111?style=for-the-badge"></a>
@@ -6,6 +6,10 @@
 </p>
 
 ---
+
+<p align="center">
+  <img src=".github/images/preview.png" alt="CoDecide Preview Image" width="800" />
+</p>
 
 <p align="center">
   Community portal for reporting and tracking neighborhood issues<br>
@@ -16,7 +20,7 @@
 
 ## Table of Contents
 
-- [Badges](#badges)
+- [Technologies and others](#technologies-and-others)
 - [Project Categories](#project-categories)
 - [Structure](#structure)
 - [Quick Start](#quick-start)
@@ -28,7 +32,7 @@
 
 <div align="center">
 
-## Badges
+## Technologies and others
 
 ### Build & Tooling
 
@@ -68,7 +72,7 @@
 ## Structure
 
 ```
-CokeDecide/
+CoDecide/
 ├── apps/
 │   ├── frontend/       # Vite + Vanilla JS SPA
 │   └── backend/        # Flask REST API (MySQL + MongoDB)
@@ -83,25 +87,10 @@ CokeDecide/
 
 ## Quick Start
 
-```bash
-# Clone the repository and switch to dev branch
-git clone https://github.com/Codecide-co/CoDecide.git
-cd CokeDecide
-git checkout dev
-git pull origin dev
+See the [Get Started](/docs/get-started/EN.md) guide for step-by-step setup instructions for Windows and Linux.
 
-# Frontend
-cd apps/frontend
-npm install
-npm run dev
-
-# Backend
-cd apps/backend
-python -m venv venv        # create virtual environment (optional but recommended)
-.\venv\Scripts\activate     # Windows — on Linux/macOS: source venv/bin/activate
-pip install -r requirements.txt
-python run.py               # starts on http://localhost:5000
-```
+- **[Get Started (English)](/docs/get-started/EN.md)**
+- **[Primeros Pasos (Español)](/docs/get-started/ES.md)**
 
 ## Team
 
@@ -133,10 +122,10 @@ python run.py               # starts on http://localhost:5000
 
 ## Documentation
 
-| Language | Frontend | Backend |
-|----------|----------|---------|
-| English | [Architecture](docs/frontend/EN/) | [Architecture](docs/backend/EN/) |
-| Spanish | [Arquitectura](docs/frontend/ES/) | [Arquitectura](docs/backend/ES/) |
+| Language | Get Started | Frontend | Backend |
+|----------|-------------|----------|---------|
+| English | [Guide](docs/get-started/EN.md) | [Architecture](docs/frontend/EN/) | [Architecture](docs/backend/EN/) |
+| Spanish | [Guía](docs/get-started/ES.md) | [Arquitectura](docs/frontend/ES/) | [Arquitectura](docs/backend/ES/) |
 
 ## Contributing
 

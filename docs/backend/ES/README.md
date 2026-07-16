@@ -1,4 +1,4 @@
-# Backend - CokeDecide
+# Backend - CoDecide
 
 Documentacion del backend.
 
@@ -81,7 +81,7 @@ apps/backend/
 
 migrations/                         # Migraciones Alembic
 instance/
-└── cokedecide.db                   # BD SQLite local (desarrollo)
+└── codecide.db                   # BD SQLite local (desarrollo)
 ```
 
 ---

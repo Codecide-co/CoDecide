@@ -14,6 +14,6 @@ Health check endpoint to verify the API is running.
 
 ```json
 {
-  "message": "Hello, CokeDecide!"
+  "message": "Hello, CoDecide!"
 }
 ```
