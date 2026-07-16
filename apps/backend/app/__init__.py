@@ -1,3 +1,10 @@
+"""
+Flask application factory.
+
+Initializes the Flask app with extensions (SQLAlchemy, MongoDB, JWT, Migrate)
+and registers all route blueprints.
+"""
+
 from flask import Flask
 from flask_cors import CORS
 
@@ -7,6 +14,16 @@ from app.routes import register_blueprints
 
 
 def create_app() -> Flask:
+    """
+    Create and configure the Flask application.
+
+    Configures CORS from comma-separated origins, initializes database
+    and authentication extensions, and registers all blueprints.
+
+    Returns:
+        Flask: The fully configured Flask application instance.
+    """
+    
     app = Flask(__name__)
     app.config.from_object(Config)
 

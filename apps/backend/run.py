@@ -1,3 +1,10 @@
+"""
+Application entry point.
+
+Creates and runs the Flask application with a colored ASCII banner
+displaying the app name, version, and current Git commit hash.
+"""
+
 from colorama import init, Fore, Style
 
 from app import create_app
@@ -11,6 +18,13 @@ app = create_app()
 init(autoreset=True)
 
 def get_banner() -> str:
+    """
+    Generate the ASCII startup banner with version and commit info.
+
+    Returns:
+        str: Colored banner string with app name, version, and commit hash.
+    """
+
     commit: str = get_git_commit()
     return rf"""{Fore.CYAN}
  ██████╗ ██████╗ ██╗  ██╗███████╗██████╗ ███████╗ ██████╗██╗██████╗ ███████╗
