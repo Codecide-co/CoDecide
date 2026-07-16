@@ -39,6 +39,7 @@ Lists reports with filters and pagination.
       "votes_count": 5,
       "upvotes": 4,
       "downvotes": 1,
+      "user_vote": "up",
       "comments_count": 2
     }
   ],
@@ -117,6 +118,7 @@ Gets report details including votes and comments.
   "votes_count": 5,
   "upvotes": 4,
   "downvotes": 1,
+  "user_vote": "up",
   "comments_count": 2,
   "attachments": [
     {
@@ -193,7 +195,8 @@ Votes on a report (up/down).
 ```json
 {
   "upvotes": 4,
-  "downvotes": 1
+  "downvotes": 1,
+  "user_vote": "up"
 }
 ```
 
