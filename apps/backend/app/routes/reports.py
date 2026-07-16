@@ -64,6 +64,8 @@ def get_report(report_id: int):
         report = ReportService.get_by_id(report_id)
         data = report.to_dict()
         data["votes_count"] = len(report.votes)
+        data["upvotes"] = sum(1 for v in report.votes if v.vote_type == "up")
+        data["downvotes"] = sum(1 for v in report.votes if v.vote_type == "down")
         data["comments_count"] = len(report.comments)
         data["comments"] = [
             {

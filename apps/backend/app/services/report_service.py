@@ -74,6 +74,8 @@ class ReportService:
         for report in pagination.items:
             r = report.to_dict()
             r["votes_count"] = len(report.votes)
+            r["upvotes"] = sum(1 for v in report.votes if v.vote_type == "up")
+            r["downvotes"] = sum(1 for v in report.votes if v.vote_type == "down")
             r["comments_count"] = len(report.comments)
             reports.append(r)
 
@@ -134,12 +136,17 @@ class ReportService:
         if not report:
             raise ValueError("Report not found")
 
+        if report.user_id == user_id:
+            raise ValueError("Cannot vote on own report")
+
         existing = Vote.query.filter_by(user_id=user_id, report_id=report_id).first()
         if existing:
-            raise ValueError("Already voted on this report")
-
-        vote = Vote(user_id=user_id, report_id=report_id, vote_type=vote_type)
-        db.session.add(vote)
+            if existing.vote_type == vote_type:
+                raise ValueError("Already voted with the same type")
+            existing.vote_type = vote_type
+        else:
+            vote = Vote(user_id=user_id, report_id=report_id, vote_type=vote_type)
+            db.session.add(vote)
         db.session.commit()
 
         upvotes = Vote.query.filter_by(report_id=report_id, vote_type="up").count()
