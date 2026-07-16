@@ -54,3 +54,30 @@ class AuthService:
         if not user:
             raise ValueError("User not found")
         return user
+
+    @staticmethod
+    def update_profile(user_id: int, **kwargs) -> User:
+        user = db.session.get(User, user_id)
+        if not user:
+            raise ValueError("User not found")
+
+        for key, value in kwargs.items():
+            if value is not None:
+                setattr(user, key, value)
+
+        user.updated_at = datetime.now(timezone.utc)
+        db.session.commit()
+        return user
+
+    @staticmethod
+    def change_password(user_id: int, current_password: str, new_password: str) -> None:
+        user = db.session.get(User, user_id)
+        if not user:
+            raise ValueError("User not found")
+
+        if not check_password_hash(user.password_hash, current_password):
+            raise ValueError("Current password is incorrect")
+
+        user.password_hash = generate_password_hash(new_password)
+        user.updated_at = datetime.now(timezone.utc)
+        db.session.commit()

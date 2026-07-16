@@ -1,7 +1,13 @@
 from flask import Blueprint, jsonify, request
 
 from app.middleware.auth import login_required
-from app.schemas.auth_schema import AuthResponseSchema, LoginSchema, RegisterSchema
+from app.schemas.auth_schema import (
+    AuthResponseSchema,
+    ChangePasswordSchema,
+    LoginSchema,
+    RegisterSchema,
+    UpdateProfileSchema,
+)
 from app.services.auth_service import AuthService
 
 auth_bp = Blueprint("auth", __name__)
@@ -44,6 +50,42 @@ def login():
 def me():
     user = request.current_user
     return jsonify(user.to_dict()), 200
+
+
+@auth_bp.route("/me", methods=["PATCH"])
+@login_required
+def update_profile():
+    schema = UpdateProfileSchema()
+    errors = schema.validate(request.json)
+    if errors:
+        return jsonify({"error": "Validation failed", "details": errors}), 400
+
+    try:
+        data = schema.load(request.json)
+        user = AuthService.update_profile(request.current_user.id, **data)
+        return jsonify(user.to_dict()), 200
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+
+
+@auth_bp.route("/change-password", methods=["POST"])
+@login_required
+def change_password():
+    schema = ChangePasswordSchema()
+    errors = schema.validate(request.json)
+    if errors:
+        return jsonify({"error": "Validation failed", "details": errors}), 400
+
+    try:
+        data = schema.load(request.json)
+        AuthService.change_password(
+            request.current_user.id,
+            current_password=data["current_password"],
+            new_password=data["new_password"],
+        )
+        return jsonify({"message": "Password updated successfully"}), 200
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
 
 
 @auth_bp.route("/logout", methods=["POST"])
