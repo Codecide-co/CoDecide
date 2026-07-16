@@ -7,6 +7,7 @@
 @import "./home.css";
 @import "./HeaderHome.css";
 @import "./FooterHome.css";
+@import "./report.css";
 
 * {
     padding: 0;
