@@ -1,3 +1,5 @@
+import { isAuthenticated } from "@/utils/utils.js";
+
 export function HeaderLanding() {
   return `
   <header class="header-landing flex flex-row justify-between">
@@ -10,7 +12,11 @@ export function HeaderLanding() {
         <li><a class="header-nav-link" href="#how-it-works" data-link>How It Works</a></li>
         <li><a class="header-nav-link" href="#about-us" data-link>About Us</a></li>
         <li><a class="header-nav-link" href="/announcements" data-link>Announcements</a></li>
+        ${isAuthenticated() ?
+        `<li><a class="header-nav-link header-nav-cta" href="/home" data-link>Home</a></li>` : `
         <li><a class="header-nav-link header-nav-cta" href="/login" data-link>Login</a></li>
+        `
+        }
       </ul>
     </nav>
   </header>
@@ -18,7 +24,7 @@ export function HeaderLanding() {
 }
 
 export function HeaderHome() {
-  return`
+  return `
   <header class="header-home flex flex-row justify-between items-center">
     <button id="sidebar-toggle" class="sidebar-toggle-btn">☰</button>
     <a id="button-home" class="header-logo" href="/" data-link>CoDecide</a>
