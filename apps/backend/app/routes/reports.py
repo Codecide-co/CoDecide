@@ -7,8 +7,8 @@ Handles CRUD operations for reports, status transitions, voting, and comments.
 from flask import Blueprint, jsonify, request
 
 from app.middleware.auth import admin_required, login_required
-from app.mongo.attachment import Attachment
-from app.mongo.audit_log import AuditLog
+from app.mongodb.attachment import Attachment
+from app.mongodb.audit_log import AuditLog
 from app.schemas.report_schema import (
     CommentSchema,
     CreateReportSchema,

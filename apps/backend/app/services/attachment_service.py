@@ -12,7 +12,7 @@ from werkzeug.utils import secure_filename
 
 from app.extensions import db
 from app.models.report import Report
-from app.mongo.attachment import Attachment
+from app.mongodb.attachment import Attachment
 
 ALLOWED_EXTENSIONS = {
     "png", "jpg", "jpeg", "gif", "webp",
