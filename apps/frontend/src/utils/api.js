@@ -2,6 +2,8 @@ import { getToken } from "@store/auth.store";
 
 const API_URL = "http://localhost:5000/api";
 
+export const UPLOADS_BASE = "http://localhost:5000";
+
 async function request(path, options = {}) {
   const token = getToken();
 
