@@ -71,7 +71,7 @@ apps/backend/
     ├── middleware/                  # Decoradores de seguridad
     │   └── auth.py                 # @login_required, @admin_required
     │
-    ├── mongo/                      # Modelos MongoDB
+    ├── mongodb/                    # Modelos MongoDB
     │   ├── attachment.py           # Metadatos de archivos
     │   └── audit_log.py            # Registro de auditoria
     │
@@ -113,7 +113,7 @@ instance/
 - Funciones decoradoras para aspectos transversales
 - Autenticacion, autorizacion, logging de peticiones
 
-### mongo/
+### mongodb/
 - Schemas y helpers para operaciones con documentos MongoDB
 - Usado para datos no relacionales: metadatos de archivos, logs de auditoria
 

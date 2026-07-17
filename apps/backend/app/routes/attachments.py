@@ -10,7 +10,7 @@ import os
 from flask import Blueprint, current_app, jsonify, request, send_from_directory
 
 from app.middleware.auth import login_required
-from app.mongo.attachment import Attachment
+from app.mongodb.attachment import Attachment
 from app.services.attachment_service import AttachmentService
 
 attachments_bp = Blueprint("attachments", __name__, url_prefix="/api/attachments")

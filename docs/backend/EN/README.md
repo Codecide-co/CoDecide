@@ -71,7 +71,7 @@ apps/backend/
     ├── middleware/                  # Security decorators
     │   └── auth.py                 # @login_required, @admin_required
     │
-    ├── mongo/                      # MongoDB models
+    ├── mongodb/                    # MongoDB models
     │   ├── attachment.py           # File metadata
     │   └── audit_log.py            # Audit trail
     │
@@ -113,7 +113,7 @@ instance/
 - Decorator functions for cross-cutting concerns
 - Authentication, authorization, request logging
 
-### mongo/
+### mongodb/
 - Schemas and helpers for MongoDB document operations
 - Used for non-relational data: file metadata, audit logs
 

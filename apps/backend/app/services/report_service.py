@@ -15,9 +15,9 @@ from app.models.comment import Comment
 from app.models.report import Report
 from app.models.user import User
 from app.models.vote import Vote
-from app.mongo.attachment import Attachment
-from app.mongo.audit_log import AuditLog
+from app.mongodb.attachment import Attachment
 
+from app.mongodb.audit_log import AuditLog
 
 class ReportService:
     """Service for report management operations."""
