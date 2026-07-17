@@ -27,6 +27,7 @@ export default function homeView() {
               <span class="home-status-badge ${r.status}">${r.status.replace("_", " ")}</span>
             </div>
             <span class="home-report-id">#${r.tracking_number || r.id}</span>
+            ${r.is_anonymous ? `<span class="anonymous-badge">Anonymous<span class="anonymous-tooltip">The author&#39;s identity is hidden for this report.</span></span>` : ""}
           </div>
         `,
             )

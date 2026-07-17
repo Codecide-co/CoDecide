@@ -38,7 +38,7 @@ export default function reportSuccessView() {
         <div class="text-left space-y-2 mb-6">
           <p><strong>Title:</strong> ${escapeHtml(report.title)}</p>
           <p><strong>Category:</strong> ${escapeHtml(report.category)}</p>
-          <p><strong>Anonymous:</strong> ${report.anonymous ? "Yes" : "No"}</p>
+          <p><strong>Anonymous:</strong> ${report.is_anonymous ? "Yes" : "No"}</p>
           <p><strong>Description:</strong> ${escapeHtml(report.description)}</p>
           ${report.photoCount ? `<p><strong>Photos:</strong> ${report.photoCount} file(s)</p>` : ""}
         </div>

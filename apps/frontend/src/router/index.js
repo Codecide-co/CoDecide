@@ -10,6 +10,7 @@ import { isAuthenticated, isAdmin } from "@/utils/utils.js";
 import { navigateTo } from "@/utils/navigate.js";
 import profileView from "@/views/profileView.js";
 import reportsView from "@/views/reportsView.js";
+import reportDetailView from "@/views/reportDetailView.js";
 import announcementsView from "@/views/announcementsView.js";
 
 const routes = {
@@ -58,6 +59,18 @@ if (!isAuthenticated() && path !== "/login" && path !== "/register" && path !== 
       </div>
     `;
     document.querySelector("#backHome")?.addEventListener("click", () => navigateTo("/home"));
+    return;
+  }
+
+  const reportMatch = path.match(/^\/reports\/(\d+)$/);
+  if (reportMatch) {
+    app.innerHTML = reportDetailView(reportMatch[1]);
+    document.querySelectorAll("[data-link]").forEach((link) => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        navigateTo(link.getAttribute("href"));
+      });
+    });
     return;
   }
 
