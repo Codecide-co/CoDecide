@@ -1,6 +1,6 @@
 import { HeaderHome } from "@/layout/Header";
 import { SidebarHome } from "@/layout/Sidebar";
-import { fetchApiData } from "@utils/api";
+import { fetchApiData, postApiData, UPLOADS_BASE } from "@utils/api";
 import { navigateTo } from "@router/index";
 import { authStore } from "@store/auth.store";
 import { VotingWidgetView, initVotingWidget } from "@components/domain/VotingWidget";
@@ -28,7 +28,7 @@ export default function reportDetailView(reportId) {
                   </span>`
                 : `<span class="report-detail-author-name">Posted by ${escapeHtml(report.author_name || "Unknown")}</span>`
               }
-              <span class="report-detail-date">${new Date(report.created_at).toLocaleDateString()}</span>
+              <span class="report-detail-date">${formatDate(report.created_at)}</span>
             </div>
 
             <p class="report-detail-description">${escapeHtml(report.description)}</p>
@@ -36,6 +36,7 @@ export default function reportDetailView(reportId) {
             <div class="report-detail-meta">
               <span><strong>Category:</strong> ${escapeHtml(report.category_name || "Unknown")}</span>
               <span><strong>Tracking:</strong> #${report.tracking_number || report.id}</span>
+              ${report.status_history?.length > 0 ? `<span><strong>Status:</strong> ${escapeHtml(report.status)}</span>` : ""}
             </div>
 
             ${report.attachments && report.attachments.length > 0 ? `
@@ -44,8 +45,10 @@ export default function reportDetailView(reportId) {
               <div class="report-detail-attachment-grid">
                 ${report.attachments.map(a => `
                   <div class="report-detail-attachment-item">
-                    ${a.file_path?.match(/\.(jpg|jpeg|png|gif|webp|avif)$/i)
-                      ? `<img src="${a.file_path}" alt="Attachment">`
+                    ${a.file_url?.match(/\.(jpg|jpeg|png|gif|webp|avif)$/i)
+                      ? `<a href="${UPLOADS_BASE}${a.file_url}" target="_blank" rel="noopener noreferrer">
+                          <img src="${UPLOADS_BASE}${a.file_url}" alt="${a.file_name || "Attachment"}" loading="lazy" onerror="this.parentElement.parentElement.innerHTML='<span>${escapeHtml(a.file_name || "File")}</span>'">
+                        </a>`
                       : `<span>${a.file_name || "File"}</span>`
                     }
                   </div>
@@ -58,6 +61,30 @@ export default function reportDetailView(reportId) {
               <span>${report.comments_count || 0} comments</span>
             </div>
 
+            ${report.status_history && report.status_history.length > 0 ? `
+            <div class="report-detail-status-history">
+              <h4>Status History</h4>
+              <div class="status-timeline">
+                ${report.status_history.map(h => `
+                  <div class="status-timeline-item">
+                    <div class="status-timeline-dot"></div>
+                    <div class="status-timeline-content">
+                      <div class="status-timeline-header">
+                        <span class="status-timeline-action">${escapeHtml(h.action.replace("_", " "))}</span>
+                        <span class="status-timeline-date">${formatDate(h.created_at)}</span>
+                      </div>
+                      ${h.details ? `
+                        <div class="status-timeline-details">
+                          ${h.details.from && h.details.to ? `<span class="status-timeline-transition">${escapeHtml(h.details.from)} → ${escapeHtml(h.details.to)}</span>` : ""}
+                          ${h.details.comment ? `<p class="status-timeline-comment">${escapeHtml(h.details.comment)}</p>` : ""}
+                        </div>
+                      ` : ""}
+                    </div>
+                  </div>
+                `).join("")}
+              </div>
+            </div>` : ""}
+
             ${report.comments && report.comments.length > 0 ? `
             <div class="report-detail-comments">
               <h4>Comments (${report.comments.length})</h4>
@@ -65,15 +92,23 @@ export default function reportDetailView(reportId) {
                 <div class="report-detail-comment">
                   <strong>${escapeHtml(c.author_name || "Anonymous")}</strong>
                   <p>${escapeHtml(c.body)}</p>
-                  <small>${new Date(c.created_at).toLocaleDateString()}</small>
+                  <small>${formatDate(c.created_at)}</small>
                 </div>
               `).join("")}
             </div>` : ""}
+
+            <div class="report-detail-add-comment">
+              <h4>Add a Comment</h4>
+              <textarea id="comment-body" placeholder="Write your comment..." rows="3"></textarea>
+              <small id="comment-error"></small>
+              <button id="submit-comment" class="report-detail-back">Submit Comment</button>
+            </div>
 
             <button id="back-to-reports" class="report-detail-back">← Back to Reports</button>
           </div>
         `;
 
+        initCommentForm(reportId);
         document.getElementById("back-to-reports")?.addEventListener("click", () => {
           navigateTo("/reports");
         });
@@ -106,6 +141,64 @@ export default function reportDetailView(reportId) {
       </main>
     </div>
   `;
+}
+
+function initCommentForm(reportId) {
+  const submitBtn = document.getElementById("submit-comment");
+  const textarea = document.getElementById("comment-body");
+  const errorEl = document.getElementById("comment-error");
+
+  submitBtn?.addEventListener("click", async () => {
+    const body = textarea.value.trim();
+    if (!body) {
+      errorEl.textContent = "Comment cannot be empty.";
+      return;
+    }
+    errorEl.textContent = "";
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting...";
+
+    try {
+      await postApiData(`/reports/${reportId}/comments`, { body });
+
+      const detail = await fetchApiData(`/reports/${reportId}`);
+      const commentsSection = document.querySelector(".report-detail-comments");
+      const container = document.querySelector(".report-detail-comments, .report-detail-add-comment");
+
+      if (detail.comments?.length > 0) {
+        const newCommentsHtml = `
+          <div class="report-detail-comments">
+            <h4>Comments (${detail.comments.length})</h4>
+            ${detail.comments.map(c => `
+              <div class="report-detail-comment">
+                <strong>${escapeHtml(c.author_name || "Anonymous")}</strong>
+                <p>${escapeHtml(c.body)}</p>
+                <small>${formatDate(c.created_at)}</small>
+              </div>
+            `).join("")}
+          </div>
+        `;
+        if (commentsSection) {
+          commentsSection.outerHTML = newCommentsHtml;
+        } else {
+          document.querySelector(".report-detail-add-comment").insertAdjacentHTML("beforebegin", newCommentsHtml);
+        }
+      }
+
+      textarea.value = "";
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Submit Comment";
+    } catch (error) {
+      errorEl.textContent = error.message || "Could not submit comment.";
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Submit Comment";
+    }
+  });
+}
+
+function formatDate(dateStr) {
+  const d = new Date(dateStr);
+  return `${d.toLocaleDateString()} ${d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
 }
 
 function escapeHtml(str) {
