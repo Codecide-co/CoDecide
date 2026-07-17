@@ -63,3 +63,42 @@ jobs:
       - script: python -c "from app import create_app; app = create_app(); print('App created OK')"
         displayName: Verify app factory
         workingDirectory: apps/backend
+
+  - job: backend_tests
+    displayName: Backend tests
+    steps:
+      - checkout: self
+
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: "3.12"
+          addToPath: true
+        displayName: Install Python
+
+      - script: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+        displayName: Install dependencies
+        workingDirectory: apps/backend
+
+      - script: pytest -v
+        displayName: Run tests
+        workingDirectory: apps/backend
+
+  - job: frontend_tests
+    displayName: Frontend tests
+    steps:
+      - checkout: self
+
+      - task: UseNode@1
+        inputs:
+          version: "20.x"
+        displayName: Install Node.js
+
+      - script: npm ci
+        workingDirectory: apps/frontend
+        displayName: Install dependencies
+
+      - script: npm test
+        workingDirectory: apps/frontend
+        displayName: Run tests
