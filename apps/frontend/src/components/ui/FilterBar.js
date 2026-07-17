@@ -6,7 +6,6 @@ export function FilterBar({ onFilterChange }) {
         <option value="open">Open</option>
         <option value="in_progress">In Progress</option>
         <option value="resolved">Resolved</option>
-        <option value="closed">Closed</option>
       </select>
       <select id="filter-category" class="admin-select">
         <option value="">All Categories</option>
