@@ -39,10 +39,11 @@ export function CreateReportView() {
           accept: "image/*",
         })}
 
-        <div>
+        <div class="anonymous-checkbox-wrap">
             <label for="anonymous">
                 <input id="anonymous" name="anonymous" type="checkbox">
                 Submit anonymously
+                <span class="anonymous-tooltip">Your name and personal details will not be displayed with this report. Community members and authorities will see the issue without knowing who submitted it.</span>
             </label>
         </div>
 
@@ -113,6 +114,7 @@ export function initCreateReportView(onSuccess) {
       title,
       description,
       category_id: parseInt(categoryId, 10),
+      is_anonymous: anonymousInput.checked,
     };
 
     try {
