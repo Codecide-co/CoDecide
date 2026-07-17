@@ -1,6 +1,6 @@
 import { HeaderHome } from "@/layout/Header";
 import { SidebarHome } from "@/layout/Sidebar";
-import { fetchApiData } from "@utils/api";
+import { fetchApiData, UPLOADS_BASE } from "@utils/api";
 import { navigateTo } from "@router/index";
 import { authStore } from "@store/auth.store";
 import { VotingWidgetView, initVotingWidget } from "@components/domain/VotingWidget";
@@ -55,6 +55,9 @@ export default function reportsView() {
               .map(
                 (r) => `
               <div class="report-card" data-id="${r.id}">
+                <div class="report-card-img report-card-img--loading">
+                  <img src="../../public/img.svg">
+                </div>
                 <div class="report-card-header">
                   <span class="report-card-title">${r.title}</span>
                   <span class="home-status-badge ${r.status}">${r.status.replace("_", " ")}</span>
@@ -77,6 +80,28 @@ export default function reportsView() {
             `
               )
               .join("");
+
+            reports.forEach((r) => {
+              fetchApiData(`/reports/${r.id}`)
+                .then((detail) => {
+                  const card = document.querySelector(`.report-card[data-id="${r.id}"]`);
+                  if (!card) return;
+                  const imgContainer = card.querySelector(".report-card-img");
+                  if (!imgContainer) return;
+
+                  if (detail.attachments?.[0]?.file_url) {
+                    imgContainer.innerHTML = `<img src="${UPLOADS_BASE}${detail.attachments[0].file_url}" alt="" loading="lazy" onerror="this.onerror=null;this.style.display='none';this.parentElement.classList.add('report-card-img--broken')">`;
+                  } else {
+                    imgContainer.classList.remove("report-card-img--loading");
+                    imgContainer.classList.add("report-card-img--placeholder");
+                    imgContainer.innerHTML = `
+                      <img src="../../public/img.svg">
+                      <span>No image</span>
+                    `;
+                  }
+                })
+                .catch(() => {});
+            });
 
             document.querySelectorAll(".report-card").forEach((card) => {
               card.addEventListener("click", () => {
