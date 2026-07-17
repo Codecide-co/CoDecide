@@ -120,7 +120,7 @@ Consulta la guía de [Primeros Pasos](/docs/get-started/ES.md) para instruccione
 
 | Nombre | Clan | GitHub |
 |--------|------|--------|
-| Gustavo Guzman | Micaela | [Zerik-Official](https://github.com/Zerik-Official) |
+| Gustavo Guzmán | Micaela | [Zerik-Official](https://github.com/Zerik-Official) |
 
 ## Documentación
 

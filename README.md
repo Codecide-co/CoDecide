@@ -118,7 +118,7 @@ See the [Get Started](/docs/get-started/EN.md) guide for step-by-step setup inst
 
 | Name | Clan | GitHub |
 |------|------|--------|
-| Gustavo Guzman | Micaela | [Zerik-Official](https://github.com/Zerik-Official) |
+| Gustavo Guzmán | Micaela | [Zerik-Official](https://github.com/Zerik-Official) |
 
 ## Documentation
 
