@@ -1,3 +1,4 @@
+import adminDashboardView from "@/views/adminDashboardView.js";
 import loginView from "@/views/loginView.js";
 import registerView from "@/views/registerView.js";
 import homeView from "@/views/homeView.js";
@@ -21,6 +22,7 @@ const routes = {
   "/announcements": announcementsView,
   "/reports/create": createReportView,
   "/reports/success": reportSuccessView,
+  "/admin": adminDashboardView,
 };
 
 const adminOnlyRoutes = ["/admin"];
