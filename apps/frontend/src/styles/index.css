@@ -10,6 +10,7 @@
 @import "./sidebar.css";
 @import "./report.css";
 @import "./announcements.css";
+@import "./viewReports.css";
 
 * {
     padding: 0;
