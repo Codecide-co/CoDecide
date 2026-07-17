@@ -25,3 +25,7 @@ export async function updateReportStatus(reportId, status, comment) {
   if (comment) body.comment = comment;
   return patchApiData(`/reports/${reportId}/status`, body);
 }
+
+export async function voteReport(reportId, voteType) {
+  return postApiData(`/reports/${reportId}/vote`, { vote_type: voteType });
+}

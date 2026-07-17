@@ -701,3 +701,58 @@
   border-color: var(--color-blue-primary);
   color: var(--color-blue-primary);
 }
+
+/* ===== VOTING WIDGET ===== */
+.voting-widget {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.voting-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-surface);
+  color: var(--color-text-gray);
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  line-height: 1;
+}
+
+.voting-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.voting-btn:hover:not(.voting-btn--disabled) {
+  border-color: var(--color-blue-primary);
+  color: var(--color-blue-primary);
+  background: rgba(37, 99, 235, 0.05);
+}
+
+.voting-btn--up.voting-btn--active {
+  border-color: var(--color-blue-primary);
+  color: var(--color-blue-primary);
+  background: rgba(37, 99, 235, 0.1);
+}
+
+.voting-btn--down.voting-btn--active {
+  border-color: #EF4444;
+  color: #EF4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.voting-btn--disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.voting-count {
+  font-variant-numeric: tabular-nums;
+}

@@ -2,6 +2,8 @@ import { HeaderHome } from "@/layout/Header";
 import { SidebarHome } from "@/layout/Sidebar";
 import { fetchApiData } from "@utils/api";
 import { navigateTo } from "@router/index";
+import { authStore } from "@store/auth.store";
+import { VotingWidgetView, initVotingWidget } from "@components/domain/VotingWidget";
 
 export default function reportDetailView(reportId) {
   setTimeout(() => {
@@ -52,8 +54,7 @@ export default function reportDetailView(reportId) {
             </div>` : ""}
 
             <div class="report-detail-stats">
-              <span>${report.upvotes || 0} upvotes</span>
-              <span>${report.downvotes || 0} downvotes</span>
+              ${VotingWidgetView({ reportId: report.id, upvotes: report.upvotes || 0, downvotes: report.downvotes || 0, userVote: report.user_vote, isOwnReport: authStore.user?.id === report.user_id })}
               <span>${report.comments_count || 0} comments</span>
             </div>
 
@@ -76,6 +77,7 @@ export default function reportDetailView(reportId) {
         document.getElementById("back-to-reports")?.addEventListener("click", () => {
           navigateTo("/reports");
         });
+        initVotingWidget();
       })
       .catch(() => {
         document.getElementById("report-detail").innerHTML = `
