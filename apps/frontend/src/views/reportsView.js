@@ -7,10 +7,11 @@ export default function reportsView() {
   let page = 1;
   let statusFilter = "";
   let categoryFilter = "";
+  let dateFrom = "";
+  let dateTo = "";
   let categoryNames = {};
 
   setTimeout(() => {
-    // --- LOAD CATEGORIES ---
     fetchApiData("/categories")
       .then((cats) => {
         const select = document.getElementById("filter-category");
@@ -25,13 +26,14 @@ export default function reportsView() {
       })
       .catch(() => {});
 
-    // --- LOAD REPORTS ---
     function loadReports() {
       const params = new URLSearchParams();
       params.set("page", page);
       params.set("per_page", 12);
       if (statusFilter) params.set("status", statusFilter);
       if (categoryFilter) params.set("category_id", categoryFilter);
+      if (dateFrom) params.set("date_from", dateFrom);
+      if (dateTo) params.set("date_to", dateTo);
 
       const grid = document.getElementById("reports-grid");
       const pagination = document.getElementById("reports-pagination");
@@ -44,7 +46,6 @@ export default function reportsView() {
           const reports = data.reports || [];
           const totalPages = data.pages || 1;
 
-          // --- GRID ---
           if (reports.length === 0) {
             grid.innerHTML = `<p class="reports-loading">No reports found.</p>`;
           } else {
@@ -61,8 +62,8 @@ export default function reportsView() {
                   <span>${new Date(r.created_at).toLocaleDateString()}</span>
                 </div>
                 <div class="report-card-footer">
-                  <span> ${r.votes_count || 0}</span>
-                  <span> ${r.comments_count || 0}</span>
+                  <span>${r.votes_count || 0}</span>
+                  <span>${r.comments_count || 0}</span>
                 </div>
               </div>
             `
@@ -76,7 +77,6 @@ export default function reportsView() {
             });
           }
 
-          // --- PAGINATION ---
           pagination.innerHTML = `
             <button id="prev-page" ${page <= 1 ? "disabled" : ""}>← Previous</button>
             <span>Page ${page} of ${totalPages}</span>
@@ -97,7 +97,6 @@ export default function reportsView() {
 
     loadReports();
 
-    // --- FILTER EVENTS ---
     document.getElementById("filter-status")?.addEventListener("change", (e) => {
       statusFilter = e.target.value;
       page = 1;
@@ -106,6 +105,18 @@ export default function reportsView() {
 
     document.getElementById("filter-category")?.addEventListener("change", (e) => {
       categoryFilter = e.target.value;
+      page = 1;
+      loadReports();
+    });
+
+    document.getElementById("filter-date-from")?.addEventListener("change", (e) => {
+      dateFrom = e.target.value;
+      page = 1;
+      loadReports();
+    });
+
+    document.getElementById("filter-date-to")?.addEventListener("change", (e) => {
+      dateTo = e.target.value;
       page = 1;
       loadReports();
     });
@@ -120,7 +131,6 @@ export default function reportsView() {
 
           <h2 class="reports-title">All Reports</h2>
 
-          <!-- FILTERS -->
           <div class="reports-filter-bar">
             <select id="filter-status">
               <option value="">All Statuses</option>
@@ -132,13 +142,14 @@ export default function reportsView() {
             <select id="filter-category">
               <option value="">All Categories</option>
             </select>
+            <input type="date" id="filter-date-from">
+            <input type="date" id="filter-date-to">
           </div>
 
           <div id="reports-grid" class="reports-grid">
             <p class="reports-loading">Loading...</p>
           </div>
 
-          <!-- PAGINATION -->
           <div id="reports-pagination" class="reports-pagination"></div>
 
         </section>
