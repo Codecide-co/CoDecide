@@ -1,6 +1,6 @@
 const state = { currentDialog: null };
 
-export function openModal({ title, content, onSubmit, submitLabel = "Save", cancellable = true }) {
+export function openModal({ title, content, onSubmit, submitLabel = "Save", cancellable = true, onCancel }) {
   closeModal();
 
   const dialog = document.createElement("dialog");
@@ -24,9 +24,14 @@ export function openModal({ title, content, onSubmit, submitLabel = "Save", canc
   dialog.showModal();
   state.currentDialog = dialog;
 
-  dialog.querySelector("#modal-close")?.addEventListener("click", closeModal);
-  dialog.querySelector("#modal-cancel")?.addEventListener("click", closeModal);
-  dialog.addEventListener("click", (e) => { if (e.target === dialog && cancellable) closeModal(); });
+  const cancelModal = () => {
+    if (onCancel) onCancel();
+    closeModal();
+  };
+
+  dialog.querySelector("#modal-close")?.addEventListener("click", cancelModal);
+  dialog.querySelector("#modal-cancel")?.addEventListener("click", cancelModal);
+  dialog.addEventListener("click", (e) => { if (e.target === dialog && cancellable) cancelModal(); });
 
   const submitBtn = dialog.querySelector("#modal-submit");
   const errorEl = dialog.querySelector("#modal-error");
