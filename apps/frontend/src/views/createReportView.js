@@ -1,3 +1,5 @@
+import { HeaderHome } from "@/layout/Header";
+import { SidebarHome } from "@/layout/Sidebar";
 import { CreateReportView, initCreateReportView } from "@pages/reports/create";
 import { navigateTo } from "@router/index";
 
@@ -9,5 +11,13 @@ export default function createReportView() {
     });
   }, 0);
 
-  return CreateReportView();
+  return `
+    ${HeaderHome()}
+    <div class="auth-layout flex flex-row">
+      ${SidebarHome()}
+      <main class="container-home">
+        ${CreateReportView()}
+      </main>
+    </div>
+  `;
 }
