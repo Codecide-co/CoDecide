@@ -243,3 +243,12 @@
 .profile-reports-scroll::-webkit-scrollbar-thumb:hover {
   background: #94A3B8;
 }
+
+.profile-edit-btn img,
+.profile-security-btn img {
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  margin-right: 6px;
+  display: inline-block;
+}
