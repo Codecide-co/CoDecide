@@ -5,27 +5,16 @@
   background: #F8FAFC;
 }
 
-.admin-header {
-  margin-bottom: 2rem;
-}
-
-.admin-header h2 {
+.admin-page h2 {
   font-size: 1.75rem;
   font-weight: 800;
   color: #0D1B2A;
 }
 
-.admin-header p {
+.admin-page > div > div > p {
   color: #64748B;
   font-size: 0.95rem;
   margin-top: 0.25rem;
-}
-
-.admin-stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1rem;
-  margin-bottom: 2rem;
 }
 
 .admin-stat-card {
@@ -75,6 +64,7 @@
   background: white;
   cursor: pointer;
   min-width: 180px;
+  transition: border-color 0.15s;
 }
 
 .admin-select:focus {
@@ -106,6 +96,11 @@
   color: #0D1B2A;
 }
 
+.admin-table td strong {
+  font-size: 0.95rem;
+  color: #1E293B;
+}
+
 .admin-table tbody tr:hover {
   background: #F8FAFC;
 }
@@ -132,35 +127,85 @@
   font-size: 0.8rem;
   cursor: pointer;
   background: white;
+  transition: border-color 0.15s;
 }
 
-.admin-modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
+.admin-status-select:focus {
+  border-color: #2563EB;
+  outline: none;
 }
 
-.admin-modal {
+.admin-btn {
+  padding: 0.5rem 1.25rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  background: #2563EB;
+  color: white;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.admin-btn:hover {
+  background: #1D4EDB;
+}
+
+.history-btn {
+  padding: 4px 10px;
+  border: 1px solid #E2E8F0;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  cursor: pointer;
   background: white;
-  border-radius: 16px;
-  padding: 2rem;
-  max-width: 420px;
-  width: 90%;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-}
-
-.admin-modal h3 {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #0D1B2A;
-  margin-bottom: 0.5rem;
-}
-
-.admin-modal p {
   color: #64748B;
-  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+
+.history-btn:hover {
+  background: #F1F5F9;
+  border-color: #CBD5E1;
+  color: #475569;
+}
+
+.admin-table td:first-child {
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#btn-prev,
+#btn-next {
+  padding: 8px 20px;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #0D1B2A;
+  transition: all 0.15s;
+}
+
+#btn-prev:hover:not(:disabled),
+#btn-next:hover:not(:disabled) {
+  background: #F1F5F9;
+  border-color: #CBD5E1;
+}
+
+#btn-prev:disabled,
+#btn-next:disabled {
+  background: #F1F5F9;
+  color: #94A3B8;
+  cursor: not-allowed;
+  border-color: #E2E8F0;
+}
+
+#btn-prev + span {
+  font-size: 0.85rem;
+  color: #64748B;
+  font-weight: 500;
 }

@@ -10,7 +10,7 @@ from flask import Blueprint, jsonify, request
 from app.extensions import db
 from app.middleware.auth import admin_required
 from app.models.user import User
-from app.mongo.audit_log import AuditLog
+from app.mongodb.audit_log import AuditLog
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/api/admin")
 

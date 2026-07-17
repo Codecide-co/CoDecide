@@ -1,10 +1,16 @@
-export function DataTable({ reports, categories }) {
+const validTransitions = {
+  open: ["in_progress"],
+  in_progress: ["resolved"],
+  resolved: [],
+};
+
+export function DataTable({ reports, categories, onViewHistory }) {
   if (!reports || reports.length === 0) {
-    return `<p style="text-align: center; color: #94A3B8; padding: 2rem;">No reports found.</p>`;
+    return `<p class="text-center p-8">No reports found.</p>`;
   }
 
   return `
-    <div style="overflow-x: auto;">
+    <div class="overflow-x-auto">
       <table class="admin-table">
         <thead>
           <tr>
@@ -14,13 +20,16 @@ export function DataTable({ reports, categories }) {
             <th>Date</th>
             <th>Reporter</th>
             <th>Votes</th>
-            <th>Action</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           ${reports
             .map(
-              (r) => `
+              (r) => {
+                const transitions = validTransitions[r.status] || [];
+                const hasTransitions = transitions.length > 0;
+                return `
             <tr>
               <td><strong>${r.title}</strong></td>
               <td><span class="admin-status-badge ${r.status}">${r.status.replace("_", " ")}</span></td>
@@ -29,15 +38,17 @@ export function DataTable({ reports, categories }) {
               <td>${r.author_name || "—"}</td>
               <td>${r.votes_count || 0}</td>
               <td>
-                <select class="admin-status-select" data-report-id="${r.id}" data-current-status="${r.status}">
-                  <option value="open" ${r.status === "open" ? "selected" : ""}>Open</option>
-                  <option value="in_progress" ${r.status === "in_progress" ? "selected" : ""}>In Progress</option>
-                  <option value="resolved" ${r.status === "resolved" ? "selected" : ""}>Resolved</option>
-                  <option value="closed" ${r.status === "closed" ? "selected" : ""}>Closed</option>
-                </select>
+                <div class="flex items-center gap-2">
+                  ${hasTransitions ? `
+                  <select class="admin-status-select" data-report-id="${r.id}" data-current-status="${r.status}">
+                    <option value="${r.status}" disabled selected>${r.status.replace("_", " ")}</option>
+                    ${transitions.map(t => `<option value="${t}">${t.replace("_", " ")}</option>`).join("")}
+                  </select>` : ""}
+                  <button class="history-btn" data-report-id="${r.id}">History</button>
+                </div>
               </td>
-            </tr>
-          `
+            </tr>`;
+              }
             )
             .join("")}
         </tbody>
@@ -46,7 +57,7 @@ export function DataTable({ reports, categories }) {
   `;
 }
 
-export function initDataTable({ onStatusChange }) {
+export function initDataTable({ onStatusChange, onViewHistory }) {
   document.querySelectorAll(".admin-status-select").forEach((select) => {
     select.addEventListener("change", (e) => {
       const reportId = parseInt(e.target.dataset.reportId);
@@ -55,6 +66,14 @@ export function initDataTable({ onStatusChange }) {
       if (newStatus !== currentStatus) {
         onStatusChange(reportId, newStatus, e.target);
       }
+    });
+  });
+
+  document.querySelectorAll(".history-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const reportId = parseInt(e.target.dataset.reportId);
+      if (onViewHistory) onViewHistory(reportId);
     });
   });
 }
