@@ -14,7 +14,7 @@ async function request(path, options = {}) {
   const data = await res.json();
 
   if (!res.ok) {
-    const error = new Error(data.error || "Something went wrong");
+    const error = new Error(data.error || data.msg || "Something went wrong");
     error.status = res.status;
     throw error;
   }
@@ -41,7 +41,7 @@ export async function postFormData(path, formData) {
   const data = await res.json();
 
   if (!res.ok) {
-    const error = new Error(data.error || "Something went wrong");
+    const error = new Error(data.error || data.msg || "Something went wrong");
     error.status = res.status;
     throw error;
   }
@@ -54,6 +54,10 @@ export async function postApiData(path, body) {
 
 export async function updateApiData(path, body) {
   return request(path, { method: "PUT", body: JSON.stringify(body) });
+}
+
+export async function patchApiData(path, body) {
+  return request(path, { method: "PATCH", body: JSON.stringify(body) });
 }
 
 export async function deleteApiData(path) {
