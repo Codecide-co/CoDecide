@@ -2,6 +2,8 @@ import { HeaderHome } from "@/layout/Header";
 import { SidebarHome } from "@/layout/Sidebar";
 import { fetchApiData } from "@utils/api";
 import { navigateTo } from "@router/index";
+import { authStore } from "@store/auth.store";
+import { VotingWidgetView, initVotingWidget } from "@components/domain/VotingWidget";
 
 export default function reportsView() {
   let page = 1;
@@ -62,7 +64,7 @@ export default function reportsView() {
                   <span>${new Date(r.created_at).toLocaleDateString()}</span>
                 </div>
                 <div class="report-card-footer">
-                  <span>${r.votes_count || 0} votes</span>
+                  ${VotingWidgetView({ reportId: r.id, upvotes: r.upvotes || 0, downvotes: r.downvotes || 0, userVote: r.user_vote, isOwnReport: authStore.user?.id === r.user_id })}
                   <span>${r.comments_count || 0} comments</span>
                   ${r.is_anonymous ? `
                   <span class="anonymous-badge">
@@ -81,6 +83,7 @@ export default function reportsView() {
                 navigateTo(`/reports/${card.dataset.id}`);
               });
             });
+            initVotingWidget();
           }
 
           pagination.innerHTML = `
