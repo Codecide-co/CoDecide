@@ -12,6 +12,7 @@ import profileView from "@/views/profileView.js";
 import reportsView from "@/views/reportsView.js";
 import reportDetailView from "@/views/reportDetailView.js";
 import announcementsView from "@/views/announcementsView.js";
+import statsView from "@/views/statsView.js";
 
 const routes = {
   "/": LandingView,
@@ -24,6 +25,7 @@ const routes = {
   "/reports/create": createReportView,
   "/reports/success": reportSuccessView,
   "/admin": adminDashboardView,
+  "/stats": statsView,
 };
 
 const adminOnlyRoutes = ["/admin"];

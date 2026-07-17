@@ -63,11 +63,37 @@ class StatsService:
             },
             "resolved_today": resolved_today,
             "avg_resolution_time": StatsService.get_avg_resolution_time(),
+            "avg_resolution_time_by_category": StatsService.get_avg_resolution_time_by_category(),
             "total_votes": total_votes,
             "total_comments": total_comments,
             "active_users": active_users,
             "total_users": total_users,
         }
+
+    @staticmethod
+    def get_avg_resolution_time_by_category() -> dict:
+        """Get average resolution time in hours per category."""
+        from app.models.category import Category
+
+        categories = Category.query.all()
+        result = {}
+        for cat in categories:
+            reports = Report.query.filter(
+                Report.category_id == cat.id,
+                Report.status.in_(["resolved", "closed"]),
+            ).all()
+            if not reports:
+                result[str(cat.id)] = {"name": cat.name, "avg_hours": None}
+                continue
+            total_hours = 0.0
+            for r in reports:
+                delta = r.updated_at - r.created_at
+                total_hours += delta.total_seconds() / 3600
+            result[str(cat.id)] = {
+                "name": cat.name,
+                "avg_hours": round(total_hours / len(reports), 2),
+            }
+        return result
 
     @staticmethod
     def get_reports_by_status() -> dict:
