@@ -41,7 +41,13 @@ export const router = () => {
     return;
   }
 
-if (!isAuthenticated() && path !== "/login" && path !== "/register" && path !== "/announcements") {
+  if (isAuthenticated() && (path === "/login" || path === "/register")) {
+    history.replaceState({}, "", "/home");
+    app.innerHTML = homeView();
+    return;
+  }
+
+  if (!isAuthenticated() && path !== "/login" && path !== "/register" && path !== "/announcements") {
     history.replaceState({}, "", "/");
     app.innerHTML = LandingView();
     return;
