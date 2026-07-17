@@ -34,8 +34,8 @@ export function SidebarHome() {
           <li><a href="/reports/create" data-link><img src="../../public/reports.svg" alt="report">New Report</a></li>
           <li><a href="#" data-link><img src="../../public/statistics.svg" alt="statistics">Statistics</a></li>
           <li><a href="#" data-link><img src="../../public/comumnicated.svg" alt="comumnicated">Comumnicated</a></li>
-          <li><a href="#" data-link><img src="../../public/setting.svg" alt="settings">Settings</a></li>
           <li><a href="/profile" data-link><img src="../../public/user.svg" alt="user">My Profile</a></li>
+          ${user?.role === "admin" ? '<li><a href="/admin" data-link><img src="../../public/setting.svg" alt="admin">Admin Panel</a></li>' : ''}
           <li><a href="#" id="sidebar-logout"><img src="../../public/exit.svg" alt="exit">Exit</a></li>
         </ul>
       </nav>
