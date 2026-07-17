@@ -12,7 +12,7 @@
 @import "./announcements.css";
 @import "./viewReports.css";
 @import "./admin.css";
-@import "./modal.css";
+@import "./stats.css";
 
 * {
     padding: 0;
