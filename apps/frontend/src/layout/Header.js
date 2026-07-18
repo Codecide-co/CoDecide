@@ -30,7 +30,7 @@ export function HeaderHome() {
   <header class="header-home flex flex-row justify-between items-center">
     <button id="sidebar-toggle" class="sidebar-toggle-btn">☰</button>
     <a id="button-home" class="header-logo" href="/" data-link>CoDecide</a>
-    <a id="button-profile" href="/profile" data-link class="header-icon"><img src="../../public/user.svg" alt="user">${user?.name || "User"}</a>
+    <a id="button-profile" href="/profile" data-link class="header-icon"><img src="/public/user.svg" alt="user">${user?.name || "User"}</a>
   </header>
   `
 }
