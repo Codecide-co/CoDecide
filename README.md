@@ -78,11 +78,15 @@ CoDecide/
 │   └── backend/        # Flask REST API (MySQL + MongoDB)
 ├── docs/
 │   ├── CONTRIBUTING.md      # Branch strategy, commit conventions, PR workflow (EN)
-│   ├── CONTRIBUTING.es.md   # Mismo contenido en español
+│   ├── CONTRIBUTING.es.md   # Same content in Spanish
+│   ├── get-started/         # Quick start guides (EN/ES)
 │   ├── frontend/            # Frontend architecture docs (EN/ES)
-│   └── backend/             # Backend architecture docs (EN/ES)
+│   ├── backend/             # Backend architecture docs (EN/ES)
+│   └── bug-report/          # Bug issue templates and guide (EN/ES)
+├── LICENSE
 ├── .gitignore
-└── README.md
+├── README.md
+└── README.es.md
 ```
 
 ## Quick Start
@@ -130,3 +134,5 @@ See the [Get Started](/docs/get-started/EN.md) guide for step-by-step setup inst
 ## Contributing
 
 See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for branch strategy, commit conventions, and PR workflow.
+
+See the [Bug Issue Guide](docs/bug-report/README.md) for how to create and format bug reports.
