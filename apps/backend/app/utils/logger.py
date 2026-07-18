@@ -1,5 +1,5 @@
 """
-Custom logger with tag and level filtering for CokeDecide.
+Custom logger with tag and level filtering for CoDecide.
 
 Provides thread-safe logging with color-coded output, tag-based
 filtering, and per-tag level suppression rules.
@@ -30,7 +30,7 @@ LogLevel = Literal["INFO", "SUCCESS", "WARNING", "ERROR", "DEBUG", "CRITICAL"]
 
 @unique
 class Tags(StrEnum):
-    """Tags matching CokeDecide backend modules and domains."""
+    """Tags matching CoDecide backend modules and domains."""
 
     MAIN = "MAIN"
     AUTH = "AUTH"
