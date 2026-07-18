@@ -81,7 +81,9 @@ CoDecide/
 │   ├── CONTRIBUTING.es.md   # Mismo contenido en español
 │   ├── get-started/         # Guías de inicio rápido (EN/ES)
 │   ├── frontend/            # Documentación de arquitectura frontend (EN/ES)
-│   └── backend/             # Documentación de arquitectura backend (EN/ES)
+│   ├── backend/             # Documentación de arquitectura backend (EN/ES)
+│   └── bug-report/          # Plantillas y guía de issues de bug (EN/ES)
+├── LICENSE
 ├── .gitignore
 ├── README.md
 └── README.es.md
@@ -132,3 +134,5 @@ Consulta la guía de [Primeros Pasos](/docs/get-started/ES.md) para instruccione
 ## Contribuir
 
 Ver [CONTRIBUTING.md](docs/CONTRIBUTING.md) para la estrategia de ramas, convención de commits y flujo de PR.
+
+Ver la [Guía de Issues de Bug](docs/bug-report/README.md) para cómo crear y formatear reportes de bug.
