@@ -2,16 +2,29 @@
   background: var(--color-navy);        
   backdrop-filter: blur(12px);          
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
+  height: 60px;
+  display: flex;
+  align-items: center;
 }
 
 .header-icon {
   color: #FFFFFF;
-  font-size: 1.25rem;
+  font-size: 0.85rem;
   text-decoration: none;
   transition: opacity 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.header-icon img {
+  width: 18px;
+  height: 18px;
 }
 
 .header-icon:hover {

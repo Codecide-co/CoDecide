@@ -4,7 +4,7 @@ import { RegisterView, initRegisterView } from "@pages/auth/register.view";
 import { navigateTo } from "@/utils/navigate.js";
 
 export default function registerView() {
-  setTimeout(() => initRegisterView(() => navigateTo("/")), 0);
+  setTimeout(() => initRegisterView(() => navigateTo("/login")), 0);
   return `
   ${HeaderLanding()}
   <section class="auth-page flex flex-col lg:flex-row">

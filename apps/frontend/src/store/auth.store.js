@@ -36,8 +36,6 @@ export async function login(email, password) {
 
 export async function register(user) {
   const data = await postApiData("/auth/register", user);
-  saveSession(data);
-  authStore.user = data;
   return data;
 }
 

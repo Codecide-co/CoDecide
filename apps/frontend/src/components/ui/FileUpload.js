@@ -2,7 +2,11 @@ export function FileUploadView({ id, label, multiple = true, accept = "image/*" 
   return `
     <div>
       <label for="${id}">${label}</label>
-      <input id="${id}" name="${id}" type="file" accept="${accept}" ${multiple ? "multiple" : ""}>
+      <div class="file-upload-custom">
+        <button type="button" class="file-upload-btn" data-for="${id}">Choose file</button>
+        <span class="file-upload-text" id="${id}-text">No file chosen</span>
+      </div>
+      <input id="${id}" name="${id}" type="file" accept="${accept}" ${multiple ? "multiple" : ""} hidden>
       <div id="${id}-preview" class="file-preview-grid"></div>
       <small id="${id}-error"></small>
     </div>
@@ -47,9 +51,19 @@ export function initFileUpload(id) {
     });
   }
 
+  const textEl = document.getElementById(`${id}-text`);
+  const btn = document.querySelector(`.file-upload-btn[data-for="${id}"]`);
+  if (btn) {
+    btn.addEventListener("click", () => input.click());
+  }
+
   input.addEventListener("change", () => {
-    files = [...files, ...Array.from(input.files)];
-    input.value = ""; // permite volver a elegir el mismo archivo o sumar más
+    const newFiles = Array.from(input.files);
+    files = [...files, ...newFiles];
+    input.value = "";
+    textEl.textContent = files.length
+      ? `${files.length} file${files.length > 1 ? "s" : ""} selected`
+      : "No file chosen";
     render();
   });
 

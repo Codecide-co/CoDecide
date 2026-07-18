@@ -13,6 +13,7 @@
 @import "./viewReports.css";
 @import "./admin.css";
 @import "./stats.css";
+@import "./responsive.css";
 @import "./modal.css";
 
 * {

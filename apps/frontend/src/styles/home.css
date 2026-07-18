@@ -1,8 +1,8 @@
 .container-home {
   background: linear-gradient(180deg, #F8FAFC 0%, #EFF6FF 100%);
   flex: 1;
-  overflow-y: auto;
-  height: 120vh;
+  min-height: calc(100vh - 60px);
+  width: 100%;
 }
 
 .home-welcome {

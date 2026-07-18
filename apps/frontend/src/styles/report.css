@@ -107,14 +107,14 @@
 }
 
 /* ===== FILE UPLOAD ===== */
-#create-report-form input[type="file"] {
-  padding: 0.5rem 0;
-  font-size: 0.9rem;
-  color: var(--color-text-gray);
-  cursor: pointer;
+.file-upload-custom {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
 }
 
-#create-report-form input[type="file"]::file-selector-button {
+.file-upload-btn {
   background: linear-gradient(135deg, #2563EB, #60A5FA);
   color: white;
   padding: 0.5rem 1.25rem;
@@ -124,12 +124,18 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.25s;
-  margin-right: 0.75rem;
+  display: inline-flex;
+  align-items: center;
 }
 
-#create-report-form input[type="file"]::file-selector-button:hover {
+.file-upload-btn:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.file-upload-text {
+  font-size: 0.9rem;
+  color: var(--color-text-gray);
 }
 
 /* ===== FILE PREVIEW ===== */

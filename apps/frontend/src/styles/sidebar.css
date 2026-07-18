@@ -1,16 +1,32 @@
 .sidebar-home {
   width: 220px;
-  min-height: calc(100vh - 68px);
+  height: calc(100vh - 60px);
   background: var(--color-navy);
   padding: 1.5rem 0;
   flex-shrink: 0;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: fixed;
+  left: 0;
+  top: 60px;
+  z-index: 50;
   transition: width 0.35s ease, padding 0.35s ease;
+}
+
+.auth-layout {
+  min-height: calc(100vh - 60px);
+  padding: 60px 0 0 220px;
+  transition: padding 0.35s ease;
+}
+
+.auth-layout.collapsed {
+  padding: 60px 0 0 0;
 }
 
 .auth-layout.collapsed .sidebar-home {
   width: 0;
   padding: 1.5rem 0;
+  overflow: hidden;
 }
 
 .sidebar-home nav ul {
