@@ -3,6 +3,7 @@ import { FileUploadView, initFileUpload } from "@components/ui/FileUpload";
 import { CategoryPickerView, initCategoryPicker } from "@components/domain/CategoryPicker";
 import { validateReportForm, DESCRIPTION_MAX_LENGTH } from "@utils/validators";
 import { createReport } from "@services/reports.service";
+import { uploadAttachment } from "@services/attachments.service";
 
 let isSubmitting = false;
 
@@ -36,7 +37,7 @@ export function CreateReportView() {
           id: "photos",
           label: "Photos (optional)",
           multiple: true,
-          accept: "image/*",
+          accept: ".png,.jpg,.jpeg,.gif,.webp,.pdf,.doc,.docx,.mp4,.mov,.avi",
         })}
 
         <div class="anonymous-checkbox-wrap">
@@ -119,12 +120,25 @@ export function initCreateReportView(onSuccess) {
 
     try {
       const report = await createReport(payload);
+
+      const files = fileUpload.getFiles();
+      if (files.length > 0) {
+        submitBtn.textContent = "Uploading photos...";
+        const results = await Promise.allSettled(
+          files.map((f) => uploadAttachment(report.id, f))
+        );
+        const failures = results.filter((r) => r.status === "rejected");
+        if (failures.length > 0) {
+          console.warn("Some attachments failed to upload:", failures.map((r) => r.reason));
+        }
+      }
+
       setLoading(false);
       form.reset();
       if (typeof onSuccess === "function") onSuccess(report);
     } catch (error) {
       setLoading(false);
-      submitError.textContent = "Something went wrong submitting your report. Please try again.";
+      submitError.textContent = error.message || "Something went wrong submitting your report. Please try again.";
     }
   });
 }

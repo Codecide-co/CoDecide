@@ -762,3 +762,247 @@
 .voting-count {
   font-variant-numeric: tabular-nums;
 }
+
+/* ===== REPORT CARD IMAGE ===== */
+.report-card-img {
+  width: 100%;
+  height: 160px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+  background: #F1F5F9;
+}
+
+.report-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ===== DETAIL ATTACHMENT IMAGE LINK ===== */
+.report-detail-attachment-item a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.report-detail-attachment-item a img {
+  transition: transform 0.3s ease;
+}
+
+.report-detail-attachment-item a:hover img {
+  transform: scale(1.08);
+}
+
+/* ===== REPORT CARD IMAGE ===== */
+.report-card-img {
+  width: 100%;
+  height: 160px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+  background: #F1F5F9;
+}
+
+.report-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.report-card-img--placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  color: #94A3B8;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.report-card-img--placeholder svg {
+  width: 36px;
+  height: 36px;
+}
+
+.report-card-img--broken {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FEF2F2;
+  color: #FCA5A5;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.report-card-img--broken::after {
+  content: "Broken image";
+}
+
+/* ===== DETAIL ATTACHMENT IMAGE LINK ===== */
+.report-detail-attachment-item a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.report-detail-attachment-item a img {
+  transition: transform 0.3s ease;
+}
+
+.report-detail-attachment-item a:hover img {
+  transform: scale(1.08);
+}
+
+/* ===== STATUS HISTORY TIMELINE ===== */
+.report-detail-status-history {
+  margin-bottom: 1.5rem;
+}
+
+.report-detail-status-history h4 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-text-blue);
+  margin-bottom: 0.75rem;
+}
+
+.status-timeline {
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.status-timeline::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 4px;
+  bottom: 4px;
+  width: 2px;
+  background: #E2E8F0;
+  border-radius: 2px;
+}
+
+.status-timeline-item {
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.status-timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.status-timeline-dot {
+  position: absolute;
+  left: -1.5rem;
+  top: 4px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #2563EB;
+  border: 3px solid #DBEAFE;
+  z-index: 1;
+}
+
+.status-timeline-content {
+  background: #F8FAFC;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  border: 1px solid #F1F5F9;
+}
+
+.status-timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.35rem;
+}
+
+.status-timeline-action {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #2563EB;
+  text-transform: capitalize;
+}
+
+.status-timeline-date {
+  font-size: 0.7rem;
+  color: #94A3B8;
+}
+
+.status-timeline-details {
+  font-size: 0.82rem;
+}
+
+.status-timeline-transition {
+  display: inline-block;
+  background: #EFF6FF;
+  color: #1D4ED8;
+  padding: 0.15rem 0.6rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
+.status-timeline-comment {
+  color: #475569;
+  line-height: 1.5;
+  margin: 0;
+  font-size: 0.82rem;
+}
+
+/* ===== ADD COMMENT FORM ===== */
+.report-detail-add-comment {
+  margin-bottom: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.report-detail-add-comment h4 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-text-blue);
+  margin-bottom: 0.75rem;
+}
+
+.report-detail-add-comment textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: #F8FAFC;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: var(--color-navy);
+  resize: vertical;
+  min-height: 70px;
+  line-height: 1.6;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.report-detail-add-comment textarea:focus {
+  border-color: var(--color-blue-primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  background: white;
+}
+
+.report-detail-add-comment #comment-error {
+  font-size: 0.75rem;
+  color: #DC2626;
+  display: block;
+  min-height: 1.2em;
+  margin-top: 0.25rem;
+}
+
+.report-detail-add-comment #submit-comment {
+  margin-top: 0.5rem;
+}
+
+.report-detail-add-comment #submit-comment:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
