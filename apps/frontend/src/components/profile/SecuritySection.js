@@ -3,7 +3,7 @@ export function SecuritySection() {
     <div class="profile-section-security">
       <h3 class="profile-section-title">Security</h3>
       <button class="profile-security-btn" id="btn-change-password">
-        <img src="../../public/security.svg"> Change Password
+        <img src="/security.svg"> Change Password
       </button>
     </div>
   `;

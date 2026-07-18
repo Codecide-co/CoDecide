@@ -5,7 +5,7 @@ export function PersonalInfo(user) {
     <div class="profile-info-section">
       <div class="profile-info-header">
         <h3>Personal Information</h3>
-        <button class="profile-edit-btn" id="btn-edit-profile"><img src="../../public/pincel.svg"> Edit</button>
+        <button class="profile-edit-btn" id="btn-edit-profile"><img src="/pincel.svg"> Edit</button>
       </div>
       <div class="profile-info-grid">
         <div class="profile-info-item">

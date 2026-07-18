@@ -56,7 +56,7 @@ export default function reportsView() {
                 (r) => `
               <div class="report-card" data-id="${r.id}">
                 <div class="report-card-img report-card-img--loading">
-                  <img src="../../public/img.svg">
+                  <img src="/img.svg">
                 </div>
                 <div class="report-card-header">
                   <span class="report-card-title">${r.title}</span>
@@ -95,7 +95,7 @@ export default function reportsView() {
                     imgContainer.classList.remove("report-card-img--loading");
                     imgContainer.classList.add("report-card-img--placeholder");
                     imgContainer.innerHTML = `
-                      <img src="../../public/img.svg">
+                      <img src="/img.svg">
                       <span>No image</span>
                     `;
                   }

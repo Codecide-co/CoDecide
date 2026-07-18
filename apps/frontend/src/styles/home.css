@@ -6,7 +6,7 @@
 }
 
 .home-welcome {
-  background: url('../../public/city.jfif') center/cover no-repeat;
+  background: url('/city.jfif') center/cover no-repeat;
   padding: 2.5rem 2rem;
   border-radius: 16px;
   color: var(--color-text-white);

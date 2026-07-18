@@ -1,6 +1,6 @@
 .auth-page {
   min-height: 120vh;
-  background: url('../../public/city.jpeg') center/cover no-repeat fixed;
+  background: url('/city.jpeg') center/cover no-repeat fixed;
   position: relative;
 }
 
