@@ -6,6 +6,7 @@ development. Uses a .env file in the backend root directory.
 """
 
 import os
+from datetime import timedelta
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -44,6 +45,10 @@ class Config:
     JWT_SECRET_KEY: str = os.getenv(
         "JWT_SECRET_KEY",
         "jwt-secret-key"
+    )
+
+    JWT_ACCESS_TOKEN_EXPIRES: timedelta = timedelta(
+        days=int(os.getenv("JWT_EXPIRATION_DAYS", "7"))
     )
 
     CORS_ORIGINS: str = os.getenv(

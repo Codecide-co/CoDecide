@@ -72,6 +72,18 @@ Key used to sign JWT tokens. **Always change this in production**. Must be diffe
 
 ---
 
+### `JWT_EXPIRATION_DAYS`
+
+| | |
+|---|---|
+| **Required** | No |
+| **Default** | `7` |
+| **Example** | `JWT_EXPIRATION_DAYS=30` |
+
+Number of days before a JWT token expires. After this period, the user must log in again to obtain a new token.
+
+---
+
 ### `CORS_ORIGINS`
 
 | | |

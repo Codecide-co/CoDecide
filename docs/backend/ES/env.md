@@ -72,6 +72,18 @@ Clave para firmar los tokens JWT. **Cambiar siempre en produccion**. Debe ser di
 
 ---
 
+### `JWT_EXPIRATION_DAYS`
+
+| | |
+|---|---|
+| **Obligatorio** | No |
+| **Default** | `7` |
+| **Ejemplo** | `JWT_EXPIRATION_DAYS=30` |
+
+Numero de dias antes de que un token JWT expire. Despues de este periodo, el usuario debe iniciar sesion nuevamente para obtener un nuevo token.
+
+---
+
 ### `CORS_ORIGINS`
 
 | | |
