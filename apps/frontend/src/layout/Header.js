@@ -1,6 +1,8 @@
-import { isAuthenticated } from "@/utils/utils.js";
+import { isAuthenticated } from "@utils/utils";
+import { authStore } from "@store/auth.store";
 
 export function HeaderLanding() {
+  const loggedIn = isAuthenticated();
   return `
   <header class="header-landing flex flex-row justify-between">
     <div>
@@ -8,14 +10,13 @@ export function HeaderLanding() {
     </div>
     <nav class="hidden md:flex">
       <ul class="header-nav-list flex flex-row justify-around">
-        <li><a class="header-nav-link" href="#explore-reports" data-link>Explore Reports</a></li>
-        <li><a class="header-nav-link" href="#how-it-works" data-link>How It Works</a></li>
-        <li><a class="header-nav-link" href="#about-us" data-link>About Us</a></li>
+        <li><a class="header-nav-link" href="#explore-reports">Explore Reports</a></li>
+        <li><a class="header-nav-link" href="#how-it-works">How It Works</a></li>
+        <li><a class="header-nav-link" href="#about-us">About Us</a></li>
         <li><a class="header-nav-link" href="/announcements" data-link>Announcements</a></li>
-        ${isAuthenticated() ?
-        `<li><a class="header-nav-link header-nav-cta" href="/home" data-link>Home</a></li>` : `
-        <li><a class="header-nav-link header-nav-cta" href="/login" data-link>Login</a></li>
-        `
+        ${loggedIn
+          ? '<li><a class="header-nav-link header-nav-cta" href="/home" data-link>Home</a></li>'
+          : '<li><a class="header-nav-link header-nav-cta" href="/login" data-link>Login</a></li>'
         }
       </ul>
     </nav>
@@ -24,11 +25,12 @@ export function HeaderLanding() {
 }
 
 export function HeaderHome() {
-  return `
+  const user = authStore.user;
+  return`
   <header class="header-home flex flex-row justify-between items-center">
     <button id="sidebar-toggle" class="sidebar-toggle-btn">☰</button>
     <a id="button-home" class="header-logo" href="/" data-link>CoDecide</a>
-    <a id="button-profile" href="/profile" data-link class="header-icon"><img src="../../public/user.svg" alt="user">User</a>
+    <a id="button-profile" href="/profile" data-link class="header-icon"><img src="../../public/user.svg" alt="user">${user?.name || "User"}</a>
   </header>
   `
 }

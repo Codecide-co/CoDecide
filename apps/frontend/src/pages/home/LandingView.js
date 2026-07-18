@@ -1,5 +1,6 @@
 import { HeaderLanding } from "@layout/Header";
 import { FooterLanding } from "@layout/Footer";
+import { isAuthenticated } from "@utils/utils";
 
 export function LandingView() {
 return`
@@ -22,15 +23,19 @@ return`
                 <p class="landing-hero-desc">
                     From damaged roads to public safety concerns, CoDecide helps citizens report issues, monitor updates, and drive positive change together.
                 </p>
+                ${(() => {
+                  const li = isAuthenticated();
+                  return `
                 <div class="hero-buttons">
-                    <a class="link-report-issue" href="/login" data-link>Report an Issue</a> 
-                    <a class="link-explore-report" href="#explore-reports" data-link>Explore Reports</a>
-                </div>
+                    <a class="link-report-issue" href="${li ? "/reports/create" : "/login"}" ${li ? 'data-link' : ''}>Report an Issue</a> 
+                    <a class="link-explore-report" href="${li ? "/reports" : "#explore-reports"}" ${li ? 'data-link' : ''}>Explore Reports</a>
+                </div>`;
+                })()}
             </article>
         </section>
 
         <!-- VIEW EXPLORE REPORTS -->
-        <section class="landing-explore">
+        <section id="explore-reports" class="landing-explore">
             <div class="landing-explore-container">
 
                 <article class="landing-explore-carousel">
@@ -38,7 +43,7 @@ return`
                     <div class="landing-explore-viewport">
                     <div class="landing-report-cards">
                     <div class="landing-report-card">
-                        <span class="landing-report-card-icon">🛣️</span>
+                        <div class="landing-report-card-img"><div class="landing-report-card-placeholder">Add photo</div></div>
                         <h4 class="landing-report-card-title">Pothole on Maple Street</h4>
                         <div class="landing-report-card-field">
                             <h5 class="landing-report-card-label">Category</h5>
@@ -59,7 +64,7 @@ return`
                     </div>
 
                     <div class="landing-report-card">
-                        <span class="landing-report-card-icon">💡</span>
+                        <div class="landing-report-card-img"><div class="landing-report-card-placeholder">Add photo</div></div>
                         <h4 class="landing-report-card-title">Broken Street Light</h4>
                         <div class="landing-report-card-field">
                             <h5 class="landing-report-card-label">Category</h5>
@@ -80,7 +85,7 @@ return`
                     </div>
 
                     <div class="landing-report-card">
-                        <span class="landing-report-card-icon">🌳</span>
+                        <div class="landing-report-card-img"><div class="landing-report-card-placeholder">Add photo</div></div>
                         <h4 class="landing-report-card-title">Fallen Tree Blocking Sidewalk</h4>
                         <div class="landing-report-card-field">
                             <h5 class="landing-report-card-label">Category</h5>
@@ -102,7 +107,7 @@ return`
 
                     <!-- duplicated set so the animation loops without a visible jump -->
                     <div class="landing-report-card" aria-hidden="true">
-                        <span class="landing-report-card-icon">🛣️</span>
+                        <div class="landing-report-card-img"><div class="landing-report-card-placeholder">Add photo</div></div>
                         <h4 class="landing-report-card-title">Pothole on Maple Street</h4>
                         <div class="landing-report-card-field">
                             <h5 class="landing-report-card-label">Category</h5>
@@ -123,7 +128,7 @@ return`
                     </div>
 
                     <div class="landing-report-card" aria-hidden="true">
-                        <span class="landing-report-card-icon">💡</span>
+                        <div class="landing-report-card-img"><div class="landing-report-card-placeholder">Add photo</div></div>
                         <h4 class="landing-report-card-title">Broken Street Light</h4>
                         <div class="landing-report-card-field">
                             <h5 class="landing-report-card-label">Category</h5>
@@ -144,7 +149,7 @@ return`
                     </div>
 
                     <div class="landing-report-card" aria-hidden="true">
-                        <span class="landing-report-card-icon">🌳</span>
+                        <div class="landing-report-card-img"><div class="landing-report-card-placeholder">Add photo</div></div>
                         <h4 class="landing-report-card-title">Fallen Tree Blocking Sidewalk</h4>
                         <div class="landing-report-card-field">
                             <h5 class="landing-report-card-label">Category</h5>
@@ -185,7 +190,7 @@ return`
         </section>
 
         <!-- VIEW HOW IT WORKS -->
-        <section class="landing-how">
+        <section id="how-it-works" class="landing-how">
             <h1 class="landing-how-title">How It Works</h1>
             <p class="landing-how-subtitle">
                 Discover how CoDecide helps communities identify,
@@ -299,13 +304,13 @@ return`
                     <p class="landing-action-card-desc">
                         Join CoDecide today and help build a safer, smarter, and more connected community. Every action counts.
                     </p>
-                    <a class="landing-action-btn" href="/login" data-link>Get Started</a>
+                    <a class="landing-action-btn" href="${isAuthenticated() ? "/home" : "/login"}" ${isAuthenticated() ? 'data-link' : ''}>Get Started</a>
                 </div>
             </div>
         </section>
 
         <!-- VIEW ABOUT US -->
-        <section class="landing-about">
+        <section id="about-us" class="landing-about">
             <input type="radio" name="ac" id="ac-none" checked hidden>
             <input type="radio" name="ac" id="ac-1" hidden>
             <input type="radio" name="ac" id="ac-2" hidden>

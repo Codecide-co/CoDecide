@@ -115,7 +115,7 @@ export default function profileView() {
 
   return `
     ${HeaderHome()}
-    <div class="auth-layout flex">
+    <div class="auth-layout flex flex-row">
       ${SidebarHome()}
       <main class="container-home">
         <div id="profile-content" class="flex flex-col items-center justify-center">${renderSkeletons()}</div>
