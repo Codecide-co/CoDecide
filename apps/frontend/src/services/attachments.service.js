@@ -1,4 +1,4 @@
-import { postFormData } from "@utils/api";
+import { postFormData } from "@core/api";
 
 export async function uploadAttachment(reportId, file) {
   const formData = new FormData();
