@@ -125,6 +125,10 @@
   transition: box-shadow 0.2s, border-color 0.2s;
 }
 
+.profile-report-card {
+  cursor: pointer;
+}
+
 .profile-report-card:hover {
   border-color: #CBD5E1;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
