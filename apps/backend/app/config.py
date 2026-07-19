@@ -63,9 +63,10 @@ class Config:
         "http://localhost:5173"
     )
 
-    UPLOAD_FOLDER: str = os.getenv(
-        "UPLOAD_FOLDER",
-        os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "uploads")
-    )
+    _BASE_DIR: str = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+    UPLOAD_FOLDER: str = os.getenv("UPLOAD_FOLDER", "uploads")
+    if not os.path.isabs(UPLOAD_FOLDER):
+        UPLOAD_FOLDER = os.path.join(_BASE_DIR, UPLOAD_FOLDER)
 
     MAX_CONTENT_LENGTH: int = int(os.getenv("MAX_FILE_SIZE_MB", "16")) * 1024 * 1024
