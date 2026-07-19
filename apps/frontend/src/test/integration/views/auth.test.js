@@ -2,13 +2,18 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { LoginView, initLoginView } from '@pages/auth/login.view'
 import { RegisterView, initRegisterView } from '@pages/auth/register.view'
 
-vi.mock('@store/auth.store', () => ({
+vi.mock('@services/auth.service', () => ({
   login: vi.fn(),
   register: vi.fn(),
 }))
 
-vi.mock('@/utils/navigate.js', () => ({
+vi.mock('@core/helpers', () => ({
   navigateTo: vi.fn(),
+  saveSession: vi.fn(),
+}))
+
+vi.mock('@store/auth.store', () => ({
+  authStore: { user: null },
 }))
 
 function setBody(html) {
@@ -68,7 +73,7 @@ describe('LoginView form submission', () => {
   })
 
   it('calls login with email and password on valid submission', async () => {
-    const { login } = await import('@store/auth.store')
+    const { login } = await import('@services/auth.service')
     login.mockResolvedValue({ token: 'abc' })
     initLoginView(() => {})
 
@@ -93,7 +98,7 @@ describe('LoginView form submission', () => {
   })
 
   it('sets button loading state during submission', async () => {
-    const { login } = await import('@store/auth.store')
+    const { login } = await import('@services/auth.service')
     let resolveLogin
     login.mockReturnValue(new Promise((resolve) => { resolveLogin = resolve }))
     initLoginView(() => {})
@@ -121,7 +126,7 @@ describe('RegisterView form submission', () => {
   })
 
   it('calls register with user data (without confirmPassword) on valid submission', async () => {
-    const { register } = await import('@store/auth.store')
+    const { register } = await import('@services/auth.service')
     register.mockResolvedValue({ token: 'xyz' })
     initRegisterView(() => {})
 
