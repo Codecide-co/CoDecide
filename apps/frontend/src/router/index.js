@@ -13,6 +13,7 @@ import { SuccessPageView } from "@pages/reports/SuccessPage";
 import { NotFoundPageView } from "@pages/NotFoundPage";
 import { isAuthenticated, isAdmin } from "@core/helpers";
 import { navigateTo } from "@core/helpers";
+import { initHeaderLanding } from "@/layouts/Header";
 
 export { navigateTo };
 
@@ -42,7 +43,7 @@ function guard(path) {
 
   if (!isAuthenticated() && path !== "/login" && path !== "/register" && path !== "/announcements") {
     history.replaceState({}, "", "/");
-    render(app, LandingPageView());
+    render(app, LandingPageView(), initHeaderLanding);
     return true;
   }
 
@@ -55,14 +56,14 @@ function guard(path) {
 }
 
 const routes = [
-  { path: "/login",       view: () => AuthView("login"),         init: () => initAuth("login") },
-  { path: "/register",    view: () => AuthView("register"),      init: () => initAuth("register") },
+  { path: "/login",       view: () => AuthView("login"),         init: () => { initHeaderLanding(); initAuth("login"); } },
+  { path: "/register",    view: () => AuthView("register"),      init: () => { initHeaderLanding(); initAuth("register"); } },
   { path: "/home",        view: HomePageView,                    init: initHomePage },
   { path: "/profile",     view: ProfilePageView,                 init: initProfilePage },
   { path: "/reports",     view: ReportsPageView,                 init: initReportsPage },
   { path: "/reports/create", view: CreateReportView,             init: () => initCreateReportView(() => navigateTo("/reports/success")) },
   { path: "/admin",       view: AdminDashboardView },
-  { path: "/announcements", view: AnnouncementsPageView },
+  { path: "/announcements", view: AnnouncementsPageView, init: initHeaderLanding },
   { path: "/stats",       view: StatsPageView },
   { path: "/reports/success", view: SuccessPageView },
   { test: /^\/reports\/(\d+)$/, view: (m) => DetailPageView(m[1]) },
@@ -73,7 +74,7 @@ export const router = () => {
   const path = window.location.pathname;
 
   if (path === "/") {
-    render(app, LandingPageView());
+    render(app, LandingPageView(), initHeaderLanding);
     return;
   }
 
