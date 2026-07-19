@@ -1,15 +1,10 @@
 import { HeaderHome } from "@/layouts/Header";
 import { SidebarHome } from "@/layouts/Sidebar";
 import { fetchApiData, postApiData, UPLOADS_BASE } from "@core/api";
-import { navigateTo, escapeHtml } from "@core/helpers";
+import { navigateTo, escapeHtml, formatDate } from "@core/helpers";
 import { authStore } from "@store/auth.store";
 import { VotingWidgetView, initVotingWidget } from "@components/domain/VotingWidget";
 import { voteReport } from "@services/reports.service";
-
-function formatDate(dateStr) {
-  const d = new Date(dateStr);
-  return `${d.toLocaleDateString()} ${d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
-}
 
 function renderReport(report, reportId) {
   return `
@@ -28,7 +23,7 @@ function renderReport(report, reportId) {
             </span>`
           : `<span class="report-detail-author-name">Posted by ${escapeHtml(report.author_name || "Unknown")}</span>`
         }
-        <span class="report-detail-date">${formatDate(report.created_at)}</span>
+        <span class="report-detail-date">${formatDate(report.created_at, "datetime")}</span>
       </div>
 
       <p class="report-detail-description">${escapeHtml(report.description)}</p>
@@ -71,7 +66,7 @@ function renderReport(report, reportId) {
               <div class="status-timeline-content">
                 <div class="status-timeline-header">
                   <span class="status-timeline-action">${escapeHtml(h.action.replace("_", " "))}</span>
-                  <span class="status-timeline-date">${formatDate(h.created_at)}</span>
+                  <span class="status-timeline-date">${formatDate(h.created_at, "datetime")}</span>
                 </div>
                 ${h.details ? `
                   <div class="status-timeline-details">
@@ -92,7 +87,7 @@ function renderReport(report, reportId) {
           <div class="report-detail-comment">
             <strong>${escapeHtml(c.author_name || "Anonymous")}</strong>
             <p>${escapeHtml(c.body)}</p>
-            <small>${formatDate(c.created_at)}</small>
+            <small>${formatDate(c.created_at, "datetime")}</small>
           </div>
         `).join("")}
       </div>` : ""}
@@ -137,7 +132,7 @@ function initCommentForm(reportId) {
               <div class="report-detail-comment">
                 <strong>${escapeHtml(c.author_name || "Anonymous")}</strong>
                 <p>${escapeHtml(c.body)}</p>
-                <small>${formatDate(c.created_at)}</small>
+                <small>${formatDate(c.created_at, "datetime")}</small>
               </div>
             `).join("")}
           </div>
