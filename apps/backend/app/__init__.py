@@ -39,7 +39,8 @@ def create_app() -> Flask:
     CORS(app, origins=origins, supports_credentials=True)
 
     db.init_app(app)
-    mongo.init_app(app, uri=Config.MONGO_URI)
+    if Config.USE_MONGO:
+        mongo.init_app(app, uri=Config.MONGO_URI)
     migrate.init_app(app, db)
     jwt.init_app(app)
 
