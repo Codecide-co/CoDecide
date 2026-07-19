@@ -1,10 +1,4 @@
-const validTransitions = {
-  open: ["in_progress"],
-  in_progress: ["resolved"],
-  resolved: [],
-};
-
-export function DataTable({ reports, categories, onViewHistory }) {
+export function DataTable({ reports, categories, validTransitions, onViewHistory }) {
   if (!reports || reports.length === 0) {
     return `<p class="text-center p-8">No reports found.</p>`;
   }
