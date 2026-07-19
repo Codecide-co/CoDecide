@@ -1,51 +1,56 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { LoginView, initLoginView } from '@pages/auth/login.view'
-import { RegisterView, initRegisterView } from '@pages/auth/register.view'
+import { LoginFormView, initLoginForm } from '@pages/auth/LoginForm'
+import { RegisterFormView, initRegisterForm } from '@pages/auth/RegisterForm'
 
-vi.mock('@store/auth.store', () => ({
+vi.mock('@services/auth.service', () => ({
   login: vi.fn(),
   register: vi.fn(),
 }))
 
-vi.mock('@/utils/navigate.js', () => ({
+vi.mock('@core/helpers', () => ({
   navigateTo: vi.fn(),
+  saveSession: vi.fn(),
+}))
+
+vi.mock('@store/auth.store', () => ({
+  authStore: { user: null },
 }))
 
 function setBody(html) {
   document.body.innerHTML = `<div id="app">${html}</div>`
 }
 
-describe('LoginView rendering', () => {
+describe('LoginFormView rendering', () => {
   it('renders email field', () => {
-    setBody(LoginView())
+    setBody(LoginFormView())
     expect(document.getElementById('email')).not.toBeNull()
     expect(document.getElementById('email').placeholder).toBe('email@example.com')
   })
 
   it('renders password field', () => {
-    setBody(LoginView())
+    setBody(LoginFormView())
     expect(document.getElementById('password')).not.toBeNull()
     expect(document.getElementById('password').placeholder).toBe('••••••••')
   })
 
   it('renders submit button', () => {
-    setBody(LoginView())
+    setBody(LoginFormView())
     const btn = document.getElementById('login-btn')
     expect(btn).not.toBeNull()
     expect(btn.textContent).toBe('Log In')
   })
 
   it('renders register link', () => {
-    setBody(LoginView())
+    setBody(LoginFormView())
     const link = document.getElementById('go-register')
     expect(link).not.toBeNull()
     expect(link.textContent).toBe('Sign Up')
   })
 })
 
-describe('RegisterView rendering', () => {
+describe('RegisterFormView rendering', () => {
   it('renders all form fields', () => {
-    setBody(RegisterView())
+    setBody(RegisterFormView())
     expect(document.getElementById('name')).not.toBeNull()
     expect(document.getElementById('email')).not.toBeNull()
     expect(document.getElementById('tower')).not.toBeNull()
@@ -54,23 +59,23 @@ describe('RegisterView rendering', () => {
   })
 
   it('renders confirm password field', () => {
-    setBody(RegisterView())
+    setBody(RegisterFormView())
     const el = document.getElementById('confirm-password')
     expect(el).not.toBeNull()
     expect(el.placeholder).toBe('••••••••')
   })
 })
 
-describe('LoginView form submission', () => {
+describe('LoginFormView form submission', () => {
   beforeEach(() => {
-    setBody(LoginView())
+    setBody(LoginFormView())
     vi.clearAllMocks()
   })
 
   it('calls login with email and password on valid submission', async () => {
-    const { login } = await import('@store/auth.store')
+    const { login } = await import('@services/auth.service')
     login.mockResolvedValue({ token: 'abc' })
-    initLoginView(() => {})
+    initLoginForm(() => {})
 
     document.getElementById('email').value = 'test@example.com'
     document.getElementById('password').value = 'secret123'
@@ -82,7 +87,7 @@ describe('LoginView form submission', () => {
   })
 
   it('shows inline errors on empty submission', async () => {
-    initLoginView(() => {})
+    initLoginForm(() => {})
 
     document.getElementById('login-form').dispatchEvent(new Event('submit', { cancelable: true }))
 
@@ -93,10 +98,10 @@ describe('LoginView form submission', () => {
   })
 
   it('sets button loading state during submission', async () => {
-    const { login } = await import('@store/auth.store')
+    const { login } = await import('@services/auth.service')
     let resolveLogin
     login.mockReturnValue(new Promise((resolve) => { resolveLogin = resolve }))
-    initLoginView(() => {})
+    initLoginForm(() => {})
 
     document.getElementById('email').value = 'a@b.com'
     document.getElementById('password').value = 'secret'
@@ -114,16 +119,16 @@ describe('LoginView form submission', () => {
   })
 })
 
-describe('RegisterView form submission', () => {
+describe('RegisterFormView form submission', () => {
   beforeEach(() => {
-    setBody(RegisterView())
+    setBody(RegisterFormView())
     vi.clearAllMocks()
   })
 
   it('calls register with user data (without confirmPassword) on valid submission', async () => {
-    const { register } = await import('@store/auth.store')
+    const { register } = await import('@services/auth.service')
     register.mockResolvedValue({ token: 'xyz' })
-    initRegisterView(() => {})
+    initRegisterForm(() => {})
 
     document.getElementById('name').value = 'John'
     document.getElementById('email').value = 'john@example.com'
@@ -145,7 +150,7 @@ describe('RegisterView form submission', () => {
   })
 
   it('shows inline errors on empty submission', async () => {
-    initRegisterView(() => {})
+    initRegisterForm(() => {})
 
     document.getElementById('register-form').dispatchEvent(new Event('submit', { cancelable: true }))
 

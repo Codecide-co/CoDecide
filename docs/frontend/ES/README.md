@@ -8,86 +8,121 @@ Aplicación de una sola página construida con **JavaScript Vanilla (ES Modules)
 
 ```
 src/
-├── assets/            # Recursos estáticos (imágenes, iconos, SVGs)
-├── components/
-│   ├── ui/            # Primitivas de UI reutilizables y genéricas
-│   │                   # (Button, Input, Modal, Badge, Spinner, etc.)
-│   └── domain/        # Componentes compuestos de dominio específico
-│                       # (ReportCard, VotingWidget, CommentList, etc.)
-├── layout/            # Componentes del esqueleto de la app
-│                       # (Header, Footer, Sidebar, MainLayout)
-├── pages/             # Un directorio por ruta/vista
-│   ├── home/          # Página de inicio / dashboard
-│   ├── reports/       # Listado, creación y detalle de reportes
-│   ├── profile/       # Perfil de usuario
-│   ├── admin/         # Panel de administración y gestión de reportes
-│   └── auth/          # Inicio de sesión y registro
-├── router/            # Router cliente SPA basado en hash
-│                       # Analiza la URL, carga la página correspondiente, maneja guards
-├── services/          # Capa de comunicación con la API
-│                       # Cada archivo encapsula un recurso del backend
-│                       # (api.js instancia base, auth.service.js, reports.service.js, etc.)
-├── store/             # Estado global reactivo (patrón basado en Proxy)
-│                       # Estado centralizado con lógica de suscripción/re-renderizado
-├── styles/            # CSS global y punto de entrada de Tailwind
-│   └── index.css      # Directivas de Tailwind y resets globales
-├── utils/             # Funciones auxiliares puras
-│                       # (formateo de fechas, validadores, constantes, etc.)
-└── main.js            # Punto de entrada de la aplicación
-                        # Inicializa el router, monta el esqueleto de la app
+├── core/               # Lógica pura, cero DOM
+│   ├── api.js          # Cliente HTTP con token getter configurable
+│   ├── router.js       # Ruteo genérico (no usado — ver src/router/)
+│   ├── store.js        # Fábrica de estado reactivo (createStore via Proxy)
+│   ├── validators.js   # Validación de formularios
+│   └── helpers.js      # Utilidades puras (formatDate, escapeHtml, sesión, navigateTo)
+│
+├── services/           # Capa de API — un módulo por dominio
+│   ├── auth.service.js
+│   ├── reports.service.js
+│   ├── categories.service.js
+│   ├── stats.service.js
+│   ├── announcements.service.js
+│   └── attachments.service.js
+│
+├── components/         # Solo presentacionales. Sin API calls. Sin lógica de negocio.
+│   ├── ui/             # Primitivas de UI genéricas (Modal, DataTable, Badge, FileUpload, etc.)
+│   ├── domain/         # Componentes compuestos de dominio (VotingWidget, CategoryPicker)
+│   ├── charts/         # Componentes Chart.js (PieChart, BarChart, LineChart, chartRegistry)
+│   ├── forms/          # Helper de envío de formularios (FormHelper)
+│   └── profile/        # Sub-componentes de perfil (PersonalInfo, ProfileCard, ProfileReports)
+│
+├── pages/              # Un directorio por ruta. Cada página orquesta: arma HTML, llama services, lee store.
+│   ├── landing/        # Página pública de aterrizaje
+│   ├── auth/           # Login / Register (AuthPage, LoginForm, RegisterForm)
+│   ├── home/           # Dashboard principal (autenticado)
+│   ├── reports/        # Listado, creación, detalle, éxito
+│   ├── profile/        # Perfil de usuario
+│   ├── stats/          # Estadísticas y gráficos
+│   ├── admin/          # Panel de administración
+│   ├── announcements/  # Comunicados públicos
+│   ├── NotFoundPage.js
+│   └── AccessDeniedPage.js
+│
+├── layouts/            # Shell de la app — Header, Sidebar, Footer
+│
+├── router/             # Router SPA: match path → render page, guards
+│
+├── store/              # Estado reactivo (auth.store.js)
+│
+├── styles/             # CSS global (punto de entrada Tailwind, estilos de componentes)
+│
+└── main.js             # Entry point: configura API, ejecuta router
 ```
 
 ## Flujo de Datos
 
 ```
 main.js
-  └─> router/
-        └─> pages/         (carga el módulo de la página)
-              └─> components/   (renderiza la UI)
-                    └─> services/    (llamadas HTTP al backend)
-                          └─> store/  (actualiza el estado reactivo)
-                                └─> las vistas se re-renderizan al cambiar el estado
+  └─> router/              (match path → delegate)
+        └─> pages/         (orquestan: HTML + services + store)
+              ├─> components/   (renderizan UI, sin efectos secundarios)
+              └─> services/     (llamadas HTTP al backend)
+                    └─> core/api.js  (cliente HTTP de bajo nivel)
 ```
 
 ## Responsabilidades por Capa
 
+### `core/`
+- Lógica pura sin manipulación del DOM
+- `api.js` — cliente HTTP configurable (token getter inyectado via `configureApi`)
+- `store.js` — fábrica `createStore` usando `Proxy` de JavaScript para reactividad
+- `validators.js` — funciones de validación puras que retornan `{ isValid, errors }`
+- `helpers.js` — `formatDate`, `escapeHtml`, manejo de sesión, `navigateTo`
+
 ### `router/`
-- Escucha eventos `hashchange`
-- Asocia patrones de URL con módulos de página
-- Soporta guards de ruta (ej. redirigir si no está autenticado)
-- Carga módulos de página bajo demanda (lazy loading)
+- Escucha eventos `popstate`
+- Guards de ruta: redirige usuarios anónimos, bloquea rutas no-admin
+- Delega el renderizado a `pages/` via el helper `render(app, view, init?)`
+- El mapa de rutas es un array declarativo: entradas `{ path, view, init }` + patrones regex
 
 ### `pages/`
-- Un módulo por ruta
-- Orquesta componentes, servicios y store para esa vista
-- Gestiona el ciclo de vida de la página (al montar, al destruir)
+- Un módulo (o directorio) por ruta
+- Cada página exporta una función `XxxPageView()` que retorna HTML, y opcionalmente `initXxxPage()` para binding de eventos
+- Orquesta: construye el template HTML completo (layouts + componentes), llama servicios, lee del store
+- Sin lógica de negocio en el template — toda la lógica vive en funciones `init`
 
 ### `components/`
-- **`ui/`**: Componentes puramente de presentación. Reciben props, renderizan HTML. Sin lógica de negocio.
-- **`domain/`**: Componen componentes UI con datos del dominio. Pueden llamar servicios o leer del store.
+- Puramente presentacionales: reciben datos, retornan HTML
+- Sin API calls, sin `document.querySelector`, sin lógica de negocio
+- `ui/` — primitivas genéricas utilizables en cualquier lado
+- `domain/` — componentes compuestos que combinan primitivas UI con conceptos de dominio
+- `charts/` — wrappers de Chart.js (cada componente es dueño de un canvas y se registra con `chartRegistry`)
+- Los componentes que necesitan binding de eventos exportan una función `init` separada (ej. `initVotingWidget`)
 
 ### `services/`
 - Responsabilidad única: comunicarse con la API del backend
-- Retornan datos procesados o lanzan errores tipados
-- Nunca manipulan el DOM directamente
+- Cada archivo encapsula un recurso de dominio
+- Retornan datos procesados o lanzan errores
+- Nunca manipulan el DOM
+
+### `layouts/`
+- Definen el shell de la app: `HeaderHome`, `HeaderLanding`, `SidebarHome`, `FooterLanding`
+- `HeaderHome` incluye el botón de toggle del sidebar
+- `SidebarHome` soporta el atributo `data-collapsed` para modo solo-iconos (impulsado por CSS `:has()`)
 
 ### `store/`
-- Estado reactivo centralizado usando `Proxy` de JavaScript
-- Cada dominio (auth, reports) tiene su propia porción del store
-- Los componentes se suscriben a porciones; el store notifica al cambiar
-
-### `layout/`
-- Define el esqueleto de la app: header, navegación, área de contenido principal
-- Envuelve el contenido de las páginas de forma consistente entre rutas
-
-### `utils/`
-- Funciones puras sin efectos secundarios
-- Helpers compartidos usados en todas las capas
+- Porciones de estado reactivo creadas con `createStore` de `core/store.js`
+- `auth.store.js` contiene el usuario actual y expone...
 
 ## Convenciones
 
-- **Archivos**: PascalCase para componentes (`Button.js`), camelCase para servicios/utils (`auth.service.js`)
-- **Exportaciones**: Default export para componentes/páginas, named exports para servicios/utils
-- **Importaciones**: Usar alias `@` (ej. `import Button from '@components/ui/Button'`)
-- **DOM**: Nunca usar `document.querySelector` dentro de componentes — recibir el contenedor como argumento
-- **Estado**: Los componentes leen del store, nunca escriben directamente — usar funciones de servicio
+- **Archivos**: PascalCase para componentes (`Button.js`), camelCase para servicios (`auth.service.js`)
+- **Exportaciones**: Named exports para todo (sin default exports)
+- **Patrón de página**: `XxxPage.js` exporta `XxxPageView` (HTML) + opcionalmente `initXxxPage` (eventos)
+- **Importaciones**: Usar alias `@` (`@core/helpers`, `@services/reports.service`, `@components/ui/Modal`)
+- **Alias de core**: `@core`, `@layouts`, `@services`, `@store`, `@router`, `@components`
+- **Sin comentarios en código**: Mantener el código auto-documentado
+- **DOM**: Los componentes reciben datos como argumentos, nunca consultan el DOM ellos mismos
+
+## Lógica de Guards del Router
+
+El router aplica tres guards en orden:
+1. **Autenticado en páginas de auth**: redirige a `/home`
+2. **No autenticado en páginas protegidas**: redirige a `/` (landing)
+3. **No-admin en `/admin`**: muestra `AccessDeniedPage`
+
+Las rutas se definen como un array plano — el primer match gana. Los segmentos dinámicos usan patrones regex (ej. `/reports/:id`).

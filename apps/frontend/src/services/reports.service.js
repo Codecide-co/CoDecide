@@ -1,4 +1,4 @@
-import { postApiData, fetchApiData, patchApiData } from "@utils/api";
+import { postApiData, fetchApiData, patchApiData } from "@core/api";
 
 export async function createReport(data) {
   return postApiData("/reports", data);

@@ -1,5 +1,3 @@
-import { voteReport } from "@services/reports.service";
-
 export function VotingWidgetView({ reportId, upvotes, downvotes, userVote, isOwnReport }) {
   const upActive = userVote === "up" ? "voting-btn--active" : "";
   const downActive = userVote === "down" ? "voting-btn--active" : "";
@@ -19,7 +17,7 @@ export function VotingWidgetView({ reportId, upvotes, downvotes, userVote, isOwn
   `;
 }
 
-export function initVotingWidget() {
+export function initVotingWidget({ onVote } = {}) {
   document.querySelectorAll(".voting-widget").forEach((widget) => {
     const reportId = widget.dataset.reportId;
     const isOwnReport = widget.dataset.ownReport === "true";
@@ -37,8 +35,7 @@ export function initVotingWidget() {
       const prevUp = parseInt(upBtn.querySelector(".voting-count").textContent);
       const prevDown = parseInt(downBtn.querySelector(".voting-count").textContent);
 
-      // Optimistic update
-      if (prevUserVote === voteType) return; // same vote, no-op
+      if (prevUserVote === voteType) return;
       if (prevUserVote === "up") {
         upBtn.querySelector(".voting-count").textContent = Math.max(0, prevUp - 1);
         upBtn.classList.remove("voting-btn--active");
@@ -47,10 +44,7 @@ export function initVotingWidget() {
         downBtn.classList.remove("voting-btn--active");
       }
 
-      if (prevUserVote === voteType) return;
-
       if (prevUserVote && prevUserVote !== voteType) {
-        // Changing vote: remove one from other, add one to new
         const otherCount = parseInt(otherBtn.querySelector(".voting-count").textContent);
         otherBtn.querySelector(".voting-count").textContent = Math.max(0, otherCount - 1);
         otherBtn.classList.remove("voting-btn--active");
@@ -62,8 +56,7 @@ export function initVotingWidget() {
       widget.dataset.userVote = voteType;
 
       try {
-        const result = await voteReport(reportId, voteType);
-        // Sync with server response
+        const result = await onVote(reportId, voteType);
         upBtn.querySelector(".voting-count").textContent = result.upvotes;
         downBtn.querySelector(".voting-count").textContent = result.downvotes;
         widget.dataset.userVote = result.user_vote || "";
@@ -78,7 +71,6 @@ export function initVotingWidget() {
           downBtn.classList.remove("voting-btn--active");
         }
       } catch (error) {
-        // Revert on error
         upBtn.querySelector(".voting-count").textContent = prevUp;
         downBtn.querySelector(".voting-count").textContent = prevDown;
         widget.dataset.userVote = prevUserVote;

@@ -1,6 +1,7 @@
 import { openModal } from "@components/ui/Modal";
 import { updateReportStatus } from "@services/reports.service";
-import { fetchApiData, postApiData } from "@utils/api";
+import { fetchApiData, postApiData } from "@core/api";
+import { formatDate } from "@core/helpers";
 import { createAnnouncement } from "@services/announcements.service";
 
 export function showStatusChangeModal(reportId, newStatus, onComplete) {
@@ -40,7 +41,7 @@ export function showHistoryModal(reportId) {
         const from = h.details?.from || "—";
         const to = h.details?.to || "—";
         const comment = h.details?.comment || "";
-        const date = new Date(h.created_at).toLocaleString();
+        const date = formatDate(h.created_at, "full");
         return `
           <div class="flex items-start gap-4 p-4">
             <div class="flex flex-col items-center">

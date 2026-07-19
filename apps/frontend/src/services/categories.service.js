@@ -1,4 +1,4 @@
-import { fetchApiData } from "@utils/api";
+import { fetchApiData } from "@core/api";
 
 const USE_MOCK = import.meta.env.VITE_MOCK_API === "true";
 

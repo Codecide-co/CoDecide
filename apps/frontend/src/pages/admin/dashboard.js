@@ -1,12 +1,18 @@
-import { fetchApiData } from "@utils/api";
+import { fetchApiData } from "@core/api";
 import { fetchReports } from "@services/reports.service";
 import { StatCard } from "@components/domain/StatCard";
 import { FilterBar, initFilterBar } from "@components/ui/FilterBar";
 import { DataTable, initDataTable } from "@components/ui/DataTable";
 import { Pagination, initPagination } from "@components/ui/Pagination";
-import { HeaderHome } from "@/layout/Header";
-import { SidebarHome } from "@/layout/Sidebar";
+import { HeaderHome } from "@/layouts/Header";
+import { SidebarHome } from "@/layouts/Sidebar";
 import { showStatusChangeModal, showHistoryModal, showAnnouncementModal, showCategoryModal } from "./modals";
+
+const validTransitions = {
+  open: ["in_progress"],
+  in_progress: ["resolved"],
+  resolved: [],
+};
 
 let currentPage = 1;
 let currentStatus = "";
@@ -39,7 +45,7 @@ function loadDashboard() {
       const reports = data.reports || [];
       totalPages = data.pages || 1;
 
-      tableContainer.innerHTML = DataTable({ reports, categories });
+      tableContainer.innerHTML = DataTable({ reports, categories, validTransitions });
       initDataTable({
         onStatusChange: (reportId, newStatus) => showStatusChangeModal(reportId, newStatus, loadDashboard),
         onViewHistory: showHistoryModal,

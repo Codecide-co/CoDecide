@@ -1,3 +1,5 @@
+import { formatDate } from "@core/helpers";
+
 export function PersonalInfo(user) {
   if (!user) return "";
 
@@ -22,7 +24,7 @@ export function PersonalInfo(user) {
         </div>
         <div class="profile-info-item">
           <span class="profile-info-label">Member since</span>
-          <span class="profile-info-value">${user.created_at ? new Date(user.created_at).toLocaleDateString("en-GB") : "—"}</span>
+          <span class="profile-info-value">${formatDate(user.created_at)}</span>
         </div>
       </div>
     </div>
