@@ -2,7 +2,7 @@ import { HeaderLanding } from "@layouts/Header";
 import { FooterLanding } from "@layouts/Footer";
 import { isAuthenticated } from "@core/helpers";
 
-export function LandingView() {
+export function LandingPageView() {
 return`
     ${HeaderLanding()}
     <main>  
