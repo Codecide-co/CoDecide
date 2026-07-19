@@ -1,3 +1,5 @@
+import { formatDate } from "@core/helpers";
+
 export function DataTable({ reports, categories, validTransitions, onViewHistory }) {
   if (!reports || reports.length === 0) {
     return `<p class="text-center p-8">No reports found.</p>`;
@@ -28,7 +30,7 @@ export function DataTable({ reports, categories, validTransitions, onViewHistory
               <td><strong>${r.title}</strong></td>
               <td><span class="admin-status-badge ${r.status}">${r.status.replace("_", " ")}</span></td>
               <td>${r.category_name || "—"}</td>
-              <td>${new Date(r.created_at).toLocaleDateString()}</td>
+              <td>${formatDate(r.created_at)}</td>
               <td>${r.author_name || "—"}</td>
               <td>${r.votes_count || 0}</td>
               <td>
