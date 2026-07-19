@@ -9,13 +9,12 @@
       "@assets/*": ["./src/assets/*"],
       "@components/*": ["./src/components/*"],
       "@styles/*": ["./src/styles/*"],
-      "@utils/*": ["./src/utils/*"],
       "@services/*": ["./src/services/*"],
       "@pages/*": ["./src/pages/*"],
-      "@layout/*": ["./src/layout/*"],
+      "@layouts/*": ["./src/layouts/*"],
       "@store/*": ["./src/store/*"],
       "@router/*": ["./src/router/*"],
-      "@helpers/*": ["./src/helpers/*"]
+      "@core/*": ["./src/core/*"]
     }
   },
   "include": ["./**/*"],
