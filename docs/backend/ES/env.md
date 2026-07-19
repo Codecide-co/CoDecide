@@ -36,6 +36,18 @@ Cadena de conexion a la base de datos. Usa **SQLite** por defecto para desarroll
 
 ---
 
+### `USE_MONGO`
+
+| | |
+|---|---|
+| **Obligatorio** | No |
+| **Default** | `false` |
+| **Ejemplo** | `USE_MONGO=true` |
+
+ Configura MongoDB para los logs de auditoria y metadatos de archivos adjuntos. Cuando es `false` (default), los audit logs y attachments se guardan en la base de datos SQL. Poner `true` para usar MongoDB mediante la cadena `MONGO_URI`.
+
+---
+
 ### `MONGO_URI`
 
 | | |
