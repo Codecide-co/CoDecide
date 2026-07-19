@@ -278,8 +278,11 @@
   /* Modal */
   .modal-content {
     width: 95%;
-    margin: 5% auto;
     padding: 1.5rem;
+  }
+
+  .modal-overlay {
+    width: 95vw;
   }
 }
 

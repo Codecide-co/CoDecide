@@ -2,11 +2,14 @@
   border: none;
   border-radius: 16px;
   padding: 0;
-  max-width: 480px;
   width: 90vw;
+  max-width: 480px;
   box-shadow: 0 25px 60px rgba(0,0,0,0.2);
   animation: modal-fade-in 0.2s ease-out;
   overflow: visible;
+  position: fixed;
+  inset: 0;
+  margin: auto;
 }
 
 .modal-overlay::backdrop {
