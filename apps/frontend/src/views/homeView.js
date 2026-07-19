@@ -90,7 +90,7 @@ export default function homeView() {
         <div class="home-communicado-item">
           <div class="home-communicado-date">${new Date(c.created_at).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}</div>
           <div class="home-communicado-title">${c.title}</div>
-          <p class="home-communicado-desc">${c.description}</p>
+          <p class="home-communicado-desc">${c.body}</p>
         </div>
       `,
           )
