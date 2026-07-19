@@ -1,12 +1,18 @@
-import { login } from "@store/auth.store";
-import { validateLoginForm } from "@utils/validators";
-import { useFormSubmit } from "@helpers/form.helper";
-import { navigateTo } from "@/utils/navigate.js";
+import { login } from "@services/auth.service";
+import { saveSession } from "@core/helpers";
+import { authStore } from "@store/auth.store";
+import { validateLoginForm } from "@core/validators";
+import { useFormSubmit } from "@components/forms/FormHelper";
+import { navigateTo } from "@core/helpers";
 
 export function initLoginView(onSuccess) {
   useFormSubmit("login-form", {
     validator: validateLoginForm,
-    onSubmit: ({ email, password }) => login(email, password),
+    onSubmit: async ({ email, password }) => {
+      const data = await login(email, password);
+      saveSession(data);
+      authStore.user = data;
+    },
     onSuccess,
   });
 
