@@ -1,3 +1,5 @@
+import { navigateTo } from "@core/helpers";
+
 export function ProfileReports({ reports, loading, error }) {
   const wrapperId = "profile-reports-wrapper";
 
@@ -15,12 +17,20 @@ export function ProfileReports({ reports, loading, error }) {
       return;
     }
     wrapper.innerHTML = reports.map((r) => `
-      <div class="profile-report-card">
+      <div class="profile-report-card" data-id="${r.id}" role="button" tabindex="0">
         <div class="profile-report-title">${r.title}</div>
         <div class="profile-report-id">#${r.tracking_number || r.id}</div>
         <span class="home-status-badge ${r.status}">${r.status.replace("_", " ")}</span>
       </div>
     `).join("");
+
+    wrapper.querySelectorAll(".profile-report-card").forEach((card) => {
+      const id = card.dataset.id;
+      card.addEventListener("click", () => navigateTo(`/reports/${id}`));
+      card.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") navigateTo(`/reports/${id}`);
+      });
+    });
   }, 0);
 
   return `
