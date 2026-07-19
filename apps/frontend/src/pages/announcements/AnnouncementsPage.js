@@ -1,6 +1,7 @@
 import { HeaderLanding } from "@/layouts/Header";
 import { FooterLanding } from "@/layouts/Footer";
 import { fetchApiData } from "@core/api";
+import { formatDate } from "@core/helpers";
 
 export function AnnouncementsPageView() {
   setTimeout(() => {
@@ -16,7 +17,7 @@ export function AnnouncementsPageView() {
           .map(
             (a) => `
           <article class="announcement-card">
-            <div class="announcement-date">${new Date(a.created_at).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}</div>
+            <div class="announcement-date">${formatDate(a.created_at, "long")}</div>
             <h3 class="announcement-title">${a.title}</h3>
             <p class="announcement-body">${a.body}</p>
             <span class="announcement-author">— ${a.author_name || "Administration"}</span>
