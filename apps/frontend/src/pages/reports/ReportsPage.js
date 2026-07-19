@@ -1,7 +1,7 @@
 import { HeaderHome } from "@/layouts/Header";
 import { SidebarHome } from "@/layouts/Sidebar";
 import { fetchApiData, UPLOADS_BASE } from "@core/api";
-import { navigateTo } from "@core/helpers";
+import { navigateTo, formatDate } from "@core/helpers";
 import { authStore } from "@store/auth.store";
 import { VotingWidgetView, initVotingWidget } from "@components/domain/VotingWidget";
 import { voteReport } from "@services/reports.service";
@@ -101,7 +101,7 @@ export function initReportsPage() {
                 </div>
                 <div class="report-card-meta">
                   <span>${categoryNames[r.category_id] || "Unknown"}</span>
-                  <span>${new Date(r.created_at).toLocaleDateString()}</span>
+                  <span>${formatDate(r.created_at)}</span>
                 </div>
                 <div class="report-card-footer">
                   ${VotingWidgetView({ reportId: r.id, upvotes: r.upvotes || 0, downvotes: r.downvotes || 0, userVote: r.user_vote, isOwnReport: authStore.user?.id === r.user_id })}
