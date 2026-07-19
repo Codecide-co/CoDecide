@@ -5,7 +5,7 @@ import { validateLoginForm } from "@core/validators";
 import { useFormSubmit } from "@components/forms/FormHelper";
 import { navigateTo } from "@core/helpers";
 
-export function initLoginView(onSuccess) {
+export function initLoginForm(onSuccess) {
   useFormSubmit("login-form", {
     validator: validateLoginForm,
     onSubmit: async ({ email, password }) => {
@@ -32,7 +32,7 @@ export function initLoginView(onSuccess) {
   }
 }
 
-export function LoginView() {
+export function LoginFormView() {
   return `
   <section class="auth-form-section">
     <header class="auth-form-header">
