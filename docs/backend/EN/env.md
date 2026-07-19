@@ -36,6 +36,18 @@ Database connection string. Uses **SQLite** by default for local development. Fo
 
 ---
 
+### `USE_MONGO`
+
+| | |
+|---|---|
+| **Required** | No |
+| **Default** | `false` |
+| **Example** | `USE_MONGO=true` |
+
+Whether to use MongoDB for audit logs and attachment metadata. When set to `false` (default), audit logs and attachments are stored in the SQL database instead. Set to `true` to use MongoDB via the `MONGO_URI` connection string.
+
+---
+
 ### `MONGO_URI`
 
 | | |
