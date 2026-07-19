@@ -1,7 +1,7 @@
-import { register } from "@store/auth.store";
-import { validateRegisterForm } from "@utils/validators";
-import { useFormSubmit } from "@helpers/form.helper";
-import { navigateTo } from "@/utils/navigate.js";
+import { register } from "@services/auth.service";
+import { validateRegisterForm } from "@core/validators";
+import { useFormSubmit } from "@components/forms/FormHelper";
+import { navigateTo } from "@core/helpers";
 
 export function initRegisterView(onSuccess) {
   useFormSubmit("register-form", {
