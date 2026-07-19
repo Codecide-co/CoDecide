@@ -1,4 +1,4 @@
-import { postApiData } from "@utils/api";
+import { postApiData } from "@core/api";
 
 export class AuthError extends Error {
   constructor(message, status) {
