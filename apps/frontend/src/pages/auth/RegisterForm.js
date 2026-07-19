@@ -3,7 +3,7 @@ import { validateRegisterForm } from "@core/validators";
 import { useFormSubmit } from "@components/forms/FormHelper";
 import { navigateTo } from "@core/helpers";
 
-export function initRegisterView(onSuccess) {
+export function initRegisterForm(onSuccess) {
   useFormSubmit("register-form", {
     validator: validateRegisterForm,
     onSubmit: (values) => {
@@ -32,7 +32,7 @@ export function initRegisterView(onSuccess) {
   });
 }
 
-export function RegisterView() {
+export function RegisterFormView() {
   return `
 <section class="auth-form-section">
   <header class="auth-form-header">
