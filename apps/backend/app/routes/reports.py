@@ -83,7 +83,7 @@ def create_report():
             location=data.get("location"),
             is_anonymous=data.get("is_anonymous", False),
         )
-        return jsonify(report.to_dict()), 201
+        return jsonify(report.to_dict(current_user_id=request.current_user.id)), 201
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
 
@@ -105,7 +105,7 @@ def get_report(report_id: int):
 
     try:
         report = ReportService.get_by_id(report_id)
-        data = report.to_dict()
+        data = report.to_dict(current_user_id=request.current_user.id)
         data["votes_count"] = len(report.votes)
         data["upvotes"] = sum(1 for v in report.votes if v.vote_type == "up")
         data["downvotes"] = sum(1 for v in report.votes if v.vote_type == "down")
@@ -118,9 +118,11 @@ def get_report(report_id: int):
             {
                 "id": c.id,
                 "body": c.body,
-                "user_id": c.user_id,
-                "author_name": c.author.name if c.author else None,
                 "created_at": c.created_at.isoformat(),
+                **({} if report.is_anonymous else {
+                    "user_id": c.user_id,
+                    "author_name": c.author.name if c.author else None,
+                }),
             }
             for c in report.comments
         ]
@@ -166,7 +168,7 @@ def update_status(report_id: int):
             admin_id=request.current_user.id,
             comment=data.get("comment"),
         )
-        return jsonify(report.to_dict()), 200
+        return jsonify(report.to_dict(current_user_id=request.current_user.id)), 200
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
 
@@ -229,6 +231,7 @@ def add_comment(report_id: int):
             user_id=request.current_user.id,
             body=data["body"],
         )
-        return jsonify(comment.to_dict()), 201
+        report = ReportService.get_by_id(report_id)
+        return jsonify(comment.to_dict(hide_author=report.is_anonymous)), 201
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
