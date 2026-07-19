@@ -1,6 +1,6 @@
-import { HeaderLanding } from "@layout/Header";
-import { FooterLanding } from "@layout/Footer";
-import { isAuthenticated } from "@utils/utils";
+import { HeaderLanding } from "@layouts/Header";
+import { FooterLanding } from "@layouts/Footer";
+import { isAuthenticated } from "@core/helpers";
 
 export function LandingView() {
 return`

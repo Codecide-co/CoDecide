@@ -1,9 +1,10 @@
 import { TextAreaView, initTextAreaCount } from "@components/ui/TextArea";
 import { FileUploadView, initFileUpload } from "@components/ui/FileUpload";
 import { CategoryPickerView, initCategoryPicker } from "@components/domain/CategoryPicker";
-import { validateReportForm, DESCRIPTION_MAX_LENGTH } from "@utils/validators";
+import { validateReportForm, DESCRIPTION_MAX_LENGTH } from "@core/validators";
 import { createReport } from "@services/reports.service";
 import { uploadAttachment } from "@services/attachments.service";
+import { getCategories } from "@services/categories.service";
 
 let isSubmitting = false;
 
@@ -63,7 +64,7 @@ export function initCreateReportView(onSuccess) {
   const form = document.getElementById("create-report-form");
   if (!form) return;
 
-  initCategoryPicker();
+  getCategories().then((cats) => initCategoryPicker(cats)).catch(() => {});
   initTextAreaCount("description", DESCRIPTION_MAX_LENGTH);
   const fileUpload = initFileUpload("photos");
 
