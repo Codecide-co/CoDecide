@@ -69,17 +69,20 @@ class Report(db.Model):
 
         return f"CD-{uuid.uuid4().hex[:8].upper()}"
 
-    def to_dict(self) -> dict:
+    def to_dict(self, current_user_id: int | None = None) -> dict:
         """
         Serialize the report to a dictionary.
+
+        Args:
+            current_user_id: ID of the requesting user (for is_own_report).
 
         Returns:
             dict: Report data including computed fields like author_name,
                 category_name, and vote/comment metadata.
         """
-        
+
         author_name = "Anonymous" if self.is_anonymous else (self.author.name if self.author else None)
-        return {
+        result = {
             "id": self.id,
             "title": self.title,
             "description": self.description,
@@ -89,8 +92,11 @@ class Report(db.Model):
             "is_anonymous": self.is_anonymous,
             "category_id": self.category_id,
             "category_name": self.category.name if self.category else None,
-            "user_id": self.user_id,
             "author_name": author_name,
+            "is_own_report": current_user_id is not None and current_user_id == self.user_id,
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat(),
         }
+        if not self.is_anonymous:
+            result["user_id"] = self.user_id
+        return result

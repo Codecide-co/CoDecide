@@ -111,4 +111,4 @@ def assign_report(report_id: int):
     report.assigned_to = data["user_id"]
     db.session.commit()
 
-    return jsonify(report.to_dict()), 200
+    return jsonify(report.to_dict(current_user_id=request.current_user.id)), 200

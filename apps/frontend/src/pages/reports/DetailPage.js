@@ -52,7 +52,7 @@ function renderReport(report, reportId) {
       </div>` : ""}
 
       <div class="report-detail-stats">
-        ${VotingWidgetView({ reportId: report.id, upvotes: report.upvotes || 0, downvotes: report.downvotes || 0, userVote: report.user_vote, isOwnReport: authStore.user?.id === report.user_id })}
+        ${VotingWidgetView({ reportId: report.id, upvotes: report.upvotes || 0, downvotes: report.downvotes || 0, userVote: report.user_vote, isOwnReport: report.is_own_report })}
         <span>${report.comments_count || 0} comments</span>
       </div>
 

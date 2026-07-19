@@ -121,7 +121,7 @@ class ReportService:
 
         reports = []
         for report in pagination.items:
-            r = report.to_dict()
+            r = report.to_dict(current_user_id=current_user_id)
             r["votes_count"] = len(report.votes)
             r["upvotes"] = sum(1 for v in report.votes if v.vote_type == "up")
             r["downvotes"] = sum(1 for v in report.votes if v.vote_type == "down")

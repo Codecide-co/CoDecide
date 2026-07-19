@@ -33,19 +33,27 @@ class Comment(db.Model):
     author: Mapped["User"] = relationship("User", back_populates="comments")
     report: Mapped["Report"] = relationship("Report", back_populates="comments")
 
-    def to_dict(self) -> dict:
+    def to_dict(self, hide_author: bool = False) -> dict:
         """
         Serialize the comment to a dictionary.
+
+        Args:
+            hide_author: If True, omit user_id and set author_name to "Anonymous".
 
         Returns:
             dict: Comment data including body, author, and timestamps.
         """
-        
-        return {
+
+        result = {
             "id": self.id,
             "body": self.body,
-            "user_id": self.user_id,
             "report_id": self.report_id,
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat(),
         }
+        if hide_author:
+            result["author_name"] = "Anonymous"
+        else:
+            result["user_id"] = self.user_id
+            result["author_name"] = self.author.name if self.author else None
+        return result
