@@ -1,3 +1,5 @@
+import { HeaderHome } from "@layouts/Header";
+import { SidebarHome } from "@layouts/Sidebar";
 import { TextAreaView, initTextAreaCount } from "@components/ui/TextArea";
 import { FileUploadView, initFileUpload } from "@components/ui/FileUpload";
 import { CategoryPickerView, initCategoryPicker } from "@components/domain/CategoryPicker";
@@ -10,54 +12,60 @@ let isSubmitting = false;
 
 export function CreateReportView() {
   return `
-    <section class="report-page">
+    ${HeaderHome()}
+    <div class="auth-layout flex flex-row">
+      ${SidebarHome()}
+      <main class="container-home">
+        <section class="report-page create-report-section">
 
-    <header>
-        <h2>New Report</h2>
-        <p>Describe the issue so your community can take action.</p>
-    </header>
+        <header>
+            <h2>New Report</h2>
+            <p>Describe the issue so your community can take action.</p>
+        </header>
 
-    <form id="create-report-form" novalidate>
+        <form id="create-report-form" novalidate>
 
-        <div>
-            <label for="title">Title</label>
-            <input id="title" name="title" type="text" placeholder="e.g. Water leak in parking lot">
-            <small id="title-error"></small>
-        </div>
+            <div>
+                <label for="title">Title</label>
+                <input id="title" name="title" type="text" placeholder="e.g. Water leak in parking lot">
+                <small id="title-error"></small>
+            </div>
 
-        ${TextAreaView({
-          id: "description",
-          label: "Description",
-          placeholder: "Give as much detail as possible...",
-          maxLength: DESCRIPTION_MAX_LENGTH,
-        })}
+            ${TextAreaView({
+              id: "description",
+              label: "Description",
+              placeholder: "Give as much detail as possible...",
+              maxLength: DESCRIPTION_MAX_LENGTH,
+            })}
 
-        ${CategoryPickerView()}
+            ${CategoryPickerView()}
 
-        ${FileUploadView({
-          id: "photos",
-          label: "Photos (optional)",
-          multiple: true,
-          accept: ".png,.jpg,.jpeg,.gif,.webp,.pdf,.doc,.docx,.mp4,.mov,.avi",
-        })}
+            ${FileUploadView({
+              id: "photos",
+              label: "Photos (optional)",
+              multiple: true,
+              accept: ".png,.jpg,.jpeg,.gif,.webp,.pdf,.doc,.docx,.mp4,.mov,.avi",
+            })}
 
-        <div class="anonymous-checkbox-wrap">
-            <label for="anonymous">
-                <input id="anonymous" name="anonymous" type="checkbox">
-                Submit anonymously
-                <span class="anonymous-tooltip">Your name and personal details will not be displayed with this report. Community members and authorities will see the issue without knowing who submitted it.</span>
-            </label>
-        </div>
+            <div class="anonymous-checkbox-wrap">
+                <label for="anonymous">
+                    <input id="anonymous" name="anonymous" type="checkbox">
+                    Submit anonymously
+                    <span class="anonymous-tooltip">Your name and personal details will not be displayed with this report. Community members and authorities will see the issue without knowing who submitted it.</span>
+                </label>
+            </div>
 
-        <div id="submit-error" role="alert"></div>
+            <div id="submit-error" role="alert"></div>
 
-        <button id="submit-btn" type="submit">
-            Submit Report
-        </button>
+            <button id="submit-btn" type="submit">
+                Submit Report
+            </button>
 
-    </form>
+        </form>
 
-    </section>`;
+        </section>
+      </main>
+    </div>`;
 }
 
 export function initCreateReportView(onSuccess) {
