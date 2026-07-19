@@ -8,86 +8,121 @@ Single-page application built with **Vanilla JavaScript (ES Modules)**, **Vite**
 
 ```
 src/
-├── assets/            # Static resources (images, icons, SVGs)
-├── components/
-│   ├── ui/            # Generic reusable UI primitives
-│   │                   # (Button, Input, Modal, Badge, Spinner, etc.)
-│   └── domain/        # Domain-specific composed components
-│                       # (ReportCard, VotingWidget, CommentList, etc.)
-├── layout/            # App shell components
-│                       # (Header, Footer, Sidebar, MainLayout)
-├── pages/             # One directory per route/view
-│   ├── home/          # Landing / dashboard page
-│   ├── reports/       # Report listing, creation, detail
-│   ├── profile/       # User profile
-│   ├── admin/         # Admin dashboard and report management
-│   └── auth/          # Login and registration
-├── router/            # Hash-based SPA client router
-│                       # Parses URL, loads matching page, handles guards
-├── services/          # API communication layer
-│                       # Each file encapsulates a backend resource
-│                       # (api.js base instance, auth.service.js, reports.service.js, etc.)
-├── store/             # Global reactive state (Proxy-based pattern)
-│                       # Centralized state with subscription/re-render logic
-├── styles/            # Global CSS and Tailwind entry point
-│   └── index.css      # Tailwind directives and global resets
-├── utils/             # Pure helper functions
-│                       # (date formatting, validators, constants, etc.)
-└── main.js            # Application entry point
-                        # Initializes router, mounts app shell
+├── core/               # Pure logic, zero DOM
+│   ├── api.js          # HTTP client with configurable token getter
+│   ├── router.js       # Generic route matching (unused — see src/router/)
+│   ├── store.js        # Reactive state factory (createStore via Proxy)
+│   ├── validators.js   # Form validation logic
+│   └── helpers.js      # Pure utilities (formatDate, escapeHtml, session, navigateTo)
+│
+├── services/           # API layer — one module per domain
+│   ├── auth.service.js
+│   ├── reports.service.js
+│   ├── categories.service.js
+│   ├── stats.service.js
+│   ├── announcements.service.js
+│   └── attachments.service.js
+│
+├── components/         # Purely presentational. No API calls. No business logic.
+│   ├── ui/             # Generic UI primitives (Modal, DataTable, Badge, FileUpload, etc.)
+│   ├── domain/         # Domain-specific composed components (VotingWidget, CategoryPicker)
+│   ├── charts/         # Chart.js components (PieChart, BarChart, LineChart, chartRegistry)
+│   ├── forms/          # Form submission helper (FormHelper)
+│   └── profile/        # Profile sub-components (PersonalInfo, ProfileCard, ProfileReports)
+│
+├── pages/              # One directory per route. Each page orchestrates: builds HTML, calls services, reads store.
+│   ├── landing/        # Public landing page
+│   ├── auth/           # Login / Register (AuthPage, LoginForm, RegisterForm)
+│   ├── home/           # Authenticated home dashboard
+│   ├── reports/        # Listing, creation, detail, success pages
+│   ├── profile/        # User profile
+│   ├── stats/          # Statistics & charts
+│   ├── admin/          # Admin panel
+│   ├── announcements/  # Public announcements
+│   ├── NotFoundPage.js
+│   └── AccessDeniedPage.js
+│
+├── layouts/            # App shell — Header, Sidebar, Footer
+│
+├── router/             # SPA client router: match path → render page, guards
+│
+├── store/              # Reactive state slices (auth.store.js)
+│
+├── styles/             # Global CSS (Tailwind entry, component styles)
+│
+└── main.js             # Entry point: configure API, run router
 ```
 
 ## Data Flow
 
 ```
 main.js
-  └─> router/
-        └─> pages/         (loads page module)
-              └─> components/   (renders UI)
-                    └─> services/    (HTTP calls to backend)
-                          └─> store/  (updates reactive state)
-                                └─> views re-render on state change
+  └─> router/              (match path → delegate)
+        └─> pages/         (orchestrate: HTML + services + store)
+              ├─> components/   (render UI, no side effects)
+              └─> services/     (HTTP calls to backend)
+                    └─> core/api.js  (low-level HTTP client)
 ```
 
 ## Layer Responsibilities
 
+### `core/`
+- Pure logic with zero DOM manipulation
+- `api.js` — configurable HTTP client (token getter injected via `configureApi`)
+- `store.js` — `createStore` factory using JavaScript `Proxy` for reactivity
+- `validators.js` — pure validation functions returning `{ isValid, errors }`
+- `helpers.js` — `formatDate`, `escapeHtml`, session management, `navigateTo`
+
 ### `router/`
-- Listens to `hashchange` events
-- Matches URL patterns to page modules
-- Supports route guards (e.g., redirect if not authenticated)
-- Lazy-loads page modules on demand
+- Listens to `popstate` events
+- Route guards: redirect anonymous users, block non-admin routes
+- Delegates rendering to `pages/` via the `render(app, view, init?)` helper
+- Route map is a declarative array: `{ path, view, init }` entries + regex patterns
 
 ### `pages/`
-- One module per route
-- Orchestrates components, services, and store for that view
-- Owns the page lifecycle (on mount, on destroy)
+- One module (or directory) per route
+- Each page exports a `XxxPageView()` function returning HTML, and optionally an `initXxxPage()` for event binding
+- Orchestrates: builds the full HTML template (layouts + components), calls services, reads store
+- No business logic in the template — all logic lives in `init` functions
 
 ### `components/`
-- **`ui/`**: Pure presentational components. Receive props, render HTML. No business logic.
-- **`domain/`**: Compose UI components with domain data. May call services or read from store.
+- Purely presentational: receive data, return HTML
+- No API calls, no `document.querySelector`, no business logic
+- `ui/` — generic primitives usable anywhere
+- `domain/` — composed components that combine UI primitives with domain concepts
+- `charts/` — Chart.js wrappers (each component owns a canvas and registers with `chartRegistry`)
+- Components that need event binding export a separate `init` function (e.g., `initVotingWidget`)
 
 ### `services/`
 - Single responsibility: communicate with the backend API
-- Return parsed data or throw typed errors
-- Never manipulate the DOM directly
+- Each file encapsulates one resource domain
+- Return parsed data or throw errors
+- Never manipulate the DOM
+
+### `layouts/`
+- Define the app shell: `HeaderHome`, `HeaderLanding`, `SidebarHome`, `FooterLanding`
+- `HeaderHome` includes the sidebar toggle button
+- `SidebarHome` supports a `data-collapsed` attribute for icon-only mode (driven by CSS `:has()`)
 
 ### `store/`
-- Centralized reactive state using JavaScript `Proxy`
-- Each domain (auth, reports) has its own store slice
-- Components subscribe to slices; store notifies on change
-
-### `layout/`
-- Defines the app shell: header, navigation, main content area
-- Wraps page content consistently across routes
-
-### `utils/`
-- Pure functions with zero side effects
-- Shared helpers used across all layers
+- Reactive state slices created with `createStore` from `core/store.js`
+- `auth.store.js` holds the current user and provide...
 
 ## Conventions
 
-- **Files**: PascalCase for components (`Button.js`), camelCase for services/utils (`auth.service.js`)
-- **Exports**: Default export for components/pages, named exports for services/utils
-- **Imports**: Use `@` path aliases (e.g., `import Button from '@components/ui/Button'`)
-- **DOM**: Never use `document.querySelector` inside components — receive container as argument
-- **State**: Components read from store, never write directly — use service functions
+- **Files**: PascalCase for components (`Button.js`), camelCase for services (`auth.service.js`)
+- **Exports**: Named exports for everything (no default exports)
+- **Page pattern**: `XxxPage.js` exports `XxxPageView` (HTML) + optionally `initXxxPage` (events)
+- **Imports**: Use `@` path aliases (`@core/helpers`, `@services/reports.service`, `@components/ui/Modal`)
+- **Core aliases**: `@core`, `@layouts`, `@services`, `@store`, `@router`, `@components`
+- **No comments in code**: Keep the code self-documenting
+- **DOM**: Components receive data as arguments, never query the DOM themselves
+
+## Route Guard Logic
+
+The router applies three guards in order:
+1. **Authenticated on auth pages**: redirect to `/home`
+2. **Unauthenticated on protected pages**: redirect to `/` (landing)
+3. **Non-admin on `/admin`**: show `AccessDeniedPage`
+
+Routes are defined as a flat array — the first match wins. Dynamic segments use regex patterns (e.g., `/reports/:id`).
