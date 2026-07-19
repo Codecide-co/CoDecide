@@ -1,35 +1,50 @@
 import { authStore } from "@store/auth.store";
-import { HeaderHome } from "@/layout/Header";
-import { SidebarHome } from "@/layout/Sidebar";
-import { fetchApiData, patchApiData, postApiData } from "@utils/api";
+import { HeaderHome } from "@/layouts/Header";
+import { SidebarHome } from "@/layouts/Sidebar";
+import { fetchApiData, patchApiData, postApiData } from "@core/api";
 import { openModal } from "@components/ui/Modal";
 import { ProfileCard } from "@components/profile/ProfileCard";
 import { PersonalInfo } from "@components/profile/PersonalInfo";
 import { ProfileReports } from "@components/profile/ProfileReports";
 import { SecuritySection } from "@components/profile/SecuritySection";
+import { fetchMyReports } from "@services/reports.service";
 
-export default function profileView() {
-  let user = null;
+export function ProfilePageView() {
+  return `
+    ${HeaderHome()}
+    <div class="auth-layout flex flex-row">
+      ${SidebarHome()}
+      <main class="container-home">
+        <div id="profile-content" class="flex flex-col items-center justify-center">${renderSkeletons()}</div>
+      </main>
+    </div>
+  `;
+}
 
-  function renderSkeletons() {
-    return `
-      <div class="max-w-6xl mx-auto p-6">
-        <div class="profile-skeleton-card"><div class="skeleton-avatar"></div>
-        <div class="skeleton-line w-40 mx-auto mt-4"></div>
-        <div class="skeleton-line w-60 mx-auto mt-2"></div></div>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-          <div class="profile-skeleton-card"><div class="skeleton-line w-48 mb-4"></div>
-          <div class="grid grid-cols-2 gap-3"><div class="skeleton-block h-16"></div>
-          <div class="skeleton-block h-16"></div><div class="skeleton-block h-16"></div>
-          <div class="skeleton-block h-16"></div></div></div>
-          <div class="profile-skeleton-card"><div class="skeleton-line w-36 mb-4"></div>
-          <div class="skeleton-block h-16 mb-3"></div>
-          <div class="skeleton-block h-16 mb-3"></div></div>
-        </div>
-        <div class="profile-skeleton-card mt-6 h-20"></div>
+function renderSkeletons() {
+  return `
+    <div class="max-w-6xl mx-auto p-6">
+      <div class="profile-skeleton-card"><div class="skeleton-avatar"></div>
+      <div class="skeleton-line w-40 mx-auto mt-4"></div>
+      <div class="skeleton-line w-60 mx-auto mt-2"></div></div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+        <div class="profile-skeleton-card"><div class="skeleton-line w-48 mb-4"></div>
+        <div class="grid grid-cols-2 gap-3"><div class="skeleton-block h-16"></div>
+        <div class="skeleton-block h-16"></div><div class="skeleton-block h-16"></div>
+        <div class="skeleton-block h-16"></div></div></div>
+        <div class="profile-skeleton-card"><div class="skeleton-line w-36 mb-4"></div>
+        <div class="skeleton-block h-16 mb-3"></div>
+        <div class="skeleton-block h-16 mb-3"></div></div>
       </div>
-    `;
-  }
+      <div class="profile-skeleton-card mt-6 h-20"></div>
+    </div>
+  `;
+}
+
+export function initProfilePage() {
+  let user = null;
+  let reports = [];
+  let reportsLoading = true;
 
   function renderContent() {
     return `
@@ -37,7 +52,7 @@ export default function profileView() {
         ${ProfileCard(user)}
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
           ${PersonalInfo(user)}
-          ${ProfileReports(user?.id)}
+          ${ProfileReports({ reports, loading: reportsLoading })}
         </div>
         ${SecuritySection()}
       </div>
@@ -96,30 +111,24 @@ export default function profileView() {
     });
   }
 
-  setTimeout(() => {
-    fetchApiData("/auth/me")
-      .then((data) => {
-        user = data;
-        authStore.user = data;
-        const container = document.getElementById("profile-content");
-        if (container) {
-          container.innerHTML = renderContent();
-          bindListeners();
-        }
-      })
-      .catch(() => {
-        const container = document.getElementById("profile-content");
-        if (container) container.innerHTML = '<p class="text-red-500 text-center py-12">Could not load profile.</p>';
-      });
-  }, 0);
+  fetchApiData("/auth/me")
+    .then((data) => {
+      user = data;
+      authStore.user = data;
 
-  return `
-    ${HeaderHome()}
-    <div class="auth-layout flex flex-row">
-      ${SidebarHome()}
-      <main class="container-home">
-        <div id="profile-content" class="flex flex-col items-center justify-center">${renderSkeletons()}</div>
-      </main>
-    </div>
-  `;
+      fetchMyReports(user.id)
+        .then((r) => { reports = r; reportsLoading = false; })
+        .catch(() => { reportsLoading = false; })
+        .finally(() => {
+          const container = document.getElementById("profile-content");
+          if (container) {
+            container.innerHTML = renderContent();
+            bindListeners();
+          }
+        });
+    })
+    .catch(() => {
+      const container = document.getElementById("profile-content");
+      if (container) container.innerHTML = '<p class="text-red-500 text-center py-12">Could not load profile.</p>';
+    });
 }
