@@ -1,4 +1,4 @@
-import { isAuthenticated } from "@utils/utils";
+import { isAuthenticated } from "@core/helpers";
 import { authStore } from "@store/auth.store";
 
 export function HeaderLanding() {

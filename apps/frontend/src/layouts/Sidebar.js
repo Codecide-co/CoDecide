@@ -1,5 +1,6 @@
-import { authStore, logout as doLogout } from "@store/auth.store";
-import { navigateTo } from "@router/index";
+import { authStore } from "@store/auth.store";
+import { removeSession } from "@core/helpers";
+import { navigateTo } from "@core/helpers";
 
 export function SidebarHome() {
   const user = authStore.user;
@@ -9,7 +10,8 @@ export function SidebarHome() {
       .getElementById("sidebar-logout")
       ?.addEventListener("click", (e) => {
         e.preventDefault();
-        doLogout();
+        removeSession();
+        authStore.user = null;
         navigateTo("/");
       });
     if (localStorage.getItem("sidebarCollapsed") === "true") {
