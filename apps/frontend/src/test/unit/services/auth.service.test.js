@@ -1,11 +1,11 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { AuthError, login, register } from '@services/auth.service.js'
 
-vi.mock('@utils/api', () => ({
+vi.mock('@core/api', () => ({
   postApiData: vi.fn(),
 }))
 
-import { postApiData } from '@utils/api'
+import { postApiData } from '@core/api'
 
 describe('AuthError', () => {
   it('creates an error with message and status', () => {
