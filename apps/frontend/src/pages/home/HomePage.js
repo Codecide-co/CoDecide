@@ -3,6 +3,7 @@ import { HeaderHome } from "@/layouts/Header";
 import { SidebarHome } from "@/layouts/Sidebar";
 import { fetchMyReports } from "@services/reports.service";
 import { fetchApiData, UPLOADS_BASE } from "@core/api";
+import { formatDate } from "@core/helpers";
 
 export function HomePageView() {
   const user = authStore.user;
@@ -151,7 +152,7 @@ export function initHomePage() {
         .map(
           (c) => `
         <div class="home-communicado-item">
-          <div class="home-communicado-date">${new Date(c.created_at).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}</div>
+          <div class="home-communicado-date">${formatDate(c.created_at, "medium")}</div>
           <div class="home-communicado-title">${c.title}</div>
           <p class="home-communicado-desc">${c.body}</p>
         </div>
