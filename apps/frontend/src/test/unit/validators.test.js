@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { isValidEmail, validateLoginForm, validateRegisterForm } from '@/utils/validators'
+import { isValidEmail, validateLoginForm, validateRegisterForm } from '@core/validators'
 
 describe('isValidEmail', () => {
   it('returns true for a valid email', () => {
