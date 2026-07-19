@@ -1,30 +1,26 @@
-import { fetchApiData } from "@utils/api";
-
-export function ProfileReports(userId) {
+export function ProfileReports({ reports, loading, error }) {
   const wrapperId = "profile-reports-wrapper";
 
   setTimeout(() => {
     const wrapper = document.getElementById(wrapperId);
-    if (!wrapper || !userId) return;
+    if (!wrapper) return;
 
-    fetchApiData(`/reports?user_id=${userId}&per_page=6`)
-      .then((data) => {
-        const reports = data.reports || [];
-        if (reports.length === 0) {
-          wrapper.innerHTML = '<p class="profile-empty">No reports yet.</p>';
-          return;
-        }
-        wrapper.innerHTML = reports.map((r) => `
-          <div class="profile-report-card">
-            <div class="profile-report-title">${r.title}</div>
-            <div class="profile-report-id">#${r.tracking_number || r.id}</div>
-            <span class="home-status-badge ${r.status}">${r.status.replace("_", " ")}</span>
-          </div>
-        `).join("");
-      })
-      .catch(() => {
-        wrapper.innerHTML = '<p class="profile-error">Could not load reports.</p>';
-      });
+    if (loading) return;
+    if (error) {
+      wrapper.innerHTML = '<p class="profile-error">Could not load reports.</p>';
+      return;
+    }
+    if (!reports || reports.length === 0) {
+      wrapper.innerHTML = '<p class="profile-empty">No reports yet.</p>';
+      return;
+    }
+    wrapper.innerHTML = reports.map((r) => `
+      <div class="profile-report-card">
+        <div class="profile-report-title">${r.title}</div>
+        <div class="profile-report-id">#${r.tracking_number || r.id}</div>
+        <span class="home-status-badge ${r.status}">${r.status.replace("_", " ")}</span>
+      </div>
+    `).join("");
   }, 0);
 
   return `
