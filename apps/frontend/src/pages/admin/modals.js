@@ -1,6 +1,6 @@
 import { openModal } from "@components/ui/Modal";
 import { updateReportStatus } from "@services/reports.service";
-import { fetchApiData, postApiData } from "@utils/api";
+import { fetchApiData, postApiData } from "@core/api";
 import { createAnnouncement } from "@services/announcements.service";
 
 export function showStatusChangeModal(reportId, newStatus, onComplete) {
