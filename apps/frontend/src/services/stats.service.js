@@ -1,4 +1,4 @@
-import { fetchApiData } from "@utils/api";
+import { fetchApiData } from "@core/api";
 
 export async function fetchCommunityStats() {
   return fetchApiData("/stats");
