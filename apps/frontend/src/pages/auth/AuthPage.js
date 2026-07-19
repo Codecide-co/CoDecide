@@ -1,7 +1,7 @@
 import { viewHeroLogin } from "./heroLogin";
 import { LoginView, initLoginView } from "./login.view";
 import { RegisterView, initRegisterView } from "./register.view";
-import { HeaderLanding } from "@/layout/Header";
+import { HeaderLanding } from "@/layouts/Header";
 
 export function AuthView(formName) {
   return `
