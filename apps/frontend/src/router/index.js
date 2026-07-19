@@ -1,32 +1,17 @@
-import adminDashboardView from "@/views/adminDashboardView.js";
-import loginView from "@/views/loginView.js";
-import registerView from "@/views/registerView.js";
-import homeView from "@/views/homeView.js";
-import createReportView from "@/views/createReportView.js";
-import reportSuccessView from "@/views/reportSuccessView.js";
 import { LandingView } from "@pages/home/LandingView";
-import notFoundView from "@/views/notFound.js";
-import { isAuthenticated, isAdmin } from "@/utils/utils.js";
-import { navigateTo } from "@/utils/navigate.js";
-import profileView from "@/views/profileView.js";
-import reportsView from "@/views/reportsView.js";
-import reportDetailView from "@/views/reportDetailView.js";
-import announcementsView from "@/views/announcementsView.js";
-import statsView from "@/views/statsView.js";
-
-const routes = {
-  "/": LandingView,
-  "/login": loginView,
-  "/register": registerView,
-  "/home": homeView,
-  "/profile": profileView,
-  "/reports": reportsView,
-  "/announcements": announcementsView,
-  "/reports/create": createReportView,
-  "/reports/success": reportSuccessView,
-  "/admin": adminDashboardView,
-  "/stats": statsView,
-};
+import { AuthView, initAuth } from "@pages/auth/AuthPage";
+import { CreateReportView, initCreateReportView } from "@pages/reports/create";
+import { AdminDashboardView } from "@pages/admin/dashboard";
+import { HomePageView, initHomePage } from "@pages/home/HomePage";
+import { ProfilePageView, initProfilePage } from "@pages/profile/ProfilePage";
+import { ReportsPageView, initReportsPage } from "@pages/reports/ReportsPage";
+import { DetailPageView } from "@pages/reports/DetailPage";
+import { AnnouncementsPageView } from "@pages/announcements/AnnouncementsPage";
+import { StatsPageView } from "@pages/stats/StatsPage";
+import { SuccessPageView } from "@pages/reports/SuccessPage";
+import { NotFoundPageView } from "@pages/NotFoundPage";
+import { isAuthenticated, isAdmin } from "@core/helpers";
+import { navigateTo } from "@core/helpers";
 
 const adminOnlyRoutes = ["/admin"];
 
@@ -43,7 +28,8 @@ export const router = () => {
 
   if (isAuthenticated() && (path === "/login" || path === "/register")) {
     history.replaceState({}, "", "/home");
-    app.innerHTML = homeView();
+    app.innerHTML = HomePageView();
+    initHomePage();
     return;
   }
 
@@ -72,7 +58,7 @@ export const router = () => {
 
   const reportMatch = path.match(/^\/reports\/(\d+)$/);
   if (reportMatch) {
-    app.innerHTML = reportDetailView(reportMatch[1]);
+    app.innerHTML = DetailPageView(reportMatch[1]);
     document.querySelectorAll("[data-link]").forEach((link) => {
       link.addEventListener("click", (e) => {
         e.preventDefault();
@@ -82,8 +68,33 @@ export const router = () => {
     return;
   }
 
-  const view = routes[path] || notFoundView;
-  app.innerHTML = view();
+  if (path === "/login" || path === "/register") {
+    const formName = path === "/register" ? "register" : "login";
+    app.innerHTML = AuthView(formName);
+    initAuth(formName);
+  } else if (path === "/home") {
+    app.innerHTML = HomePageView();
+    initHomePage();
+  } else if (path === "/profile") {
+    app.innerHTML = ProfilePageView();
+    initProfilePage();
+  } else if (path === "/reports") {
+    app.innerHTML = ReportsPageView();
+    initReportsPage();
+  } else if (path === "/reports/create") {
+    app.innerHTML = CreateReportView();
+    initCreateReportView(() => navigateTo("/reports/success"));
+  } else if (path === "/admin") {
+    app.innerHTML = AdminDashboardView();
+  } else if (path === "/announcements") {
+    app.innerHTML = AnnouncementsPageView();
+  } else if (path === "/stats") {
+    app.innerHTML = StatsPageView();
+  } else if (path === "/reports/success") {
+    app.innerHTML = SuccessPageView();
+  } else {
+    app.innerHTML = NotFoundPageView();
+  }
 
   document.querySelectorAll("[data-link]").forEach((link) => {
     link.addEventListener("click", (e) => {
