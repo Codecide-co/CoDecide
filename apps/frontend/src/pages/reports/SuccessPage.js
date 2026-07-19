@@ -1,6 +1,6 @@
-import { navigateTo } from "@router/index";
+import { navigateTo, escapeHtml } from "@core/helpers";
 
-export default function reportSuccessView() {
+export function SuccessPageView() {
   let report = null;
   try {
     const stored = sessionStorage.getItem("lastReport");
@@ -48,10 +48,4 @@ export default function reportSuccessView() {
       </div>
     </div>
   `;
-}
-
-function escapeHtml(str) {
-  const div = document.createElement("div");
-  div.textContent = str;
-  return div.innerHTML;
 }
