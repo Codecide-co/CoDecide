@@ -104,7 +104,7 @@ export function initReportsPage() {
                   <span>${formatDate(r.created_at)}</span>
                 </div>
                 <div class="report-card-footer">
-                  ${VotingWidgetView({ reportId: r.id, upvotes: r.upvotes || 0, downvotes: r.downvotes || 0, userVote: r.user_vote, isOwnReport: authStore.user?.id === r.user_id })}
+                  ${VotingWidgetView({ reportId: r.id, upvotes: r.upvotes || 0, downvotes: r.downvotes || 0, userVote: r.user_vote, isOwnReport: r.is_own_report })}
                   <span>${r.comments_count || 0} comments</span>
                   ${r.is_anonymous ? `
                   <span class="anonymous-badge">
