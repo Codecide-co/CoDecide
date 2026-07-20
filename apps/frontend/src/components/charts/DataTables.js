@@ -1,11 +1,12 @@
 import { escapeHtml } from "@core/helpers";
+import { t } from "@core/i18n";
 
 export function ResolutionTable({ data, catMap, containerId = "stats-resolution-table" }) {
   const container = document.getElementById(containerId);
   if (!container) return;
 
   if (!data || Object.keys(data).length === 0) {
-    container.innerHTML = `<p class="stats-empty">No resolution data available.</p>`;
+    container.innerHTML = `<p class="stats-empty">${t("stats.table.no_resolution")}</p>`;
     return;
   }
 
@@ -14,7 +15,7 @@ export function ResolutionTable({ data, catMap, containerId = "stats-resolution-
     .sort((a, b) => b[1].avg_hours - a[1].avg_hours);
 
   if (rows.length === 0) {
-    container.innerHTML = `<p class="stats-empty">No reports have been resolved yet.</p>`;
+    container.innerHTML = `<p class="stats-empty">${t("stats.table.no_resolved")}</p>`;
     return;
   }
 
@@ -25,7 +26,7 @@ export function ResolutionTable({ data, catMap, containerId = "stats-resolution-
         <col style="width:25%">
       </colgroup>
       <thead>
-        <tr><th>Category</th><th>Avg Time (hours)</th></tr>
+        <tr><th>${t("stats.table.category")}</th><th>${t("stats.table.avg_hours")}</th></tr>
       </thead>
       <tbody>
         ${rows.map(([catId, v]) => `
@@ -44,7 +45,7 @@ export function TopVotedTable({ reports, containerId = "stats-top-voted" }) {
   if (!container) return;
 
   if (!reports || reports.length === 0) {
-    container.innerHTML = `<p class="stats-empty">No votes yet.</p>`;
+    container.innerHTML = `<p class="stats-empty">${t("stats.table.no_votes")}</p>`;
     return;
   }
 
@@ -58,7 +59,7 @@ export function TopVotedTable({ reports, containerId = "stats-top-voted" }) {
         <col style="width:12%">
       </colgroup>
       <thead>
-        <tr><th>#</th><th>Title</th><th>Up</th><th>Down</th><th>Total</th></tr>
+        <tr><th>${t("stats.table.num")}</th><th>${t("stats.table.title")}</th><th>${t("stats.table.up")}</th><th>${t("stats.table.down")}</th><th>${t("stats.table.total")}</th></tr>
       </thead>
       <tbody>
         ${reports.map((r, i) => `

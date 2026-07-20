@@ -1,9 +1,11 @@
+import { t } from "@core/i18n";
+
 export function VotingWidgetView({ reportId, upvotes, downvotes, userVote, isOwnReport, isAdmin }) {
   const upActive = userVote === "up" ? "voting-btn--active" : "";
   const downActive = userVote === "down" ? "voting-btn--active" : "";
   const disabled = isOwnReport || isAdmin ? "voting-btn--disabled" : "";
   const disabledAttr = isOwnReport || isAdmin ? "disabled" : "";
-  const title = isAdmin ? "Admins cannot vote" : isOwnReport ? "Cannot vote on your own report" : "Upvote";
+  const title = isAdmin ? t("voting.admin_disabled") : isOwnReport ? t("voting.own_report") : t("voting.upvote");
 
   return `
     <div class="voting-widget" data-report-id="${reportId}" data-own-report="${isOwnReport}" data-user-vote="${userVote || ""}">

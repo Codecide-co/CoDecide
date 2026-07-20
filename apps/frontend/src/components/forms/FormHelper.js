@@ -1,3 +1,5 @@
+import { t } from "@core/i18n";
+
 export function useFormSubmit(formId, { validator, onSubmit, onSuccess }) {
   const form = document.getElementById(formId);
   if (!form) return;
@@ -39,7 +41,7 @@ export function useFormSubmit(formId, { validator, onSubmit, onSuccess }) {
       }
     }
 
-    setLoading(true, submitBtn, "Processing...");
+    setLoading(true, submitBtn, t("common.processing"));
 
     try {
       await onSubmit(values);
@@ -48,7 +50,7 @@ export function useFormSubmit(formId, { validator, onSubmit, onSuccess }) {
     } catch (error) {
       const globalError = form.querySelector("[id$='-error'][role='alert']");
       if (globalError) {
-        globalError.textContent = error.message || "Something went wrong. Please try again.";
+        globalError.textContent = error.message || t("common.error_try_again");
       }
     }
 
