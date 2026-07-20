@@ -188,7 +188,7 @@ export function DetailPageView(reportId) {
     ${HeaderHome()}
     <div class="auth-layout flex flex-row">
       ${SidebarHome()}
-      <main class="container-home">
+      <main class="container-home container-home--report-detail">
         <section class="report-detail-page">
           <div id="report-detail">
             <p class="report-detail-loading">Loading report...</p>

@@ -365,3 +365,27 @@ img, svg, video, canvas {
   max-width: 100%;
   height: auto;
 }
+
+/* View Reports */
+@media (max-width: 600px) {
+  .report-page {
+    padding: 1.5rem 1rem;
+  }
+
+  #create-report-form {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+
+  .report-page header h2 {
+    font-size: 1.5rem;
+  }
+
+  .reports-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .reports-filter-bar {
+    flex-direction: column;
+  }
+}
