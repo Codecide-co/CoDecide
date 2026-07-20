@@ -173,6 +173,55 @@ Servidor en `http://localhost:5000`.
 
 ---
 
+## Migraciones de Base de Datos
+
+Los cambios de esquema se gestionan con **Flask-Migrate** (Alembic). Todos los archivos de migración están en `migrations/versions/`.
+
+### Flujo de trabajo
+
+1. Editar un modelo en `app/models/` (agregar columna, crear tabla, etc.)
+2. Generar una migración:
+   ```bash
+   flask db migrate -m "add avatar_url to users"
+   ```
+3. Revisar el archivo generado en `migrations/versions/`
+4. Aplicarla:
+   ```bash
+   flask db upgrade
+   ```
+
+### Primera configuración
+
+Si la carpeta `migrations/` no existe (ej. clonado fresco):
+
+```bash
+flask db init          # Crear el directorio de migraciones
+flask db stamp head    # Marcar la BD existente como actualizada
+```
+
+> **Nota:** `flask db stamp head` es crítico — le indica a Alembic que el estado actual de la BD coincide con los modelos sin ejecutar SQL. Úsalo al configurar un nuevo entorno con una BD existente o al reinicializar migraciones.
+
+### Comandos comunes
+
+| Comando | Propósito |
+|---------|-----------|
+| `flask db init` | Crear el directorio `migrations/` (una vez) |
+| `flask db migrate -m "msg"` | Auto-generar un script de migración desde cambios en modelos |
+| `flask db upgrade` | Aplicar todas las migraciones pendientes |
+| `flask db downgrade` | Revertir la última migración |
+| `flask db stamp head` | Marcar la BD como actualizada sin ejecutar SQL |
+| `flask db history` | Mostrar la cadena completa de migraciones |
+| `flask db current` | Mostrar qué revisión está aplicada actualmente |
+| `flask db heads` | Mostrar todas las revisiones cabeza (detectar forks) |
+
+### Solución de problemas
+
+- **Múltiples cabezas** — Si `flask db upgrade` falla con "Multiple head revisions", elimina el archivo de migración no deseado de `migrations/versions/` y ejecuta `flask db upgrade` de nuevo.
+- **Error "no such table"** — La tabla existe en el modelo pero no se generó una migración. Ejecuta `flask db migrate -m "add <table>"` para crearla.
+- **Migración ya aplicada** — Si se agregó un archivo de migración manualmente, ejecuta `flask db stamp head` para sincronizar Alembic sin re-ejecutarlo.
+
+---
+
 ## Endpoints
 
 Documentacion detallada por dominio en [api/](api/):
