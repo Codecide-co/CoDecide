@@ -4,6 +4,7 @@ Authentication service layer.
 Handles user registration, login, profile management, and password changes.
 """
 
+import random
 from datetime import datetime, timezone
 from typing import Optional
 
@@ -53,6 +54,7 @@ class AuthService:
             apartment=apartment,
             tower=tower,
             role="resident",
+            avatar_url=f"/static/avatars/avatar{random.randint(1, 150)}.svg",
         )
         db.session.add(user)
         db.session.commit()
