@@ -302,6 +302,8 @@ Documentacion detallada por dominio en [api/](api/):
 
 ## Base de datos (MySQL/SQLite)
 
+![Diagrama DER](../../.github/images/der_diagram.png)
+
 ### users
 
 | Campo | Tipo | Descripcion |
