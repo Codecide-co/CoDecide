@@ -1,10 +1,11 @@
-/* ===== ANNOUNCEMENTS PAGE ===== */
+/* ===== ANNOUNCEMENTS PAGE (LANDING) ===== */
 .announcements-page {
-  padding: 6rem 2rem;
-  background: linear-gradient(180deg, #F8FAFC 0%, #EFF6FF 100%);
   text-align: center;
   position: relative;
   min-height: 80vh;
+  background:
+    linear-gradient(135deg, rgba(13,27,42,0.88) 0%, rgba(37,99,235,0.55) 100%),
+    url('/city.jfif') center/cover no-repeat;
 }
 
 .announcements-page::before {
@@ -19,17 +20,19 @@
 
 .announcements-title {
   font-weight: 800;
-  color: var(--color-text-blue);
+  color: #fff;
   font-size: clamp(2rem, 4vw, 2.8rem);
   margin-bottom: 1rem;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 .announcements-subtitle {
-  color: var(--color-text-gray);
+  color: rgba(255,255,255,0.85);
   max-width: 600px;
   margin: 0 auto 3rem;
   font-size: 1.05rem;
   line-height: 1.7;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.3);
 }
 
 /* ===== LIST ===== */
@@ -51,6 +54,8 @@
   border: 1px solid rgba(0,0,0,0.04);
   transition: all 0.3s;
   animation: fadeInUp 0.5s ease-out;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .announcement-card:hover {
@@ -84,6 +89,8 @@
   color: var(--color-text-blue);
   line-height: 1.7;
   margin-bottom: 1rem;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .announcement-author {
@@ -95,17 +102,137 @@
   border-top: 1px solid #EEF2F6;
 }
 
-/* ===== EMPTY / LOADING ===== */
 .announcements-empty {
   text-align: center;
   padding: 3rem;
-  color: var(--color-text-gray);
+  color: rgba(255,255,255,0.6);
   font-size: 0.95rem;
   grid-column: 1 / -1;
 }
 
-/* ===== ANIMATION ===== */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+.announcements-carousel {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 1rem;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
+.announcements-carousel .announcement-card {
+  flex: 0 0 auto;
+  width: 380px;
+  scroll-snap-align: start;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+@media (max-width: 640px) {
+  .announcements-carousel .announcement-card {
+    width: 85vw;
+  }
+}
+
+/* ===== HOME VERSION ===== */
+.container-home--announcements {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background:
+    linear-gradient(135deg, rgba(13,27,42,0.88) 0%, rgba(37,99,235,0.55) 100%),
+    url('/city.jfif') center/cover no-repeat;
+}
+
+.announcements-page--home {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: none;
+  min-height: auto;
+}
+
+.announcements-page--home::before {
+  display: none;
+}
+
+.announcements-page--home .announcements-title,
+.announcements-page--home .announcements-subtitle {
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.announcements-page--home .announcements-scroll {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(4px);
+  border-radius: 16px;
+  padding: 0.5rem 0;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+}
+
+/* ===== HOME COMPACT LIST ===== */
+.home-announcement-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #EEF2F6;
+  transition: background 0.15s;
+}
+.home-announcement-item:last-child {
+  border-bottom: none;
+}
+.home-announcement-item:hover {
+  background: #F8FAFC;
+}
+.home-announcement-date {
+  font-size: 0.65rem;
+  background: #DBEAFE;
+  color: #1D4ED8;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.home-announcement-title {
+  flex: 1;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-text-blue);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.home-announcement-read-more {
+  background: none;
+  border: none;
+  color: #2563EB;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+.home-announcement-read-more:hover {
+  background: #EFF6FF;
+  text-decoration: underline;
+}
+
+.announcements-scroll {
+  max-height: calc(100vh - 280px);
+  overflow-y: auto;
+  padding-right: 4px;
 }
