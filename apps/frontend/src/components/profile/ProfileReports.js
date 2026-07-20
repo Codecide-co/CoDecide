@@ -16,13 +16,15 @@ export function ProfileReports({ reports, loading, error }) {
       wrapper.innerHTML = '<p class="profile-empty">No reports yet.</p>';
       return;
     }
-    wrapper.innerHTML = reports.map((r) => `
-      <div class="profile-report-card" data-id="${r.id}" role="button" tabindex="0">
-        <div class="profile-report-title">${r.title}</div>
-        <div class="profile-report-id">#${r.tracking_number || r.id}</div>
-        <span class="home-status-badge ${r.status}">${r.status.replace("_", " ")}</span>
-      </div>
-    `).join("");
+    wrapper.innerHTML = `<div class="profile-reports-grid">${
+      reports.map((r) => `
+        <div class="profile-report-card" data-id="${r.id}" role="button" tabindex="0">
+          <div class="profile-report-title">${r.title}</div>
+          <div class="profile-report-id">#${r.tracking_number || r.id}</div>
+          <span class="home-status-badge ${r.status}">${r.status.replace("_", " ")}</span>
+        </div>
+      `).join("")
+    }</div>`;
 
     wrapper.querySelectorAll(".profile-report-card").forEach((card) => {
       const id = card.dataset.id;

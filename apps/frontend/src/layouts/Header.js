@@ -1,5 +1,6 @@
 import { isAuthenticated } from "@core/helpers";
 import { authStore } from "@store/auth.store";
+import { UPLOADS_BASE } from "@core/api";
 
 export function HeaderLanding() {
   const loggedIn = isAuthenticated();
@@ -55,7 +56,10 @@ export function HeaderHome() {
   <header class="header-home flex flex-row justify-between items-center">
     <button id="sidebar-toggle" class="sidebar-toggle-btn">☰</button>
     <a id="button-home" class="header-logo" href="/" data-link>CoDecide</a>
-    <a id="button-profile" href="/profile" data-link class="header-icon"><img src="/user.svg" alt="user">${user?.name || "User"}</a>
+    <a id="button-profile" href="/profile" data-link class="header-icon">${user?.avatar_url
+      ? `<img src="${UPLOADS_BASE}${user.avatar_url}" alt="${user.name}" class="header-avatar" />`
+      : `<img src="/user.svg" alt="user" class="header-avatar" />`
+    }<span class="header-username">${user?.name || "User"}</span></a>
   </header>
   `
 }

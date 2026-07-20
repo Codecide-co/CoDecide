@@ -19,16 +19,27 @@
   transition: opacity 0.2s;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-}
-
-.header-icon img {
-  width: 18px;
-  height: 18px;
+  gap: 8px;
+  margin-right: 16px;
 }
 
 .header-icon:hover {
   opacity: 0.8;
+}
+
+.header-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.header-username {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .sidebar-toggle-btn {
