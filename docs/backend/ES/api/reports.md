@@ -210,7 +210,7 @@ Vota un reporte (up/down).
 - No se puede votar el propio reporte.
 - No se puede votar dos veces con el mismo tipo.
 
-**Errors:** 400 (voto invalido, auto-voto o voto duplicado)
+**Errors:** 400 (voto invalido, auto-voto, voto duplicado o administrador no puede votar)
 
 ---
 
