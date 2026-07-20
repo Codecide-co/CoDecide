@@ -7,9 +7,9 @@ export function HeaderLanding() {
 
   let ctaHtml;
   if (path === "/login" || path === "/register") {
-    ctaHtml = '<li><a class="header-nav-link header-nav-cta" href="/" data-link>Home</a></li>';
+    ctaHtml = '<li><a class="header-nav-link header-nav-cta" href="/" data-link>Back to Home</a></li>';
   } else if (loggedIn) {
-    ctaHtml = '<li><a class="header-nav-link header-nav-cta" href="/home" data-link>Login</a></li>';
+    ctaHtml = '<li><a class="header-nav-link header-nav-cta" href="/home" data-link>Home</a></li>';
   } else {
     ctaHtml = '<li><a class="header-nav-link header-nav-cta" href="/login" data-link>Login</a></li>';
   }
