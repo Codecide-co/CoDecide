@@ -89,14 +89,14 @@ export function AdminDashboardView() {
     ${HeaderHome()}
     <div class="auth-layout flex flex-row">
       ${SidebarHome()}
-      <main class="container-home">
+      <main class="container-home container-home--admin">
         <div class="admin-page">
           <div class="flex items-center justify-between">
             <div>
               <h2>Admin Dashboard</h2>
               <p>Manage community reports and monitor key metrics</p>
             </div>
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-3 flex-wrap">
               <button id="btn-new-category" class="admin-btn">+ New Category</button>
               <button id="btn-new-announcement" class="admin-btn">+ New Announcement</button>
             </div>

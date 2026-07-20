@@ -353,6 +353,7 @@
   cursor: pointer;
   transition: all 0.3s;
   position: relative;
+  overflow: hidden;
 }
 
 .report-card:hover {
@@ -375,6 +376,7 @@
   color: var(--color-text-blue);
   line-height: 1.3;
   flex: 1;
+  min-width: 0;
   overflow-wrap: break-word;
   display: -webkit-box;
   -webkit-line-clamp: 2;

@@ -15,7 +15,7 @@ export function ProfilePageView() {
     ${HeaderHome()}
     <div class="auth-layout flex flex-row">
       ${SidebarHome()}
-      <main class="container-home">
+      <main class="container-home container-home--profile">
         <div id="profile-content" class="flex flex-col items-center justify-center">${renderSkeletons()}</div>
       </main>
     </div>
