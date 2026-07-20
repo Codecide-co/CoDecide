@@ -17,7 +17,9 @@
 
 /* ─── Mobile (< 768px) ─── */
 @media (max-width: 768px) {
-  .auth-layout {
+  .auth-layout,
+  .auth-layout:has(#sidebar[data-collapsed]),
+  .auth-layout:has(#sidebar:not([data-collapsed])) {
     padding: 60px 0 0 0;
   }
 
