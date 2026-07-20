@@ -173,6 +173,55 @@ Server at `http://localhost:5000`.
 
 ---
 
+## Database Migrations
+
+Schema changes are managed via **Flask-Migrate** (Alembic). All migration files live in `migrations/versions/`.
+
+### Workflow
+
+1. Edit a model in `app/models/` (add a column, create a table, etc.)
+2. Generate a migration:
+   ```bash
+   flask db migrate -m "add avatar_url to users"
+   ```
+3. Review the generated file in `migrations/versions/`
+4. Apply it:
+   ```bash
+   flask db upgrade
+   ```
+
+### First-time setup
+
+If the `migrations/` folder does not exist (e.g. fresh clone):
+
+```bash
+flask db init          # Create the migrations directory
+flask db stamp head    # Mark the existing DB as up-to-date
+```
+
+> **Note:** `flask db stamp head` is critical — it tells Alembic that the current database state matches the models without running any SQL. Use this when setting up a new environment with an existing database or when reinitializing migrations.
+
+### Common commands
+
+| Command | Purpose |
+|---------|---------|
+| `flask db init` | Create the `migrations/` directory (one-time) |
+| `flask db migrate -m "msg"` | Auto-generate a migration script from model changes |
+| `flask db upgrade` | Apply all pending migrations |
+| `flask db downgrade` | Roll back the last migration |
+| `flask db stamp head` | Mark the DB as up-to-date without running any SQL |
+| `flask db history` | Show the full migration chain |
+| `flask db current` | Show which revision is currently applied |
+| `flask db heads` | Show all head revisions (detect forks) |
+
+### Troubleshooting
+
+- **Multiple heads** — If `flask db upgrade` fails with "Multiple head revisions", delete the unwanted migration file from `migrations/versions/` and run `flask db upgrade` again.
+- **"No such table" errors** — The table exists in the model but no migration was generated. Run `flask db migrate -m "add <table>"` to create one.
+- **Migration already applied** — If a migration file was added manually, run `flask db stamp head` to sync Alembic without re-executing it.
+
+---
+
 ## Endpoints
 
 Detailed per-domain documentation in [api/](api/):
