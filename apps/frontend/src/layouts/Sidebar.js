@@ -37,6 +37,7 @@ export function SidebarHome() {
   const links = [
     { href: "/home", label: "Home", icon: "home.svg" },
     { href: "/reports/create", label: "New Report", icon: "reports.svg" },
+    { href: "/reports", label: "Reports", icon: "reports.svg", icon: "book.svg"},
     { href: "/stats", label: "Statistics", icon: "statistics.svg" },
     { href: "/home/announcements", label: "Comumnicated", icon: "comumnicated.svg" },
     { href: "/profile", label: "My Profile", icon: "user.svg" },
