@@ -233,6 +233,25 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .report-detail-author {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .report-detail-meta {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .report-card-footer {
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .report-card {
+    padding: 1rem;
+  }
+
   /* Profile page */
   .profile-card-inner {
     padding: 1.5rem 1rem;
@@ -273,6 +292,62 @@
   /* Admin */
   .admin-stats-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .admin-page {
+    padding: 1rem;
+  }
+
+  .admin-page > div:first-child {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .admin-section {
+    padding: 1rem;
+  }
+
+  .admin-stat-card {
+    padding: 1rem;
+  }
+
+  /* Stats page */
+  .stats-page {
+    padding: 1rem;
+  }
+
+  .stats-chart-card {
+    padding: 1rem;
+  }
+
+  #chart-pie {
+    width: 100% !important;
+    height: 300px !important;
+  }
+
+  #chart-bar,
+  #chart-line {
+    width: 100% !important;
+    height: 250px !important;
+  }
+
+  .stats-table td,
+  .stats-table th {
+    padding: 0.4rem 0.5rem;
+    font-size: 0.75rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .stats-table td:last-child,
+  .stats-table th:last-child {
+    text-align: right;
+  }
+
+  .stats-title {
+    font-size: 1.25rem;
   }
 
   /* Modal */
@@ -339,6 +414,31 @@
   .report-detail-meta {
     flex-direction: column;
     gap: 0.5rem;
+  }
+
+  .report-detail-card {
+    padding: 1rem;
+  }
+
+  .report-card-img {
+    height: 120px;
+  }
+
+  .voting-btn {
+    padding: 0.2rem 0.35rem;
+  }
+
+  .voting-btn svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .stats-charts-grid {
+    gap: 0.5rem;
+  }
+
+  .stats-chart-card {
+    padding: 0.75rem;
   }
 }
 

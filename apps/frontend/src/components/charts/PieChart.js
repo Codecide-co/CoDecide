@@ -29,7 +29,7 @@ export function PieChart({ data, catMap, canvasId = "chart-pie" }) {
     },
     options: {
       responsive: true,
-      maintainAspectRatio: true,
+      maintainAspectRatio: false,
       plugins: {
         legend: {
           position: "bottom",

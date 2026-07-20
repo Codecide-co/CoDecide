@@ -431,7 +431,10 @@
 
 .container-home--reports,
 .container-home--report-detail,
-.container-home--create-report {
+.container-home--create-report,
+.container-home--profile,
+.container-home--admin,
+.container-home--stats {
   background:
     linear-gradient(135deg, rgba(13,27,42,0.88) 0%, rgba(37,99,235,0.55) 100%),
     url('/city.jfif') center/cover no-repeat;

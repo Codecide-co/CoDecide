@@ -22,7 +22,7 @@ export function StatsPageView() {
     ${HeaderHome()}
     <div class="auth-layout flex flex-row">
       ${SidebarHome()}
-      <main class="container-home">
+      <main class="container-home container-home--stats">
         <section class="stats-page">
           <h2 class="stats-title">Statistics & Charts</h2>
           <div class="stats-cards" id="stats-cards"></div>
@@ -38,8 +38,8 @@ export function StatsPageView() {
           </div>
           <div class="stats-charts-grid stats-charts-grid--full">
             <div class="stats-chart-card">
-              <h3 class="stats-chart-title">Reports Over Time (30 days)</h3>
-              <div class="stats-chart-wrapper"><canvas id="chart-line"></canvas></div>
+              <h3 class="stats-chart-title">Top Voted Reports</h3>
+              <div class="stats-table-wrap" id="stats-top-voted"></div>
             </div>
           </div>
           <div class="stats-charts-grid">
@@ -48,8 +48,8 @@ export function StatsPageView() {
               <div class="stats-table-wrap" id="stats-resolution-table"></div>
             </div>
             <div class="stats-chart-card">
-              <h3 class="stats-chart-title">Top Voted Reports</h3>
-              <div class="stats-table-wrap" id="stats-top-voted"></div>
+              <h3 class="stats-chart-title">Reports Over Time (30 days)</h3>
+              <div class="stats-chart-wrapper"><canvas id="chart-line"></canvas></div>
             </div>
           </div>
         </section>

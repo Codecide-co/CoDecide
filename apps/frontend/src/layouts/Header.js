@@ -22,9 +22,9 @@ export function HeaderLanding() {
     <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Toggle navigation">☰</button>
     <nav id="mobile-nav" class="header-landing-nav">
       <ul class="header-nav-list flex flex-row justify-around">
-        <li><a class="header-nav-link" href="#explore-reports">Explore Reports</a></li>
-        <li><a class="header-nav-link" href="#how-it-works">How It Works</a></li>
-        <li><a class="header-nav-link" href="#about-us">About Us</a></li>
+        <li><a class="header-nav-link" href="/#explore-reports">Explore Reports</a></li>
+        <li><a class="header-nav-link" href="/#how-it-works">How It Works</a></li>
+        <li><a class="header-nav-link" href="/#about-us">About Us</a></li>
         <li><a class="header-nav-link" href="/announcements" data-link>Announcements</a></li>
         ${ctaHtml}
       </ul>

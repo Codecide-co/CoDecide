@@ -5,6 +5,10 @@
   background: #F8FAFC;
 }
 
+#admin-stats {
+  margin: 2rem 0;
+}
+
 .admin-page h2 {
   font-size: 1.75rem;
   font-weight: 800;
@@ -208,4 +212,25 @@
   font-size: 0.85rem;
   color: #64748B;
   font-weight: 500;
+}
+
+.container-home--admin .admin-section,
+.container-home--admin .admin-stat-card {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--color-border);
+}
+
+.container-home--admin .admin-page {
+  background: transparent;
+}
+
+.container-home--admin .admin-page h2 {
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.container-home--admin .admin-page > div > div > p {
+  color: rgba(255, 255, 255, 0.85);
 }
