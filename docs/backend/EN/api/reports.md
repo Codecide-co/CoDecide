@@ -210,7 +210,7 @@ Votes on a report (up/down).
 - Users cannot vote on their own report.
 - Cannot vote twice with the same type.
 
-**Errors:** 400 (invalid vote, self-vote, or duplicate vote)
+**Errors:** 400 (invalid vote, self-vote, duplicate vote, or admin cannot vote)
 
 ---
 
