@@ -1,4 +1,5 @@
 import { formatDate } from "@core/helpers";
+import { t } from "@core/i18n";
 
 export function showAnnouncementModal({ title, body, created_at, author_name }) {
   const dialog = document.createElement("dialog");
@@ -14,10 +15,10 @@ export function showAnnouncementModal({ title, body, created_at, author_name }) 
           ${formatDate(created_at, "long")}
         </div>
         <p class="announcement-body">${body}</p>
-        <span class="announcement-author">— ${author_name || "Administration"}</span>
+        <span class="announcement-author">— ${author_name || t("announcements.author")}</span>
       </div>
       <div class="modal-footer">
-        <button class="modal-btn modal-btn-primary" id="ann-modal-close-btn">Close</button>
+        <button class="modal-btn modal-btn-primary" id="ann-modal-close-btn">${t("common.close")}</button>
       </div>
     </div>
   `;

@@ -1,15 +1,17 @@
+import { t } from "@core/i18n";
+
 export function StatusModal({ reportId, newStatus }) {
   const modal = document.createElement("div");
   modal.className = "admin-modal-overlay";
   modal.innerHTML = `
     <div class="admin-modal">
-      <h3>Change Status</h3>
+      <h3>${t("admin.change_status_title")}</h3>
       <p>Change to: <strong>${newStatus.replace("_", " ")}</strong></p>
       <div style="margin: 1rem 0;">
         <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.4rem;">
-          Internal comment (optional)
+          ${t("admin.change_status_comment")}
         </label>
-        <textarea id="modal-comment" rows="3" placeholder="Add a note about this change..." style="
+        <textarea id="modal-comment" rows="3" placeholder="${t("admin.change_status_comment")}" style="
           width: 100%;
           padding: 0.75rem;
           border: 2px solid #E2E8F0;
@@ -26,7 +28,7 @@ export function StatusModal({ reportId, newStatus }) {
           background: white;
           cursor: pointer;
           font-weight: 600;
-        ">Cancel</button>
+        ">${t("common.cancel")}</button>
         <button id="modal-confirm" style="
           padding: 8px 20px;
           border: none;
@@ -35,7 +37,7 @@ export function StatusModal({ reportId, newStatus }) {
           color: white;
           cursor: pointer;
           font-weight: 600;
-        ">Update Status</button>
+        ">${t("admin.change_status_submit")}</button>
       </div>
     </div>
   `;
