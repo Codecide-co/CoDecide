@@ -11,7 +11,7 @@ import { AnnouncementsPageView, HomeAnnouncementsView, initHomeAnnouncements } f
 import { StatsPageView } from "@pages/stats/StatsPage";
 import { SuccessPageView } from "@pages/reports/SuccessPage";
 import { NotFoundPageView } from "@pages/NotFoundPage";
-import { isAuthenticated, isAdmin } from "@core/helpers";
+import { isAuthenticated, isAdmin, getRouteState } from "@core/helpers";
 import { navigateTo } from "@core/helpers";
 import { initHeaderLanding } from "@/layouts/Header";
 
@@ -61,7 +61,7 @@ const routes = [
   { path: "/home",        view: HomePageView,                    init: initHomePage },
   { path: "/profile",     view: ProfilePageView,                 init: initProfilePage },
   { path: "/reports",     view: ReportsPageView,                 init: initReportsPage },
-  { path: "/reports/create", view: CreateReportView,             init: () => initCreateReportView(() => navigateTo("/reports/success")) },
+  { path: "/reports/create", view: CreateReportView,             init: () => initCreateReportView((report, attachments) => navigateTo("/reports/success", { report, attachments })) },
   { path: "/admin",       view: AdminDashboardView },
   { path: "/announcements", view: AnnouncementsPageView, init: initHeaderLanding },
   { path: "/home/announcements", view: HomeAnnouncementsView, init: initHomeAnnouncements },

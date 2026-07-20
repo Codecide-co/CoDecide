@@ -1,3 +1,5 @@
+let _routeState = null;
+
 export function escapeHtml(str) {
   return String(str)
     .replace(/&/g, "&amp;")
@@ -33,7 +35,14 @@ export function isAdmin() {
   return getSession()?.role === "admin";
 }
 
-export function navigateTo(path) {
+export function getRouteState() {
+  const state = _routeState;
+  _routeState = null;
+  return state;
+}
+
+export function navigateTo(path, state) {
+  _routeState = state || null;
   history.pushState({}, "", path);
   window.dispatchEvent(new PopStateEvent("popstate"));
 }
