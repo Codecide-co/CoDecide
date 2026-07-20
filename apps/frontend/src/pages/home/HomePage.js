@@ -150,7 +150,11 @@ export function initHomePage() {
   fetchApiData("/comunicados")
     .then((comunicados) => {
       const container = document.getElementById("comunicados-content");
-      if (!container || !comunicados || comunicados.length === 0) return;
+      if (!container) return;
+      if (!comunicados || comunicados.length === 0) {
+        container.innerHTML = `<p class="text-slate-400 text-sm text-center py-8">No announcements yet.</p>`;
+        return;
+      }
       container.innerHTML = comunicados
         .slice(0, 1)
         .map(
