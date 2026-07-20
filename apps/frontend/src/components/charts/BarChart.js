@@ -32,7 +32,7 @@ export function BarChart({ data, canvasId = "chart-bar" }) {
     },
     options: {
       responsive: true,
-      maintainAspectRatio: true,
+      maintainAspectRatio: false,
       plugins: {
         legend: { display: false },
         tooltip: {

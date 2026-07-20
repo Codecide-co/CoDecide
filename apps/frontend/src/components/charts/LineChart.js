@@ -48,7 +48,7 @@ export function LineChart({ data, canvasId = "chart-line" }) {
     },
     options: {
       responsive: true,
-      maintainAspectRatio: true,
+      maintainAspectRatio: false,
       plugins: {
         legend: { display: false },
         tooltip: {
