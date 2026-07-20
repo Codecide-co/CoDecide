@@ -25,6 +25,7 @@ Endpoints requiring `admin` role are marked with **Auth: Bearer (admin)**.
 | POST | `/login` | No | Authenticates and returns a JWT token |
 | GET | `/me` | Bearer | Gets the authenticated user's profile |
 | PATCH | `/me` | Bearer | Updates the authenticated user's profile |
+| POST | `/me/avatar` | Bearer | Uploads a custom avatar image |
 | POST | `/change-password` | Bearer | Changes the user's password |
 | POST | `/logout` | Bearer | Logs out the user |
 
@@ -56,6 +57,7 @@ Registers a new user.
   "role": "resident",
   "apartment": "101",
   "tower": "A",
+  "avatar_url": null,
   "created_at": "2026-07-11T12:00:00",
   "updated_at": "2026-07-11T12:00:00",
   "token": "eyJ..."
@@ -89,6 +91,7 @@ Authenticates and returns a JWT token.
   "role": "resident",
   "apartment": "101",
   "tower": "A",
+  "avatar_url": null,
   "created_at": "2026-07-11T12:00:00",
   "updated_at": "2026-07-11T12:00:00",
   "token": "eyJ..."
@@ -115,6 +118,7 @@ Gets the authenticated user's profile.
   "role": "resident",
   "apartment": "101",
   "tower": "A",
+  "avatar_url": "/static/avatars/avatar5.svg",
   "created_at": "2026-07-11T12:00:00",
   "updated_at": "2026-07-11T12:00:00"
 }
@@ -135,10 +139,43 @@ Updates the authenticated user's profile.
 | name | string | no | 2-100 characters |
 | apartment | string | no | Max 20 characters |
 | tower | string | no | Max 10 characters |
+| avatar_url | string | no | Path to avatar (e.g. `/static/avatars/avatar5.svg`) |
 
 **Response 200:** Updated user object
 
 **Errors:** 400 (validation)
+
+---
+
+## POST /me/avatar
+
+Uploads a custom avatar image. Deletes the previous uploaded avatar file if one exists.
+
+**Auth:** `Authorization: Bearer <token>`
+
+**Request:** multipart/form-data
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| file | file | yes | Image file (PNG, JPG, JPEG, SVG, GIF). Max 16 MB. |
+
+**Response 200:**
+
+```json
+{
+  "id": 1,
+  "name": "John Doe",
+  "email": "john@example.com",
+  "role": "resident",
+  "apartment": "101",
+  "tower": "A",
+  "avatar_url": "/uploads/abc123.jpg",
+  "created_at": "2026-07-11T12:00:00",
+  "updated_at": "2026-07-11T12:00:00"
+}
+```
+
+**Errors:** 400 (no file, invalid type, exceeds size limit)
 
 ---
 
