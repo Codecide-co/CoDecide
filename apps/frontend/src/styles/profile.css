@@ -202,7 +202,7 @@
   text-align: center; padding: 2rem 0; font-size: 0.875rem;
 }
 .profile-loading { color: #94A3B8; }
-.profile-empty  { color: #94A3B8; }
+.profile-empty  { color: #000000; }
 .profile-error  { color: #DC2626; }
 
 .capitalize { text-transform: capitalize; }

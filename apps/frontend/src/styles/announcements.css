@@ -105,9 +105,10 @@
 .announcements-empty {
   text-align: center;
   padding: 3rem;
-  color: var(--color-text-gray);
+  color: #000000;
   font-size: 0.95rem;
   grid-column: 1 / -1;
+  width: 100%;
 }
 
 @keyframes fadeInUp {
