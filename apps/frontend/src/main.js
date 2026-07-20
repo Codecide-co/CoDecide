@@ -3,6 +3,7 @@ import { configureApi } from "@core/api";
 import { getSessionToken, removeSession } from "@core/helpers";
 import { toast } from "@core/toast";
 import { router, navigateTo } from "@router/index";
+import { initLangToggle } from "@core/i18n";
 
 configureApi({
   tokenGetter: getSessionToken,
@@ -13,4 +14,5 @@ configureApi({
   },
 });
 
+initLangToggle();
 router();

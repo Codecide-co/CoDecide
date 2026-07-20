@@ -24,13 +24,23 @@ async function handleResponse(res) {
   return data;
 }
 
+function langParam() {
+  try {
+    const lang = localStorage.getItem("language");
+    if (lang === "en" || lang === "es") return `lang=${lang}`;
+  } catch {}
+  return "lang=es";
+}
+
 async function request(path, options = {}) {
   const token = getToken();
   const headers = { "Content-Type": "application/json", ...options.headers };
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }
-  const res = await fetch(API_URL + path, { ...options, headers });
+  const sep = path.includes("?") ? "&" : "?";
+  const url = API_URL + path + sep + langParam();
+  const res = await fetch(url, { ...options, headers });
   return handleResponse(res);
 }
 
