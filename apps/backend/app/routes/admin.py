@@ -6,6 +6,7 @@ All endpoints require the admin role.
 """
 
 from flask import Blueprint, jsonify, request
+from flask_babel import gettext
 
 from app.extensions import db
 from app.middleware.auth import admin_required
@@ -46,7 +47,7 @@ def delete_user(user_id: int):
 
     user = db.session.get(User, user_id)
     if not user:
-        return jsonify({"error": "User not found"}), 404
+        return jsonify({"error": gettext("User not found")}), 404
 
     AuditLog.create(
         user_id=request.current_user.id,
@@ -58,7 +59,7 @@ def delete_user(user_id: int):
 
     db.session.delete(user)
     db.session.commit()
-    return jsonify({"message": "User deleted"}), 200
+    return jsonify({"message": gettext("User deleted")}), 200
 
 
 @admin_bp.route("/audit-logs", methods=["GET"])
@@ -98,15 +99,15 @@ def assign_report(report_id: int):
 
     report = db.session.get(Report, report_id)
     if not report:
-        return jsonify({"error": "Report not found"}), 404
+        return jsonify({"error": gettext("Report not found")}), 404
 
     data = request.get_json()
     if not data or not data.get("user_id"):
-        return jsonify({"error": "user_id is required"}), 400
+        return jsonify({"error": gettext("user_id is required")}), 400
 
     assignee = db.session.get(User, data["user_id"])
     if not assignee:
-        return jsonify({"error": "Assignee not found"}), 404
+        return jsonify({"error": gettext("Assignee not found")}), 404
 
     report.assigned_to = data["user_id"]
     db.session.commit()
