@@ -2,6 +2,7 @@ import { authStore } from "@store/auth.store";
 import { removeSession } from "@core/helpers";
 import { navigateTo } from "@core/helpers";
 import { postApiData } from "@core/api";
+import { openModal } from "@components/ui/Modal";
 
 export function SidebarHome() {
   const user = authStore.user;
@@ -9,15 +10,20 @@ export function SidebarHome() {
   const isCollapsed = localStorage.getItem("sidebarCollapsed") === "true";
 
   setTimeout(() => {
-    document
-      .getElementById("sidebar-logout")
-      ?.addEventListener("click", (e) => {
+    document.getElementById("sidebar-logout")?.addEventListener("click", (e) => {
         e.preventDefault();
-        postApiData("/auth/logout").catch(() => {});
-        removeSession();
-        authStore.user = null;
-        navigateTo("/");
-      });
+        openModal({
+            title: "Sign Out",
+            content: "<p>Are you sure you want to log out?</p>",
+            submitLabel: "Sign Out",
+            onSubmit: async () => {
+                postApiData("/auth/logout").catch(() => {});
+                removeSession();
+                authStore.user = null;
+                navigateTo("/");
+            },
+        });
+    });
 
     const sidebar = document.getElementById("sidebar");
 
