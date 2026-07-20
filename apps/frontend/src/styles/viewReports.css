@@ -285,32 +285,21 @@
   box-shadow: none;
 }
 
-@media (max-width: 600px) {
-  .report-page {
-    padding: 1.5rem 1rem;
-  }
-
-  #create-report-form {
-    padding: 1.5rem;
-    border-radius: 16px;
-  }
-
-  .report-page header h2 {
-    font-size: 1.5rem;
-  }
-
-  .reports-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .reports-filter-bar {
-    flex-direction: column;
-  }
-}
-
-/* ===== REPORTS LISTING PAGE ===== */
 .reports-page {
   padding: 2rem 1.5rem;
+}
+
+.container-home--reports,
+.container-home--report-detail {
+  background:
+    linear-gradient(135deg, rgba(13,27,42,0.88) 0%, rgba(37,99,235,0.55) 100%),
+    url('/city.jfif') center/cover no-repeat;
+}
+
+.container-home--reports .reports-title,
+.container-home--report-detail .report-detail-title {
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 .reports-title {
@@ -318,6 +307,8 @@
   font-weight: 800;
   color: var(--color-text-blue);
   margin-bottom: 1.5rem;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .reports-filter-bar {
@@ -353,7 +344,9 @@
 }
 
 .report-card {
-  background: var(--color-surface);
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-radius: 14px;
   padding: 1.25rem;
   border: 1px solid var(--color-border);
@@ -382,6 +375,11 @@
   color: var(--color-text-blue);
   line-height: 1.3;
   flex: 1;
+  overflow-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .report-card-meta {
@@ -442,7 +440,6 @@
   cursor: not-allowed;
 }
 
-/* ===== ANONYMOUS BADGE & TOOLTIP ===== */
 .anonymous-badge {
   display: inline-flex;
   align-items: center;
@@ -498,7 +495,6 @@
   display: block;
 }
 
-/* Tooltip for checkbox */
 .anonymous-checkbox-wrap {
   position: relative;
 }
@@ -534,7 +530,6 @@
   display: block;
 }
 
-/* ===== REPORT DETAIL PAGE ===== */
 .report-detail-page {
   padding: 2rem 1.5rem;
 }
@@ -563,7 +558,9 @@
 }
 
 .report-detail-card {
-  background: var(--color-surface);
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-radius: 16px;
   padding: 2rem;
   border: 1px solid var(--color-border);
@@ -580,6 +577,7 @@
 
 .report-detail-title {
   font-size: 1.5rem;
+  overflow-wrap: break-word;
   font-weight: 800;
   color: var(--color-text-blue);
   line-height: 1.3;
@@ -608,6 +606,11 @@
   line-height: 1.8;
   color: var(--color-navy);
   margin-bottom: 1.25rem;
+  overflow-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .report-detail-meta {
@@ -662,6 +665,20 @@
   object-fit: cover;
 }
 
+.report-detail-attachment-item a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.report-detail-attachment-item a img {
+  transition: transform 0.3s ease;
+}
+
+.report-detail-attachment-item a:hover img {
+  transform: scale(1.08);
+}
+
 .report-detail-comments {
   margin-bottom: 1.25rem;
 }
@@ -708,7 +725,6 @@
   color: var(--color-blue-primary);
 }
 
-/* ===== VOTING WIDGET ===== */
 .voting-widget {
   display: inline-flex;
   align-items: center;
@@ -763,39 +779,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* ===== REPORT CARD IMAGE ===== */
-.report-card-img {
-  width: 100%;
-  height: 160px;
-  border-radius: 10px;
-  overflow: hidden;
-  margin-bottom: 0.75rem;
-  background: #F1F5F9;
-}
-
-.report-card-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* ===== DETAIL ATTACHMENT IMAGE LINK ===== */
-.report-detail-attachment-item a {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.report-detail-attachment-item a img {
-  transition: transform 0.3s ease;
-}
-
-.report-detail-attachment-item a:hover img {
-  transform: scale(1.08);
-}
-
-/* ===== REPORT CARD IMAGE ===== */
 .report-card-img {
   width: 100%;
   height: 160px;
@@ -842,22 +825,6 @@
   content: "Broken image";
 }
 
-/* ===== DETAIL ATTACHMENT IMAGE LINK ===== */
-.report-detail-attachment-item a {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.report-detail-attachment-item a img {
-  transition: transform 0.3s ease;
-}
-
-.report-detail-attachment-item a:hover img {
-  transform: scale(1.08);
-}
-
-/* ===== STATUS HISTORY TIMELINE ===== */
 .report-detail-status-history {
   margin-bottom: 1.5rem;
 }
@@ -954,7 +921,6 @@
   font-size: 0.82rem;
 }
 
-/* ===== ADD COMMENT FORM ===== */
 .report-detail-add-comment {
   margin-bottom: 1.25rem;
   padding-top: 1rem;
