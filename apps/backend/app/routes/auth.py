@@ -14,6 +14,7 @@ from app.schemas.auth_schema import (
     UpdateProfileSchema,
 )
 from app.services.auth_service import AuthService
+from app.services.avatar_service import AvatarService
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -134,6 +135,33 @@ def change_password():
             new_password=data["new_password"],
         )
         return jsonify({"message": "Password updated successfully"}), 200
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+
+
+@auth_bp.route("/me/avatar", methods=["POST"])
+@login_required
+def upload_avatar():
+    """
+    Upload a custom avatar image.
+
+    Accepts a multipart file upload. Validates the file is an allowed image
+    type (PNG, JPG, JPEG, SVG, GIF), saves it to the uploads folder, and
+    updates the user's avatar_url.
+
+    Returns:
+        tuple: JSON with updated user data, HTTP 200.
+    """
+
+    if "file" not in request.files:
+        return jsonify({"error": "No file provided"}), 400
+
+    try:
+        user = AvatarService.upload_avatar(
+            file=request.files["file"],
+            user_id=request.current_user.id,
+        )
+        return jsonify(user.to_dict()), 200
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
 
