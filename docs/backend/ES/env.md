@@ -129,3 +129,23 @@ Ruta en el sistema de archivos donde se almacenan los archivos subidos (imagenes
 | **Ejemplo** | `MAX_FILE_SIZE_MB=32` |
 
 Tamaño maximo permitido de archivo en megabytes para las subidas. Se usa tanto en la capa HTTP (Flask) como en la validacion explicita en `AttachmentService`.
+
+---
+
+## Configuracion de Internationalizacion (hardcodeada en `app/config.py`)
+
+Los siguientes valores estan definidos directamente en el codigo (`app/config.py`) y no tienen variable de entorno asociada. Se pueden sobreescribir en `Config` si es necesario.
+
+### `BABEL_DEFAULT_LOCALE`
+
+| | |
+|---|---|
+| **Default** | `"es"` |
+| **Descripcion** | Idioma por defecto del backend. El servidor siempre responde en español a menos que se envie `?lang=en` o una cookie `language=en`. |
+
+### `JSON_AS_ASCII`
+
+| | |
+|---|---|
+| **Default** | `False` |
+| **Descripcion** | Cuando es `False`, Flask no escapa los caracteres Unicode (acentos, eñes) en las respuestas JSON, permitiendo que se vean correctamente como `"Anónimo"` en vez de `"An\u00f3nimo"`.

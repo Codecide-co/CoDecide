@@ -118,7 +118,24 @@ flask db upgrade
 | `flask db history` | Show the migration chain |
 | `flask db current` | Show the current revision |
 
-### 3.5 Start the Backend Server
+### 3.5 Compile Translations (i18n)
+
+The backend uses **Flask-Babel** for internationalization. Translation files live in `app/translations/`. If you add or modify strings marked with `gettext()`, you need to recompile:
+
+```bash
+cd apps/backend
+pybabel extract -F babel.cfg -o app/translations/messages.pot --no-wrap app
+pybabel update -i app/translations/messages.pot -d app/translations --no-wrap
+# Edit the .po files with missing translations
+pybabel compile -d app/translations
+```
+
+The server responds in **Spanish** by default. To switch language:
+
+- **Query param:** `?lang=en` on any endpoint
+- **Persistent cookie:** `POST /api/language` with `{"language": "en"}`
+
+### 3.6 Start the Backend Server
 
 ```bash
 python run.py
@@ -203,6 +220,8 @@ The frontend will be available at `http://localhost:5173`.
 | Port 5000 already in use | Change the port in `apps/backend/.env` or kill the process |
 | Port 5173 already in use | Vite will automatically suggest the next available port |
 | Database errors after pulling | Run `flask db upgrade` to apply new migrations |
+| English translations shown instead of Spanish | The server defaults to Spanish. Check you are not sending `?lang=en` or a `language=en` cookie |
+| New translations not showing | Run `pybabel compile -d app/translations` to recompile `.mo` files |
 
 ---
 

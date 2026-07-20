@@ -68,6 +68,10 @@ apps/backend/
     │   ├── report_schema.py
     │   └── user_schema.py
     │
+    ├── translations/               # Archivos de traduccion i18n
+    │   ├── es/LC_MESSAGES/messages.po  # Espanol (por defecto)
+    │   └── en/LC_MESSAGES/messages.po  # Ingles
+    │
     ├── middleware/                  # Decoradores de seguridad
     │   └── auth.py                 # @login_required, @admin_required
     │
@@ -166,10 +170,66 @@ cd apps/backend
 pip install -r requirements.txt
 cp .env.example .env
 flask db upgrade
+pybabel compile -d app/translations   # Compilar traducciones i18n
 python run.py
 ```
 
 Servidor en `http://localhost:5000`.
+
+---
+
+## Internacionalizacion (i18n)
+
+El backend usa **Flask-Babel** para responder en español o inglés.
+
+### Comportamiento por defecto
+
+El servidor siempre responde en **español** a menos que se indique lo contrario.
+
+### Como cambiar el idioma
+
+1. **Query param** — cualquier endpoint acepta `?lang=en` o `?lang=es`:
+   ```bash
+   curl http://localhost:5000/api/hello?lang=en
+   ```
+
+2. **Cookie persistente** — `POST /api/language` guarda el idioma en una cookie:
+   ```bash
+   curl -X POST http://localhost:5000/api/language \
+     -H "Content-Type: application/json" \
+     -d '{"language": "en"}'
+   ```
+
+### Orden de resolucion del locale
+
+1. `?lang=` en la URL
+2. Cookie `language`
+3. `es` (español) por defecto
+
+### Como agregar o modificar traducciones
+
+1. Marca los strings en el codigo con `gettext()` o `lazy_gettext()`:
+   ```python
+   from flask_babel import gettext
+   raise ValueError(gettext("User not found"))
+   ```
+
+2. Extrae los strings al archivo `.pot`:
+   ```bash
+   pybabel extract -F babel.cfg -o app/translations/messages.pot --no-wrap app
+   ```
+
+3. Actualiza los archivos `.po` de cada idioma:
+   ```bash
+   pybabel update -i app/translations/messages.pot -d app/translations --no-wrap
+   ```
+
+4. Edita `app/translations/es/LC_MESSAGES/messages.po` o `app/translations/en/LC_MESSAGES/messages.po` con las traducciones faltantes.
+
+5. Compila los archivos `.mo`:
+   ```bash
+   pybabel compile -d app/translations
+   ```
 
 ---
 
