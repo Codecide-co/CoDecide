@@ -90,7 +90,10 @@ Creates a new report.
 }
 ```
 
-**Errors:** 400 (validation or business error)
+**Errors:** 400 (validation or business error), 403 (admin users cannot create reports)
+
+**Notes:**
+- Admin users (`role: "admin"`) are **not allowed** to create reports. The endpoint returns a 400 error with `"Admins cannot create reports"`.
 
 ---
 

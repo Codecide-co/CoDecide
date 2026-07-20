@@ -52,6 +52,11 @@ function guard(path) {
     return true;
   }
 
+  if (path === "/reports/create" && isAdmin()) {
+    render(app, AccessDeniedPageView());
+    return true;
+  }
+
   return false;
 }
 

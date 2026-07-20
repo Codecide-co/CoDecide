@@ -373,7 +373,7 @@ Example: "Juan creates a report"
 - **Passwords**: Encrypted with bcrypt/werkzeug.
 - **Roles**:
   - `resident` - create reports, vote, comment, view stats
-  - `admin` - change statuses, assign reports, delete users, view audit logs, publish announcements
+  - `admin` - change statuses, assign reports, delete users, view audit logs, publish announcements (cannot create reports)
 
 ---
 

@@ -25,7 +25,7 @@ export function HomePageView() {
               </p>
             </div>
             <div class="flex gap-3 flex-wrap">
-              <a href="/reports/create" data-link class="home-cta-btn">+ New Report</a>
+              ${user?.role !== "admin" ? '<a href="/reports/create" data-link class="home-cta-btn">+ New Report</a>' : ""}
               <a href="/reports" data-link class="home-cta-btn">View All Reports</a>
             </div>
           </section>
