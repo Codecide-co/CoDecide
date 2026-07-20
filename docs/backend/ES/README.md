@@ -373,7 +373,7 @@ Ejemplo: "Juan crea un reporte"
 - **Contrasenas**: Encriptadas con bcrypt/werkzeug.
 - **Roles**:
   - `resident` - crear reportes, votar, comentar, ver stats
-  - `admin` - cambiar estados, asignar reportes, borrar usuarios, ver audit logs, publicar comunicados
+  - `admin` - cambiar estados, asignar reportes, borrar usuarios, ver audit logs, publicar comunicados (no puede crear reportes)
 
 ---
 
