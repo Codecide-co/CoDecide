@@ -54,6 +54,17 @@
   border: 1px solid #E2E8F0;
 }
 
+.admin-error-badge {
+  background: #FEF2F2;
+  border: 1px solid #FCA5A5;
+  color: #991B1B !important;
+  border-radius: 8px;
+  padding: 1.5rem 2rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
 .admin-filter-bar {
   display: flex;
   gap: 1rem;
