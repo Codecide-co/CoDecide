@@ -20,6 +20,10 @@ export function ResolutionTable({ data, catMap, containerId = "stats-resolution-
 
   container.innerHTML = `
     <table class="stats-table">
+      <colgroup>
+        <col style="width:75%">
+        <col style="width:25%">
+      </colgroup>
       <thead>
         <tr><th>Category</th><th>Avg Time (hours)</th></tr>
       </thead>
@@ -46,6 +50,13 @@ export function TopVotedTable({ reports, containerId = "stats-top-voted" }) {
 
   container.innerHTML = `
     <table class="stats-table">
+      <colgroup>
+        <col style="width:8%">
+        <col style="width:56%">
+        <col style="width:12%">
+        <col style="width:12%">
+        <col style="width:12%">
+      </colgroup>
       <thead>
         <tr><th>#</th><th>Title</th><th>Up</th><th>Down</th><th>Total</th></tr>
       </thead>
