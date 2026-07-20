@@ -32,6 +32,8 @@ class Config:
     """
     
     SECRET_KEY: str = os.getenv("SECRET_KEY", "dev-secret-key")
+    BABEL_DEFAULT_LOCALE: str = "es"
+    JSON_AS_ASCII: bool = False
 
     SQLALCHEMY_DATABASE_URI: str = os.getenv(
         "DATABASE_URL", "sqlite:///codecide.db"
