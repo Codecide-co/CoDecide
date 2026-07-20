@@ -6,7 +6,7 @@ export function HeaderLanding() {
   const path = window.location.pathname;
 
   let ctaHtml;
-  if (path === "/login") {
+  if (path === "/login" || path === "/register") {
     ctaHtml = '<li><a class="header-nav-link header-nav-cta" href="/" data-link>Home</a></li>';
   } else if (loggedIn) {
     ctaHtml = '<li><a class="header-nav-link header-nav-cta" href="/home" data-link>Login</a></li>';
