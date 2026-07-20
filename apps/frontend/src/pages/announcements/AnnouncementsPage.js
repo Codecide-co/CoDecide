@@ -5,6 +5,7 @@ import { FooterLanding } from "@/layouts/Footer";
 import { fetchApiData } from "@core/api";
 import { formatDate } from "@core/helpers";
 import { showAnnouncementModal } from "@components/ui/AnnouncementModal";
+import { t } from "@core/i18n";
 
 export function AnnouncementsPageView() {
   setTimeout(() => {
@@ -13,7 +14,7 @@ export function AnnouncementsPageView() {
         const container = document.getElementById("announcements-list");
         if (!container) return;
         if (!list || list.length === 0) {
-          container.innerHTML = `<p class="announcements-empty">No announcements yet.</p>`;
+          container.innerHTML = `<p class="announcements-empty">${t("announcements.empty")}</p>`;
           return;
         }
         container.innerHTML = list
@@ -23,7 +24,7 @@ export function AnnouncementsPageView() {
             <div class="announcement-date">${formatDate(a.created_at, "long")}</div>
             <h3 class="announcement-title">${a.title}</h3>
             <p class="announcement-body">${a.body}</p>
-            <span class="announcement-author">— ${a.author_name || "Administration"}</span>
+            <span class="announcement-author">— ${a.author_name || t("announcements.author")}</span>
           </article>
         `
           )
@@ -31,17 +32,17 @@ export function AnnouncementsPageView() {
       })
       .catch(() => {
         document.getElementById("announcements-list").innerHTML =
-          `<p class="announcements-empty">Could not load announcements.</p>`;
+          `<p class="announcements-empty">${t("announcements.load_error")}</p>`;
       });
   }, 0);
 
   return `
     ${HeaderLanding()}
     <main class="announcements-page pt-24 md:pt-32 px-8 pb-16">
-      <h2 class="announcements-title">Official Announcements</h2>
-      <p class="announcements-subtitle">Stay informed about community news and updates.</p>
+      <h2 class="announcements-title">${t("announcements.title")}</h2>
+      <p class="announcements-subtitle">${t("announcements.subtitle")}</p>
       <div id="announcements-list" class="announcements-list announcements-carousel">
-        <p class="announcements-empty">Loading...</p>
+        <p class="announcements-empty">${t("announcements.loading")}</p>
       </div>
     </main>
     ${FooterLanding()}
@@ -55,11 +56,11 @@ export function HomeAnnouncementsView() {
       ${SidebarHome()}
       <main class="container-home container-home--announcements">
         <section class="announcements-page announcements-page--home">
-          <h2 class="announcements-title">Official Announcements</h2>
-          <p class="announcements-subtitle">Stay informed about community news and updates.</p>
+          <h2 class="announcements-title">${t("announcements.title")}</h2>
+          <p class="announcements-subtitle">${t("announcements.subtitle")}</p>
           <div class="announcements-scroll">
             <div id="announcements-list" class="announcements-list">
-              <p class="announcements-empty">Loading...</p>
+              <p class="announcements-empty">${t("announcements.loading")}</p>
             </div>
           </div>
         </section>
@@ -74,7 +75,7 @@ export function initHomeAnnouncements() {
       const container = document.getElementById("announcements-list");
       if (!container) return;
       if (!list || list.length === 0) {
-        container.innerHTML = `<p class="announcements-empty">No announcements yet.</p>`;
+        container.innerHTML = `<p class="announcements-empty">${t("announcements.empty")}</p>`;
         return;
       }
       container.innerHTML = list
@@ -83,7 +84,7 @@ export function initHomeAnnouncements() {
             <div class="home-announcement-item">
               <span class="home-announcement-date">${formatDate(a.created_at, "medium")}</span>
               <span class="home-announcement-title">${a.title}</span>
-              <button class="home-announcement-read-more" data-index="${i}">Read More</button>
+              <button class="home-announcement-read-more" data-index="${i}">${t("announcements.read_more")}</button>
             </div>
           `
         )
@@ -97,6 +98,6 @@ export function initHomeAnnouncements() {
     })
     .catch(() => {
       const el = document.getElementById("announcements-list");
-      if (el) el.innerHTML = `<p class="announcements-empty">Could not load announcements.</p>`;
+      if (el) el.innerHTML = `<p class="announcements-empty">${t("announcements.load_error")}</p>`;
     });
 }
