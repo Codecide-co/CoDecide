@@ -43,6 +43,7 @@ class UpdateProfileSchema(Schema):
     name = fields.String(validate=validate.Length(min=2, max=100))
     apartment = fields.String(validate=validate.Length(max=20))
     tower = fields.String(validate=validate.Length(max=10))
+    avatar_url = fields.String(validate=validate.Length(max=255))
 
 
 class ChangePasswordSchema(Schema):

@@ -37,6 +37,7 @@ class User(db.Model):
         onupdate=lambda: datetime.now(timezone.utc),
     )
     last_seen: Mapped[datetime | None] = mapped_column(db.DateTime, nullable=True)
+    avatar_url: Mapped[str | None] = mapped_column(db.String(255), nullable=True)
 
     reports: Mapped[list["Report"]] = relationship(
         "Report", back_populates="author", lazy="selectin", foreign_keys="Report.user_id"
@@ -69,6 +70,7 @@ class User(db.Model):
             "role": self.role,
             "apartment": self.apartment,
             "tower": self.tower,
+            "avatar_url": self.avatar_url,
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat(),
         }

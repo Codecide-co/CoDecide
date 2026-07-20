@@ -205,6 +205,7 @@ Documentacion detallada por dominio en [api/](api/):
 | apartment | String(20) | Apartamento |
 | tower | String(10) | Torre |
 | last_seen | DateTime | Ultima vez que inicio sesion |
+| avatar_url | String(255) nullable | Ruta de la imagen de avatar (galeria o subida) |
 | created_at | DateTime | Fecha de registro |
 | updated_at | DateTime | Ultima modificacion |
 
