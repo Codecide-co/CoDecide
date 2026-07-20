@@ -15,7 +15,7 @@ export function CreateReportView() {
     ${HeaderHome()}
     <div class="auth-layout flex flex-row">
       ${SidebarHome()}
-      <main class="container-home">
+      <main class="container-home container-home--create-report">
         <section class="report-page create-report-section">
 
         <header>
