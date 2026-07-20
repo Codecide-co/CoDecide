@@ -1,12 +1,13 @@
 import { UPLOADS_BASE } from "@core/api";
+import { t } from "@core/i18n";
 
 export function ProfileCard(user) {
   if (!user) return "";
 
   const initial = (user.name || "U")[0].toUpperCase();
   const badge = user.role === "admin"
-    ? '<span class="profile-badge profile-badge-admin">Admin</span>'
-    : '<span class="profile-badge profile-badge-resident">Resident</span>';
+    ? `<span class="profile-badge profile-badge-admin">${t("profile.admin_badge")}</span>`
+    : `<span class="profile-badge profile-badge-resident">${t("profile.resident_badge")}</span>`;
 
   const avatarHtml = user.avatar_url
     ? `<img src="${UPLOADS_BASE}${user.avatar_url}" alt="${user.name}" class="profile-avatar-img" />`
