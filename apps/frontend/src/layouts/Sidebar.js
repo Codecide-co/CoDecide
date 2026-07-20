@@ -9,39 +9,6 @@ export function SidebarHome() {
   const currentPath = window.location.pathname;
   const isCollapsed = localStorage.getItem("sidebarCollapsed") === "true";
 
-  setTimeout(() => {
-    document.getElementById("sidebar-logout")?.addEventListener("click", (e) => {
-        e.preventDefault();
-        openModal({
-            title: "Sign Out",
-            content: "<p>Are you sure you want to log out?</p>",
-            submitLabel: "Sign Out",
-            onSubmit: async () => {
-                postApiData("/auth/logout").catch(() => {});
-                removeSession();
-                authStore.user = null;
-                navigateTo("/");
-            },
-        });
-    });
-
-    const sidebar = document.getElementById("sidebar");
-
-    document.getElementById("sidebar-toggle")?.addEventListener("click", () => {
-      const nowCollapsed = sidebar?.getAttribute("data-collapsed") === "true";
-      const next = !nowCollapsed;
-      sidebar?.toggleAttribute("data-collapsed", next);
-      localStorage.setItem("sidebarCollapsed", String(next));
-    });
-
-    document.querySelectorAll("#sidebar nav ul li a[data-link]").forEach((link) => {
-      link.addEventListener("click", () => {
-        sidebar?.setAttribute("data-collapsed", "true");
-        localStorage.setItem("sidebarCollapsed", "true");
-      });
-    });
-  }, 0);
-
   const links = [
     { href: "/home", label: "Home", icon: "home.svg" },
     ...(user?.role !== "admin" ? [{ href: "/reports/create", label: "New Report", icon: "reports.svg" }] : []),
@@ -66,4 +33,43 @@ export function SidebarHome() {
       </nav>
     </aside>
   `;
+}
+
+export function initSidebarHome() {
+  if (window.__sidebarInitted) return;
+  window.__sidebarInitted = true;
+
+  document.addEventListener("click", (e) => {
+    const toggle = e.target.closest("#sidebar-toggle");
+    if (toggle) {
+      const sidebar = document.getElementById("sidebar");
+      const nowCollapsed = sidebar?.getAttribute("data-collapsed") === "true";
+      const next = !nowCollapsed;
+      if (sidebar) sidebar.toggleAttribute("data-collapsed", next);
+      localStorage.setItem("sidebarCollapsed", String(next));
+    }
+
+    const logoutBtn = e.target.closest("#sidebar-logout");
+    if (logoutBtn) {
+      e.preventDefault();
+      openModal({
+        title: "Sign Out",
+        content: "<p>Are you sure you want to log out?</p>",
+        submitLabel: "Sign Out",
+        onSubmit: async () => {
+          postApiData("/auth/logout").catch(() => {});
+          removeSession();
+          authStore.user = null;
+          navigateTo("/");
+        },
+      });
+    }
+
+    const navLink = e.target.closest("#sidebar nav ul li a[data-link]");
+    if (navLink) {
+      const sidebar = document.getElementById("sidebar");
+      sidebar?.setAttribute("data-collapsed", "true");
+      localStorage.setItem("sidebarCollapsed", "true");
+    }
+  });
 }

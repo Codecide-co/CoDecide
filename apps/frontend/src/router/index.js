@@ -14,6 +14,7 @@ import { NotFoundPageView } from "@pages/NotFoundPage";
 import { isAuthenticated, isAdmin, getRouteState } from "@core/helpers";
 import { navigateTo } from "@core/helpers";
 import { initHeaderLanding } from "@/layouts/Header";
+import { initSidebarHome } from "@/layouts/Sidebar";
 
 export { navigateTo };
 
@@ -29,6 +30,7 @@ function bindDataLinks() {
 function render(app, view, init) {
   app.innerHTML = view;
   bindDataLinks();
+  initSidebarHome();
   if (init) init();
 }
 
