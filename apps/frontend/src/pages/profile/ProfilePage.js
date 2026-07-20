@@ -3,6 +3,7 @@ import { HeaderHome } from "@/layouts/Header";
 import { SidebarHome } from "@/layouts/Sidebar";
 import { fetchApiData, patchApiData, postApiData } from "@core/api";
 import { openModal } from "@components/ui/Modal";
+import { openAvatarModal } from "@components/profile/AvatarModal";
 import { ProfileCard } from "@components/profile/ProfileCard";
 import { PersonalInfo } from "@components/profile/PersonalInfo";
 import { ProfileReports } from "@components/profile/ProfileReports";
@@ -62,6 +63,22 @@ export function initProfilePage() {
   function bindListeners() {
     document.getElementById("btn-edit-profile")?.addEventListener("click", openEditProfileModal);
     document.getElementById("btn-change-password")?.addEventListener("click", openChangePasswordModal);
+    document.getElementById("profile-avatar-trigger")?.addEventListener("click", openAvatarProfileModal);
+  }
+
+  function openAvatarProfileModal() {
+    openAvatarModal({
+      currentAvatarUrl: user?.avatar_url || null,
+      onSave: (updatedUser) => {
+        user = updatedUser;
+        authStore.user = updatedUser;
+        const container = document.getElementById("profile-content");
+        if (container) {
+          container.innerHTML = renderContent();
+          bindListeners();
+        }
+      },
+    });
   }
 
   function openEditProfileModal() {
