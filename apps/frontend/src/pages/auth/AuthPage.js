@@ -18,7 +18,7 @@ export function AuthView(formName) {
 
 export function initAuth(formName) {
   if (formName === "register") {
-    initRegisterForm(() => window.location.hash = "#/login");
+    initRegisterForm(() => navigateTo("/login"));
   } else {
     initLoginForm(() => navigateTo("/home"));
   }

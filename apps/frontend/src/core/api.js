@@ -4,8 +4,24 @@ export const UPLOADS_BASE = import.meta.env.VITE_UPLOADS_BASE || "http://localho
 
 let getToken = () => null;
 
-export function configureApi({ tokenGetter }) {
+let onUnauthorized = null;
+
+export function configureApi({ tokenGetter, unauthorizedHandler }) {
   getToken = tokenGetter;
+  onUnauthorized = unauthorizedHandler;
+}
+
+async function handleResponse(res) {
+  const data = await res.json();
+  if (!res.ok) {
+    if (res.status === 401 && onUnauthorized) {
+      onUnauthorized(data.error || "Session expired");
+    }
+    const error = new Error(data.error || data.msg || "Something went wrong");
+    error.status = res.status;
+    throw error;
+  }
+  return data;
 }
 
 async function request(path, options = {}) {
@@ -15,13 +31,7 @@ async function request(path, options = {}) {
     headers["Authorization"] = `Bearer ${token}`;
   }
   const res = await fetch(API_URL + path, { ...options, headers });
-  const data = await res.json();
-  if (!res.ok) {
-    const error = new Error(data.error || data.msg || "Something went wrong");
-    error.status = res.status;
-    throw error;
-  }
-  return data;
+  return handleResponse(res);
 }
 
 export async function fetchApiData(path) {
@@ -55,11 +65,5 @@ export async function postFormData(path, formData) {
     headers,
     body: formData,
   });
-  const data = await res.json();
-  if (!res.ok) {
-    const error = new Error(data.error || data.msg || "Something went wrong");
-    error.status = res.status;
-    throw error;
-  }
-  return data;
+  return handleResponse(res);
 }

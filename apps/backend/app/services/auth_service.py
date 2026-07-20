@@ -12,6 +12,7 @@ from flask_jwt_extended import create_access_token
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from app.extensions import db
+from app.models.token_blocklist import TokenBlocklist
 from app.models.user import User
 
 
@@ -159,4 +160,9 @@ class AuthService:
 
         user.password_hash = generate_password_hash(new_password)
         user.updated_at = datetime.now(timezone.utc)
+        db.session.commit()
+
+    @staticmethod
+    def revoke_token(jti: str, expires_at: datetime) -> None:
+        db.session.add(TokenBlocklist(jti=jti, expires_at=expires_at))
         db.session.commit()

@@ -1,6 +1,7 @@
 import { authStore } from "@store/auth.store";
 import { removeSession } from "@core/helpers";
 import { navigateTo } from "@core/helpers";
+import { postApiData } from "@core/api";
 
 export function SidebarHome() {
   const user = authStore.user;
@@ -12,6 +13,7 @@ export function SidebarHome() {
       .getElementById("sidebar-logout")
       ?.addEventListener("click", (e) => {
         e.preventDefault();
+        postApiData("/auth/logout").catch(() => {});
         removeSession();
         authStore.user = null;
         navigateTo("/");
