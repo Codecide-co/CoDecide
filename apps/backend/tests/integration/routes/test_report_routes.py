@@ -97,13 +97,13 @@ def report_id_other(client, resident, cat_id):
 
 
 @pytest.fixture
-def admin_report_id(client, admin, cat_id):
+def admin_report_id(client, resident, cat_id):
     with MOCK_AUDIT_CREATE:
         r = client.post(BASE, json={
-            "title": "Admin report",
-            "description": "Report created by admin for status tests",
+            "title": "Report for admin status tests",
+            "description": "Created by a resident, used by admin for status management tests",
             "category_id": cat_id,
-        }, headers=admin)
+        }, headers=resident)
     return r.get_json()["id"]
 
 
