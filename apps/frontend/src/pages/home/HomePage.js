@@ -38,11 +38,19 @@ export function HomePageView() {
           </section>
 
           <section class="home-card">
+            <h3 class="home-section-title">Official Announcements</h3>
+            <div id="comunicados-content" class="grid grid-cols-1 gap-3">
+              <p class="text-slate-400 text-sm text-center py-8">Loading...</p>
+            </div>
+          </section>
+
+          <section class="home-card">
             <h3 class="home-section-title">Community Summary</h3>
             <div class="grid grid-cols-2 gap-3">
               <div class="home-stat-card">
                 <div class="home-stat-value">—</div>
-                <div class="home-stat-label">Total Reports</div>
+                <div class="h
+                ome-stat-label">Total Reports</div>
               </div>
               <div class="home-stat-card">
                 <div class="home-stat-value">—</div>
@@ -59,12 +67,6 @@ export function HomePageView() {
             </div>
           </section>
 
-          <section class="home-card">
-            <h3 class="home-section-title">Official Announcements</h3>
-            <div id="comunicados-content" class="grid grid-cols-1 gap-3">
-              <p class="text-slate-400 text-sm text-center py-8">Loading...</p>
-            </div>
-          </section>
 
         </div>
       </main>
@@ -85,6 +87,7 @@ export function initHomePage() {
           return;
         }
         container.innerHTML = reports
+          .slice(0, 5)
           .map(
             (r) => `
           <div class="home-report-item">
@@ -110,7 +113,7 @@ export function initHomePage() {
           )
           .join("");
 
-        reports.forEach((r) => {
+        reports.slice(0, 5).forEach((r) => {
           fetchApiData(`/reports/${r.id}`)
             .then((detail) => {
               const items = container.querySelectorAll(".home-report-item");
@@ -149,6 +152,7 @@ export function initHomePage() {
       const container = document.getElementById("comunicados-content");
       if (!container || !comunicados || comunicados.length === 0) return;
       container.innerHTML = comunicados
+        .slice(0, 1)
         .map(
           (c) => `
         <div class="home-communicado-item">
