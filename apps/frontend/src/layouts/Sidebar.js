@@ -7,7 +7,8 @@ import { openModal } from "@components/ui/Modal";
 export function SidebarHome() {
   const user = authStore.user;
   const currentPath = window.location.pathname;
-  const isCollapsed = localStorage.getItem("sidebarCollapsed") === "true";
+  const isMobile = window.innerWidth < 768;
+  const isCollapsed = isMobile || localStorage.getItem("sidebarCollapsed") === "true";
 
   const links = [
     { href: "/home", label: "Home", icon: "home.svg" },
