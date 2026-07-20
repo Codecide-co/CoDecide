@@ -77,13 +77,46 @@ cp .env.example .env
 
 Los valores por defecto en `.env` funcionan para desarrollo local (SQLite, MongoDB en localhost).
 
-### 3.4 Ejecutar Migraciones de Base de Datos
+### 3.4 Migraciones de Base de Datos (Alembic / Flask-Migrate)
+
+El proyecto usa **Flask-Migrate** (Alembic) para gestionar cambios en el esquema de la base de datos.
+
+**Primera vez** (si la carpeta `migrations/` no existe):
+
+```bash
+flask db init          # Crear el directorio de migraciones
+flask db stamp head    # Marcar el estado actual de la BD como actualizado (sin ejecutar cambios)
+```
+
+**Después de actualizar el código** (aplicar migraciones pendientes):
 
 ```bash
 flask db upgrade
 ```
 
-Esto crea todas las tablas necesarias en SQLite (o MySQL si está configurado).
+**Cuando agregues o modifiques un modelo** (generar una nueva migración):
+
+```bash
+flask db migrate -m "descripción del cambio"
+```
+
+Luego revisa el archivo generado en `migrations/versions/` antes de aplicarlo:
+
+```bash
+flask db upgrade
+```
+
+**Comandos comunes:**
+
+| Comando | Propósito |
+|---------|-----------|
+| `flask db init` | Crear el directorio `migrations/` (una vez) |
+| `flask db migrate -m "msg"` | Auto-generar migración a partir de cambios en modelos |
+| `flask db upgrade` | Aplicar todas las migraciones pendientes |
+| `flask db downgrade` | Revertir la última migración |
+| `flask db stamp head` | Marcar la BD como actualizada sin ejecutar migraciones |
+| `flask db history` | Mostrar la cadena de migraciones |
+| `flask db current` | Mostrar la revisión actual |
 
 ### 3.5 Iniciar el Servidor Backend
 
