@@ -250,6 +250,10 @@ class ReportService:
         if not report:
             raise ValueError("Report not found")
 
+        voter = db.session.get(User, user_id)
+        if voter and voter.role == "admin":
+            raise ValueError("Admins cannot vote")
+
         if report.user_id == user_id:
             raise ValueError("Cannot vote on own report")
 

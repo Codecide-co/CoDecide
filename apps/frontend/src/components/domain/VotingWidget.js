@@ -1,15 +1,17 @@
-export function VotingWidgetView({ reportId, upvotes, downvotes, userVote, isOwnReport }) {
+export function VotingWidgetView({ reportId, upvotes, downvotes, userVote, isOwnReport, isAdmin }) {
   const upActive = userVote === "up" ? "voting-btn--active" : "";
   const downActive = userVote === "down" ? "voting-btn--active" : "";
-  const disabled = isOwnReport ? "voting-btn--disabled" : "";
+  const disabled = isOwnReport || isAdmin ? "voting-btn--disabled" : "";
+  const disabledAttr = isOwnReport || isAdmin ? "disabled" : "";
+  const title = isAdmin ? "Admins cannot vote" : isOwnReport ? "Cannot vote on your own report" : "Upvote";
 
   return `
     <div class="voting-widget" data-report-id="${reportId}" data-own-report="${isOwnReport}" data-user-vote="${userVote || ""}">
-      <button class="voting-btn voting-btn--up ${upActive} ${disabled}" data-vote="up" ${isOwnReport ? "disabled" : ""} title="${isOwnReport ? "Cannot vote on your own report" : "Upvote"}">
+      <button class="voting-btn voting-btn--up ${upActive} ${disabled}" data-vote="up" ${disabledAttr} title="${title}">
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
         <span class="voting-count">${upvotes}</span>
       </button>
-      <button class="voting-btn voting-btn--down ${downActive} ${disabled}" data-vote="down" ${isOwnReport ? "disabled" : ""} title="${isOwnReport ? "Cannot vote on your own report" : "Downvote"}">
+      <button class="voting-btn voting-btn--down ${downActive} ${disabled}" data-vote="down" ${disabledAttr} title="${title}">
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
         <span class="voting-count">${downvotes}</span>
       </button>
