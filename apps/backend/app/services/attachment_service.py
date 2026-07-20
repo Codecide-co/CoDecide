@@ -8,6 +8,7 @@ import os
 import uuid
 
 from flask import current_app
+from flask_babel import gettext
 from werkzeug.utils import secure_filename
 
 from app.extensions import db
@@ -49,14 +50,14 @@ class AttachmentService:
         """
 
         if not file or not file.filename:
-            raise ValueError("No file provided")
+            raise ValueError(gettext("No file provided"))
 
         report = db.session.get(Report, report_id)
         if not report:
-            raise ValueError("Report not found")
+            raise ValueError(gettext("Report not found"))
 
         if not AttachmentService._allowed_file(file.filename):
-            raise ValueError("File type not allowed")
+            raise ValueError(gettext("File type not allowed"))
 
         max_size = current_app.config.get("MAX_CONTENT_LENGTH", 16 * 1024 * 1024)
         file.seek(0, os.SEEK_END)
@@ -64,7 +65,7 @@ class AttachmentService:
         file.seek(0)
         if size > max_size:
             limit_mb = max_size // (1024 * 1024)
-            raise ValueError(f"File exceeds {limit_mb} MB limit")
+            raise ValueError(gettext("File exceeds %(limit)s MB limit") % {"limit": limit_mb})
 
         ext = file.filename.rsplit(".", 1)[1].lower()
         saved_name = f"{uuid.uuid4().hex}.{ext}"

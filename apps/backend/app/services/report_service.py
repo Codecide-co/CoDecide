@@ -7,6 +7,7 @@ Handles report CRUD operations, status transitions, voting, and comments.
 from datetime import datetime, timezone
 from typing import Optional
 
+from flask_babel import gettext
 from sqlalchemy import desc
 
 from app.extensions import db
@@ -51,13 +52,13 @@ class ReportService:
 
         user = db.session.get(User, user_id)
         if not user:
-            raise ValueError("User not found")
+            raise ValueError(gettext("User not found"))
         if user.role == "admin":
-            raise ValueError("Admins cannot create reports")
+            raise ValueError(gettext("Admins cannot create reports"))
 
         category = db.session.get(Category, category_id)
         if not category:
-            raise ValueError("Category not found")
+            raise ValueError(gettext("Category not found"))
 
         report = Report(
             title=title,
@@ -166,7 +167,7 @@ class ReportService:
 
         report = db.session.get(Report, report_id)
         if not report:
-            raise ValueError("Report not found")
+            raise ValueError(gettext("Report not found"))
         return report
 
     @staticmethod
@@ -192,7 +193,7 @@ class ReportService:
 
         report = db.session.get(Report, report_id)
         if not report:
-            raise ValueError("Report not found")
+            raise ValueError(gettext("Report not found"))
 
         valid_transitions = {
             "open": ["in_progress", "closed"],
@@ -203,7 +204,7 @@ class ReportService:
 
         if new_status not in valid_transitions.get(report.status, []):
             raise ValueError(
-                f"Invalid transition from {report.status} to {new_status}"
+                gettext("Invalid transition from %(status)s to %(new_status)s") % {"status": report.status, "new_status": new_status}
             )
 
         old_status = report.status
@@ -248,19 +249,19 @@ class ReportService:
 
         report = db.session.get(Report, report_id)
         if not report:
-            raise ValueError("Report not found")
+            raise ValueError(gettext("Report not found"))
 
         voter = db.session.get(User, user_id)
         if voter and voter.role == "admin":
-            raise ValueError("Admins cannot vote")
+            raise ValueError(gettext("Admins cannot vote"))
 
         if report.user_id == user_id:
-            raise ValueError("Cannot vote on own report")
+            raise ValueError(gettext("Cannot vote on own report"))
 
         existing = Vote.query.filter_by(user_id=user_id, report_id=report_id).first()
         if existing:
             if existing.vote_type == vote_type:
-                raise ValueError("Already voted with the same type")
+                raise ValueError(gettext("Already voted with the same type"))
             existing.vote_type = vote_type
         else:
             vote = Vote(user_id=user_id, report_id=report_id, vote_type=vote_type)
@@ -291,7 +292,7 @@ class ReportService:
         
         report = db.session.get(Report, report_id)
         if not report:
-            raise ValueError("Report not found")
+            raise ValueError(gettext("Report not found"))
 
         comment = Comment(body=body, user_id=user_id, report_id=report_id)
         db.session.add(comment)

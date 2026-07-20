@@ -8,6 +8,7 @@ import random
 from datetime import datetime, timezone
 from typing import Optional
 
+from flask_babel import gettext
 from flask_jwt_extended import create_access_token
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -46,7 +47,7 @@ class AuthService:
 
         existing = User.query.filter_by(email=email).first()
         if existing:
-            raise ValueError("Email already registered")
+            raise ValueError(gettext("Email already registered"))
 
         user = User(
             name=name,
@@ -81,7 +82,7 @@ class AuthService:
         
         user = User.query.filter_by(email=email).first()
         if not user or not check_password_hash(user.password_hash, password):
-            raise ValueError("Invalid email or password")
+            raise ValueError(gettext("Invalid email or password"))
 
         user.last_seen = datetime.now(timezone.utc)
         db.session.commit()
@@ -103,11 +104,11 @@ class AuthService:
         Raises:
             ValueError: If the user is not found.
         """
-
         user = db.session.get(User, user_id)
         if not user:
-            raise ValueError("User not found")
+            raise ValueError(gettext("User not found"))
         return user
+
 
     @staticmethod
     def update_profile(user_id: int, **kwargs) -> User:
@@ -127,7 +128,7 @@ class AuthService:
 
         user = db.session.get(User, user_id)
         if not user:
-            raise ValueError("User not found")
+            raise ValueError(gettext("User not found"))
 
         for key, value in kwargs.items():
             if value is not None:
@@ -153,10 +154,10 @@ class AuthService:
         
         user = db.session.get(User, user_id)
         if not user:
-            raise ValueError("User not found")
+            raise ValueError(gettext("User not found"))
 
         if not check_password_hash(user.password_hash, current_password):
-            raise ValueError("Current password is incorrect")
+            raise ValueError(gettext("Current password is incorrect"))
 
         user.password_hash = generate_password_hash(new_password)
         user.updated_at = datetime.now(timezone.utc)
