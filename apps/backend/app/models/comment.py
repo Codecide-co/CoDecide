@@ -56,4 +56,5 @@ class Comment(db.Model):
         else:
             result["user_id"] = self.user_id
             result["author_name"] = self.author.name if self.author else None
+            result["author_avatar_url"] = self.author.avatar_url if self.author else None
         return result
