@@ -47,19 +47,29 @@ export function navigateTo(path, state) {
   window.dispatchEvent(new PopStateEvent("popstate"));
 }
 
+function dateLocale() {
+  try {
+    const lang = localStorage.getItem("language");
+    return lang === "es" ? "es-CO" : "en-GB";
+  } catch {
+    return "en-GB";
+  }
+}
+
 export function formatDate(dateStr, style = "short") {
   const d = new Date(dateStr);
+  const loc = dateLocale();
   if (isNaN(d.getTime())) return "—";
   switch (style) {
     case "datetime":
-      return `${d.toLocaleDateString()} ${d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
+      return `${d.toLocaleDateString(loc)} ${d.toLocaleTimeString(loc, { hour: "2-digit", minute: "2-digit" })}`;
     case "long":
-      return d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+      return d.toLocaleDateString(loc, { day: "numeric", month: "long", year: "numeric" });
     case "medium":
-      return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+      return d.toLocaleDateString(loc, { day: "numeric", month: "short", year: "numeric" });
     case "full":
-      return d.toLocaleString();
+      return d.toLocaleString(loc);
     default:
-      return d.toLocaleDateString("en-GB");
+      return d.toLocaleDateString(loc);
   }
 }
