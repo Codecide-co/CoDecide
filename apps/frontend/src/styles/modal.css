@@ -24,6 +24,8 @@
 
 .modal-content {
   padding: 1.5rem 2rem 2rem;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .modal-header {
@@ -31,6 +33,8 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1.25rem;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .modal-title {
@@ -38,6 +42,8 @@
   font-weight: 700;
   color: #1E293B;
   margin: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .modal-close {
@@ -59,6 +65,8 @@
 
 .modal-body {
   margin-bottom: 1.5rem;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .modal-body label {
@@ -166,4 +174,23 @@
 
 .modal-body select {
   cursor: pointer;
+}
+
+.modal-body {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+@media (max-width: 480px) {
+  .modal-overlay {
+    width: 95vw;
+    max-height: 85vh;
+  }
+  .modal-content {
+    padding: 1rem 1.25rem 1.25rem;
+  }
+  .modal-body {
+    max-height: 50vh;
+  }
 }
