@@ -1,6 +1,7 @@
 """Seed the database with default categories and optionally create an admin user."""
 
 import getpass
+import random
 
 import werkzeug.security
 
@@ -72,6 +73,7 @@ def create_user():
         role=role,
         apartment=apartment,
         tower=tower,
+        avatar_url=f"/static/avatars/avatar{random.randint(1, 150)}.svg",
     )
     db.session.add(user)
     db.session.commit()
