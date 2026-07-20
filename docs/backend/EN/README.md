@@ -205,6 +205,7 @@ Detailed per-domain documentation in [api/](api/):
 | apartment | String(20) | Apartment number |
 | tower | String(10) | Tower letter |
 | last_seen | DateTime | Last login time |
+| avatar_url | String(255) nullable | Avatar image path (gallery or uploaded) |
 | created_at | DateTime | Registration date |
 | updated_at | DateTime | Last modification |
 
