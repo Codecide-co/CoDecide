@@ -11,7 +11,7 @@ export function ReportsPageView() {
     ${HeaderHome()}
     <div class="auth-layout flex flex-row">
       ${SidebarHome()}
-      <main class="container-home">
+        <main class="container-home container-home--reports">
         <section class="reports-page">
 
           <h2 class="reports-title">All Reports</h2>
