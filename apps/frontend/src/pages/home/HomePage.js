@@ -3,7 +3,7 @@ import { HeaderHome } from "@/layouts/Header";
 import { SidebarHome } from "@/layouts/Sidebar";
 import { fetchMyReports } from "@services/reports.service";
 import { fetchApiData, UPLOADS_BASE } from "@core/api";
-import { formatDate } from "@core/helpers";
+import { formatDate, navigateTo } from "@core/helpers";
 
 export function HomePageView() {
   const user = authStore.user;
@@ -112,6 +112,13 @@ export function initHomePage() {
         `,
           )
           .join("");
+
+        container.querySelectorAll(".home-report-item").forEach((el, i) => {
+          const report = reports[i];
+          if (!report) return;
+          el.addEventListener("click", () => navigateTo(`/reports/${report.id}`));
+          el.style.cursor = "pointer";
+        });
 
         reports.slice(0, 5).forEach((r) => {
           fetchApiData(`/reports/${r.id}`)

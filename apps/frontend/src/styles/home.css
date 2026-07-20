@@ -232,6 +232,7 @@
   transition: all 0.2s;
   background: var(--color-surface);
   min-height: 72px;
+  cursor: pointer;
 }
 
 .home-report-item:hover {
@@ -272,7 +273,6 @@
 .home-report-body {
   flex: 1;
   min-width: 0;
-  overflow: hidden;
 }
 
 .home-report-header {

@@ -353,7 +353,6 @@
   cursor: pointer;
   transition: all 0.3s;
   position: relative;
-  overflow: hidden;
 }
 
 .report-card:hover {
