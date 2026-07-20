@@ -117,7 +117,6 @@ export function initHomePage() {
           const report = reports[i];
           if (!report) return;
           el.addEventListener("click", () => navigateTo(`/reports/${report.id}`));
-          el.style.cursor = "pointer";
         });
 
         reports.slice(0, 5).forEach((r) => {
