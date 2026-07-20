@@ -43,7 +43,7 @@ return`
                     <div class="landing-explore-viewport">
                     <div class="landing-report-cards">
                     <div class="landing-report-card">
-                        <div class="landing-report-card-img"><div class="landing-report-card-placeholder">Add photo</div></div>
+                        <div class="landing-report-card-img"><img src="/pothole-maple-treet.png" alt="Pothole on Maple Street"></div>
                         <h4 class="landing-report-card-title">Pothole on Maple Street</h4>
                         <div class="landing-report-card-field">
                             <h5 class="landing-report-card-label">Category</h5>
@@ -64,7 +64,7 @@ return`
                     </div>
 
                     <div class="landing-report-card">
-                        <div class="landing-report-card-img"><div class="landing-report-card-placeholder">Add photo</div></div>
+                        <div class="landing-report-card-img"><img src="/broken-street-light.png" alt="Broken Street Light"></div>
                         <h4 class="landing-report-card-title">Broken Street Light</h4>
                         <div class="landing-report-card-field">
                             <h5 class="landing-report-card-label">Category</h5>
@@ -85,7 +85,7 @@ return`
                     </div>
 
                     <div class="landing-report-card">
-                        <div class="landing-report-card-img"><div class="landing-report-card-placeholder">Add photo</div></div>
+                        <div class="landing-report-card-img"><img src="/fallen-tree-blocking-sidewalk.png" alt="Fallen Tree Blocking Sidewalk"></div>
                         <h4 class="landing-report-card-title">Fallen Tree Blocking Sidewalk</h4>
                         <div class="landing-report-card-field">
                             <h5 class="landing-report-card-label">Category</h5>
@@ -107,7 +107,7 @@ return`
 
                     <!-- duplicated set so the animation loops without a visible jump -->
                     <div class="landing-report-card" aria-hidden="true">
-                        <div class="landing-report-card-img"><div class="landing-report-card-placeholder">Add photo</div></div>
+                        <div class="landing-report-card-img"><img src="/pothole-maple-treet.png" alt="Pothole on Maple Street"></div>
                         <h4 class="landing-report-card-title">Pothole on Maple Street</h4>
                         <div class="landing-report-card-field">
                             <h5 class="landing-report-card-label">Category</h5>
@@ -128,7 +128,7 @@ return`
                     </div>
 
                     <div class="landing-report-card" aria-hidden="true">
-                        <div class="landing-report-card-img"><div class="landing-report-card-placeholder">Add photo</div></div>
+                        <div class="landing-report-card-img"><img src="/broken-street-light.png" alt="Broken Street Light"></div>
                         <h4 class="landing-report-card-title">Broken Street Light</h4>
                         <div class="landing-report-card-field">
                             <h5 class="landing-report-card-label">Category</h5>
@@ -149,7 +149,7 @@ return`
                     </div>
 
                     <div class="landing-report-card" aria-hidden="true">
-                        <div class="landing-report-card-img"><div class="landing-report-card-placeholder">Add photo</div></div>
+                        <div class="landing-report-card-img"><img src="/fallen-tree-blocking-sidewalk.png" alt="Fallen Tree Blocking Sidewalk"></div>
                         <h4 class="landing-report-card-title">Fallen Tree Blocking Sidewalk</h4>
                         <div class="landing-report-card-field">
                             <h5 class="landing-report-card-label">Category</h5>
