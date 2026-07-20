@@ -3,6 +3,17 @@ import { authStore } from "@store/auth.store";
 
 export function HeaderLanding() {
   const loggedIn = isAuthenticated();
+  const path = window.location.pathname;
+
+  let ctaHtml;
+  if (path === "/login") {
+    ctaHtml = '<li><a class="header-nav-link header-nav-cta" href="/" data-link>Home</a></li>';
+  } else if (loggedIn) {
+    ctaHtml = '<li><a class="header-nav-link header-nav-cta" href="/home" data-link>Login</a></li>';
+  } else {
+    ctaHtml = '<li><a class="header-nav-link header-nav-cta" href="/login" data-link>Login</a></li>';
+  }
+
   return `
   <header class="header-landing flex flex-row justify-between">
     <div>
@@ -15,10 +26,7 @@ export function HeaderLanding() {
         <li><a class="header-nav-link" href="#how-it-works">How It Works</a></li>
         <li><a class="header-nav-link" href="#about-us">About Us</a></li>
         <li><a class="header-nav-link" href="/announcements" data-link>Announcements</a></li>
-        ${loggedIn
-          ? '<li><a class="header-nav-link header-nav-cta" href="/home" data-link>Home</a></li>'
-          : '<li><a class="header-nav-link header-nav-cta" href="/login" data-link>Login</a></li>'
-        }
+        ${ctaHtml}
       </ul>
     </nav>
   </header>
