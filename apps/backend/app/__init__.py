@@ -14,6 +14,7 @@ from flask import send_from_directory
 from app.config import Config
 from app.extensions import db, jwt, migrate, mongo
 from app.routes import register_blueprints
+from app.models.token_blocklist import TokenBlocklist
 
 
 def create_app() -> Flask:
@@ -43,6 +44,22 @@ def create_app() -> Flask:
         mongo.init_app(app, uri=Config.MONGO_URI)
     migrate.init_app(app, db)
     jwt.init_app(app)
+
+    @jwt.token_in_blocklist_loader
+    def check_if_token_revoked(jwt_header, jwt_payload):
+        return TokenBlocklist.query.filter_by(jti=jwt_payload["jti"]).first() is not None
+
+    @jwt.revoked_token_loader
+    def revoked_token_callback(jwt_header, jwt_payload):
+        return {"error": "Token has been revoked"}, 401
+
+    @jwt.expired_token_loader
+    def expired_token_callback(jwt_header, jwt_payload):
+        return {"error": "Token has expired"}, 401
+
+    @jwt.invalid_token_loader
+    def invalid_token_callback(error):
+        return {"error": "Invalid token"}, 401
 
     register_blueprints(app)
 
