@@ -4,7 +4,10 @@ Authentication routes.
 Handles user registration, login, profile management, password changes, and logout.
 """
 
+from datetime import datetime, timezone
+
 from flask import Blueprint, jsonify, request
+from flask_jwt_extended import get_jwt
 
 from app.middleware.auth import login_required
 from app.schemas.auth_schema import (
@@ -172,11 +175,15 @@ def logout():
     """
     Log out the authenticated user.
 
-    Note: Currently does not invalidate the JWT token (token blacklist
-    is pending implementation).
+    Revokes the current JWT by adding its JTI to the blocklist.
+    The token is then rejected on subsequent requests.
 
     Returns:
         tuple: JSON success message, HTTP 200.
     """
-    
+
+    jti = get_jwt()["jti"]
+    expires_at = datetime.fromtimestamp(get_jwt()["exp"], tz=timezone.utc)
+    AuthService.revoke_token(jti, expires_at)
+
     return jsonify({"message": "Logged out successfully"}), 200
