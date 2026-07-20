@@ -38,7 +38,7 @@ export function SidebarHome() {
     { href: "/home", label: "Home", icon: "home.svg" },
     { href: "/reports/create", label: "New Report", icon: "reports.svg" },
     { href: "/stats", label: "Statistics", icon: "statistics.svg" },
-    { href: "/announcements", label: "Comumnicated", icon: "comumnicated.svg" },
+    { href: "/home/announcements", label: "Comumnicated", icon: "comumnicated.svg" },
     { href: "/profile", label: "My Profile", icon: "user.svg" },
   ];
   if (user?.role === "admin") {
