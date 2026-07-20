@@ -43,10 +43,14 @@ export function initSidebarHome() {
     const toggle = e.target.closest("#sidebar-toggle");
     if (toggle) {
       const sidebar = document.getElementById("sidebar");
-      const nowCollapsed = sidebar?.getAttribute("data-collapsed") === "true";
-      const next = !nowCollapsed;
-      if (sidebar) sidebar.toggleAttribute("data-collapsed", next);
-      localStorage.setItem("sidebarCollapsed", String(next));
+      if (!sidebar) return;
+      const isCollapsed = sidebar.hasAttribute("data-collapsed");
+      if (isCollapsed) {
+        sidebar.removeAttribute("data-collapsed");
+      } else {
+        sidebar.setAttribute("data-collapsed", "true");
+      }
+      localStorage.setItem("sidebarCollapsed", String(!isCollapsed));
     }
 
     const logoutBtn = e.target.closest("#sidebar-logout");
