@@ -7,7 +7,7 @@ import { HomePageView, initHomePage } from "@pages/home/HomePage";
 import { ProfilePageView, initProfilePage } from "@pages/profile/ProfilePage";
 import { ReportsPageView, initReportsPage } from "@pages/reports/ReportsPage";
 import { DetailPageView } from "@pages/reports/DetailPage";
-import { AnnouncementsPageView } from "@pages/announcements/AnnouncementsPage";
+import { AnnouncementsPageView, HomeAnnouncementsView, initHomeAnnouncements } from "@pages/announcements/AnnouncementsPage";
 import { StatsPageView } from "@pages/stats/StatsPage";
 import { SuccessPageView } from "@pages/reports/SuccessPage";
 import { NotFoundPageView } from "@pages/NotFoundPage";
@@ -64,6 +64,7 @@ const routes = [
   { path: "/reports/create", view: CreateReportView,             init: () => initCreateReportView(() => navigateTo("/reports/success")) },
   { path: "/admin",       view: AdminDashboardView },
   { path: "/announcements", view: AnnouncementsPageView, init: initHeaderLanding },
+  { path: "/home/announcements", view: HomeAnnouncementsView, init: initHomeAnnouncements },
   { path: "/stats",       view: StatsPageView },
   { path: "/reports/success", view: SuccessPageView },
   { test: /^\/reports\/(\d+)$/, view: (m) => DetailPageView(m[1]) },
