@@ -131,6 +131,7 @@ export function initCreateReportView(onSuccess) {
       const report = await createReport(payload);
 
       const files = fileUpload.getFiles();
+      let uploadedPhotos = [];
       if (files.length > 0) {
         submitBtn.textContent = "Uploading photos...";
         const results = await Promise.allSettled(
@@ -140,11 +141,14 @@ export function initCreateReportView(onSuccess) {
         if (failures.length > 0) {
           console.warn("Some attachments failed to upload:", failures.map((r) => r.reason));
         }
+        uploadedPhotos = results
+          .filter((r) => r.status === "fulfilled")
+          .map((r) => r.value);
       }
 
       setLoading(false);
       form.reset();
-      if (typeof onSuccess === "function") onSuccess(report);
+      if (typeof onSuccess === "function") onSuccess(report, uploadedPhotos);
     } catch (error) {
       setLoading(false);
       submitError.textContent = error.message || "Something went wrong submitting your report. Please try again.";
