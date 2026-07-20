@@ -49,6 +49,12 @@ class ReportService:
             ValueError: If the category is not found.
         """
 
+        user = db.session.get(User, user_id)
+        if not user:
+            raise ValueError("User not found")
+        if user.role == "admin":
+            raise ValueError("Admins cannot create reports")
+
         category = db.session.get(Category, category_id)
         if not category:
             raise ValueError("Category not found")
