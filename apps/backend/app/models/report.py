@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime, timezone
-
+from flask_babel import lazy_gettext
 from sqlalchemy import Enum as SAEnum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -81,7 +81,7 @@ class Report(db.Model):
                 category_name, and vote/comment metadata.
         """
 
-        author_name = "Anonymous" if self.is_anonymous else (self.author.name if self.author else None)
+        author_name = lazy_gettext("Anonymous") if self.is_anonymous else (self.author.name if self.author else None)
         result = {
             "id": self.id,
             "title": self.title,

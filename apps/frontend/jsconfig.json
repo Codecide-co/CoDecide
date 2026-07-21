@@ -14,7 +14,8 @@
       "@layouts/*": ["./src/layouts/*"],
       "@store/*": ["./src/store/*"],
       "@router/*": ["./src/router/*"],
-      "@core/*": ["./src/core/*"]
+      "@core/*": ["./src/core/*"],
+      "@languages/*": ["./src/languages/*"]
     }
   },
   "include": ["./**/*"],

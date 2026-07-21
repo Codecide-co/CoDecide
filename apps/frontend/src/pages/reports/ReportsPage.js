@@ -5,6 +5,7 @@ import { navigateTo, formatDate } from "@core/helpers";
 import { authStore } from "@store/auth.store";
 import { VotingWidgetView, initVotingWidget } from "@components/domain/VotingWidget";
 import { voteReport } from "@services/reports.service";
+import { t } from "@core/i18n";
 
 export function ReportsPageView() {
   return `
@@ -14,25 +15,25 @@ export function ReportsPageView() {
         <main class="container-home container-home--reports">
         <section class="reports-page">
 
-          <h2 class="reports-title">All Reports</h2>
+          <h2 class="reports-title">${t("report.list.title")}</h2>
 
           <div class="reports-filter-bar">
             <select id="filter-status">
-              <option value="">All Statuses</option>
-              <option value="open">Open</option>
-              <option value="in_progress">In Progress</option>
-              <option value="resolved">Resolved</option>
-              <option value="closed">Closed</option>
+              <option value="">${t("report.list.all_statuses")}</option>
+              <option value="open">${t("report.list.open")}</option>
+              <option value="in_progress">${t("report.list.in_progress")}</option>
+              <option value="resolved">${t("report.list.resolved")}</option>
+              <option value="closed">${t("report.list.closed")}</option>
             </select>
             <select id="filter-category">
-              <option value="">All Categories</option>
+              <option value="">${t("report.list.all_categories")}</option>
             </select>
             <input type="date" id="filter-date-from">
             <input type="date" id="filter-date-to">
           </div>
 
           <div id="reports-grid" class="reports-grid">
-            <p class="reports-loading">Loading...</p>
+            <p class="reports-loading">${t("report.list.loading")}</p>
           </div>
 
           <div id="reports-pagination" class="reports-pagination"></div>
@@ -78,7 +79,7 @@ export function initReportsPage() {
     const pagination = document.getElementById("reports-pagination");
     if (!grid) return;
 
-    grid.innerHTML = `<p class="reports-loading">Loading...</p>`;
+    grid.innerHTML = `<p class="reports-loading">${t("report.list.loading")}</p>`;
 
     fetchApiData(`/reports?${params.toString()}`)
       .then((data) => {
@@ -86,7 +87,7 @@ export function initReportsPage() {
         const totalPages = data.pages || 1;
 
         if (reports.length === 0) {
-          grid.innerHTML = `<p class="reports-loading">No reports found.</p>`;
+          grid.innerHTML = `<p class="reports-loading">${t("report.list.empty")}</p>`;
         } else {
           grid.innerHTML = reports
             .map(
@@ -100,17 +101,17 @@ export function initReportsPage() {
                   <span class="home-status-badge ${r.status}">${r.status.replace("_", " ")}</span>
                 </div>
                 <div class="report-card-meta">
-                  <span>${categoryNames[r.category_id] || "Unknown"}</span>
+                  <span>${categoryNames[r.category_id] || t("report.list.unknown")}</span>
                   <span>${formatDate(r.created_at)}</span>
                 </div>
                 <div class="report-card-footer">
                   ${VotingWidgetView({ reportId: r.id, upvotes: r.upvotes || 0, downvotes: r.downvotes || 0, userVote: r.user_vote, isOwnReport: r.is_own_report, isAdmin: authStore.user?.role === "admin" })}
-                  <span>${r.comments_count || 0} comments</span>
+                  <span>${r.comments_count || 0} ${t("report.list.comments")}</span>
                   ${r.is_anonymous ? `
                   <span class="anonymous-badge">
                     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"/></svg>
-                    Anonymous
-                    <span class="anonymous-tooltip">The author&#39;s identity is hidden for this report.</span>
+                    ${t("home.anonymous_badge")}
+                    <span class="anonymous-tooltip">${t("home.anonymous_tooltip")}</span>
                   </span>` : ""}
                 </div>
               </div>
@@ -133,7 +134,7 @@ export function initReportsPage() {
                   imgContainer.classList.add("report-card-img--placeholder");
                   imgContainer.innerHTML = `
                     <img src="/img.svg">
-                    <span>No image</span>
+                    <span>${t("report.list.no_image")}</span>
                   `;
                 }
               })
@@ -149,9 +150,9 @@ export function initReportsPage() {
         }
 
         pagination.innerHTML = `
-          <button id="prev-page" ${page <= 1 ? "disabled" : ""}>← Previous</button>
-          <span>Page ${page} of ${totalPages}</span>
-          <button id="next-page" ${page >= totalPages ? "disabled" : ""}>Next →</button>
+          <button id="prev-page" ${page <= 1 ? "disabled" : ""}>${t("report.list.prev")}</button>
+          <span>${t("report.list.page", { page, total: totalPages })}</span>
+          <button id="next-page" ${page >= totalPages ? "disabled" : ""}>${t("report.list.next")}</button>
         `;
 
         document.getElementById("prev-page")?.addEventListener("click", () => {
@@ -162,7 +163,7 @@ export function initReportsPage() {
         });
       })
       .catch(() => {
-        grid.innerHTML = `<p class="reports-loading">Could not load reports.</p>`;
+        grid.innerHTML = `<p class="reports-loading">${t("report.list.load_error")}</p>`;
       });
   }
 

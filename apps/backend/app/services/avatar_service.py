@@ -8,6 +8,7 @@ import os
 import uuid
 
 from flask import current_app
+from flask_babel import gettext
 
 from app.extensions import db
 from app.models.user import User
@@ -37,12 +38,12 @@ class AvatarService:
         """
 
         if not file or not file.filename:
-            raise ValueError("No file selected")
+            raise ValueError(gettext("No file selected"))
 
         ext = file.filename.rsplit(".", 1)[1].lower() if "." in file.filename else ""
         if ext not in ALLOWED_AVATAR_EXTENSIONS:
             raise ValueError(
-                f"File type not allowed. Allowed: {', '.join(sorted(ALLOWED_AVATAR_EXTENSIONS))}"
+                gettext("File type not allowed. Allowed: %(extensions)s") % {"extensions": ', '.join(sorted(ALLOWED_AVATAR_EXTENSIONS))}
             )
 
         max_size = current_app.config.get("MAX_CONTENT_LENGTH", 16 * 1024 * 1024)
@@ -51,11 +52,11 @@ class AvatarService:
         file.seek(0)
         if size > max_size:
             limit_mb = max_size // (1024 * 1024)
-            raise ValueError(f"File exceeds {limit_mb} MB limit")
+            raise ValueError(gettext("File exceeds %(limit)s MB limit") % {"limit": limit_mb})
 
         user = db.session.get(User, user_id)
         if not user:
-            raise ValueError("User not found")
+            raise ValueError(gettext("User not found"))
 
         AvatarService._delete_previous_upload(user.avatar_url)
 

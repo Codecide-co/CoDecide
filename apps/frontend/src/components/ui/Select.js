@@ -1,4 +1,6 @@
-export function SelectView({ id, label, options = [], placeholder = "Select an option", disabled = false }) {
+import { t } from "@core/i18n";
+
+export function SelectView({ id, label, options = [], placeholder = t("select.placeholder"), disabled = false }) {
   const optionsHtml = options
     .map((opt) => `<option value="${opt.id}">${opt.name}</option>`)
     .join("");

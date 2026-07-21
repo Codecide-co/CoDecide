@@ -1,6 +1,8 @@
+import { t } from "@core/i18n";
+
 const state = { currentDialog: null };
 
-export function openModal({ title, content, onSubmit, submitLabel = "Save", cancellable = true, onCancel }) {
+export function openModal({ title, content, onSubmit, submitLabel = t("common.saving"), cancellable = true, onCancel }) {
   closeModal();
 
   const dialog = document.createElement("dialog");
@@ -13,7 +15,7 @@ export function openModal({ title, content, onSubmit, submitLabel = "Save", canc
       </div>
       <div class="modal-body">${content}</div>
       <div class="modal-footer">
-        ${cancellable ? '<button class="modal-btn modal-btn-cancel" id="modal-cancel">Cancel</button>' : ""}
+        ${cancellable ? `<button class="modal-btn modal-btn-cancel" id="modal-cancel">${t("common.cancel")}</button>` : ""}
         <button class="modal-btn modal-btn-primary" id="modal-submit">${submitLabel}</button>
       </div>
       <p id="modal-error" class="modal-error hidden"></p>
@@ -39,7 +41,7 @@ export function openModal({ title, content, onSubmit, submitLabel = "Save", canc
   if (onSubmit) {
     submitBtn.addEventListener("click", async () => {
       submitBtn.disabled = true;
-      submitBtn.textContent = "Saving...";
+      submitBtn.textContent = t("common.saving");
       errorEl.classList.add("hidden");
       try {
         const form = dialog.querySelector("form");
@@ -47,7 +49,7 @@ export function openModal({ title, content, onSubmit, submitLabel = "Save", canc
         await onSubmit(data);
         closeModal();
       } catch (err) {
-        errorEl.textContent = err.message || "Something went wrong";
+        errorEl.textContent = err.message || t("common.error");
         errorEl.classList.remove("hidden");
       } finally {
         submitBtn.disabled = false;

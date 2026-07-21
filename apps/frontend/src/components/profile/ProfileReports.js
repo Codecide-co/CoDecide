@@ -1,4 +1,5 @@
 import { navigateTo } from "@core/helpers";
+import { t } from "@core/i18n";
 
 export function ProfileReports({ reports, loading, error }) {
   const wrapperId = "profile-reports-wrapper";
@@ -9,11 +10,11 @@ export function ProfileReports({ reports, loading, error }) {
 
     if (loading) return;
     if (error) {
-      wrapper.innerHTML = '<p class="profile-error">Could not load reports.</p>';
+      wrapper.innerHTML = `<p class="profile-error">${t("profile.reports_error")}</p>`;
       return;
     }
     if (!reports || reports.length === 0) {
-      wrapper.innerHTML = '<p class="profile-empty">No reports yet.</p>';
+      wrapper.innerHTML = `<p class="profile-empty">${t("profile.reports_empty")}</p>`;
       return;
     }
     wrapper.innerHTML = `<div class="profile-reports-grid">${
@@ -37,10 +38,10 @@ export function ProfileReports({ reports, loading, error }) {
 
   return `
     <div class="profile-section-reports">
-      <h3 class="profile-section-title">My Reports</h3>
+      <h3 class="profile-section-title">${t("profile.my_reports")}</h3>
         <div id="${wrapperId}" class="profile-reports-scroll">
             <div class="profile-reports-grid">
-                <p class="profile-loading">Loading reports...</p>
+                <p class="profile-loading">${t("profile.reports_loading")}</p>
             </div>
         </div>
     </div>

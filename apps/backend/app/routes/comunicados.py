@@ -5,6 +5,7 @@ Handles listing and creating official community announcements.
 """
 
 from flask import Blueprint, jsonify, request
+from flask_babel import gettext
 
 from app.extensions import db
 from app.middleware.auth import admin_required
@@ -42,7 +43,7 @@ def create_comunicado():
     
     data = request.get_json()
     if not data or not data.get("title") or not data.get("body"):
-        return jsonify({"error": "title and body are required"}), 400
+        return jsonify({"error": gettext("title and body are required")}), 400
 
     comunicado = Comunicado(
         title=data["title"],

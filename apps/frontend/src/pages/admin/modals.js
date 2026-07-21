@@ -3,20 +3,23 @@ import { updateReportStatus } from "@services/reports.service";
 import { fetchApiData, postApiData } from "@core/api";
 import { formatDate } from "@core/helpers";
 import { createAnnouncement } from "@services/announcements.service";
+import { t } from "@core/i18n";
+import { toast } from "@core/toast";
 
 export function showStatusChangeModal(reportId, newStatus, onComplete) {
   openModal({
-    title: "Change Status",
-    submitLabel: "Update Status",
+    title: t("admin.change_status_title"),
+    submitLabel: t("admin.change_status_submit"),
     content: `
-      <p class="mb-4">Change to: <strong>${newStatus.replace("_", " ")}</strong></p>
+      <p class="mb-4">${t("admin.change_status_to", { status: newStatus.replace("_", " ") })}</p>
       <form id="status-change-form">
-        <label class="block mb-1">Internal comment (optional)</label>
+        <label class="block mb-1">${t("admin.change_status_comment")}</label>
         <textarea name="comment" rows="3" class="w-full resize-y"></textarea>
       </form>
     `,
     onSubmit: async (data) => {
       await updateReportStatus(reportId, newStatus, data.comment || "");
+      toast(t("admin.status_updated"), "success");
       onComplete();
     },
     onCancel: onComplete,
@@ -29,9 +32,9 @@ export function showHistoryModal(reportId) {
       const history = report.status_history || [];
       if (history.length === 0) {
         openModal({
-          title: "Status History",
-          content: `<p class="text-center p-8">No status changes recorded.</p>`,
-          submitLabel: "Close",
+          title: t("admin.status_history"),
+          content: `<p class="text-center p-8">${t("admin.status_history_empty")}</p>`,
+          submitLabel: t("admin.close"),
           onSubmit: () => {},
           cancellable: false,
         });
@@ -62,17 +65,17 @@ export function showHistoryModal(reportId) {
       }).join("");
 
       openModal({
-        title: "Status History",
+        title: t("admin.status_history"),
         content: `<div class="flex flex-col max-h-96 overflow-y-auto">${list}</div>`,
-        submitLabel: "Close",
+        submitLabel: t("admin.close"),
         onSubmit: () => {},
       });
     })
     .catch(() => {
       openModal({
-        title: "Status History",
-        content: `<p class="text-center p-8">Could not load history.</p>`,
-        submitLabel: "Close",
+        title: t("admin.status_history"),
+        content: `<p class="text-center p-8">${t("admin.status_history_error")}</p>`,
+        submitLabel: t("admin.close"),
         onSubmit: () => {},
       });
     });
@@ -80,47 +83,49 @@ export function showHistoryModal(reportId) {
 
 export function showAnnouncementModal() {
   openModal({
-    title: "New Announcement",
-    submitLabel: "Publish",
+    title: t("admin.announcement_title"),
+    submitLabel: t("admin.announcement_submit"),
     content: `
       <form id="announcement-form">
-        <label class="block mb-1">Title</label>
+        <label class="block mb-1">${t("admin.announcement_label")}</label>
         <input name="title" type="text" class="w-full mb-4">
-        <label class="block mb-1">Body</label>
+        <label class="block mb-1">${t("admin.announcement_body")}</label>
         <textarea name="body" rows="4" class="w-full resize-y"></textarea>
       </form>
     `,
     onSubmit: async (data) => {
-      if (!data.title || !data.body) throw new Error("Title and body are required.");
+      if (!data.title || !data.body) throw new Error(t("admin.announcement_required"));
       await createAnnouncement(data.title, data.body);
+      toast(t("admin.announcement_created"), "success");
     },
   });
 }
 
 export function showCategoryModal(onCreated) {
   openModal({
-    title: "New Category",
-    submitLabel: "Create Category",
+    title: t("admin.category_title"),
+    submitLabel: t("admin.category_submit"),
     content: `
       <form id="category-form">
-        <label class="block mb-1">Name</label>
+        <label class="block mb-1">${t("admin.category_name")}</label>
         <input name="name" type="text" class="w-full mb-4" required>
-        <label class="block mb-1">Type</label>
+        <label class="block mb-1">${t("admin.category_type")}</label>
         <select name="type" class="w-full mb-4">
-          <option value="infrastructure">Infrastructure</option>
-          <option value="coexistence">Coexistence</option>
+          <option value="infrastructure">${t("admin.category_infrastructure")}</option>
+          <option value="coexistence">${t("admin.category_coexistence")}</option>
         </select>
-        <label class="block mb-1">Description (optional)</label>
+        <label class="block mb-1">${t("admin.category_desc")}</label>
         <textarea name="description" rows="2" class="w-full resize-y"></textarea>
       </form>
     `,
     onSubmit: async (data) => {
-      if (!data.name) throw new Error("Name is required.");
+      if (!data.name) throw new Error(t("admin.category_name_required"));
       await postApiData("/categories", {
         name: data.name,
         type: data.type,
         description: data.description || "",
       });
+      toast(t("admin.category_created"), "success");
       const cats = await fetchApiData("/categories");
       if (onCreated) onCreated(cats);
     },

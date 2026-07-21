@@ -24,7 +24,7 @@ describe('LoginFormView rendering', () => {
   it('renders email field', () => {
     setBody(LoginFormView())
     expect(document.getElementById('email')).not.toBeNull()
-    expect(document.getElementById('email').placeholder).toBe('email@example.com')
+    expect(document.getElementById('email').placeholder).toBe('correo@ejemplo.com')
   })
 
   it('renders password field', () => {
@@ -37,14 +37,14 @@ describe('LoginFormView rendering', () => {
     setBody(LoginFormView())
     const btn = document.getElementById('login-btn')
     expect(btn).not.toBeNull()
-    expect(btn.textContent).toBe('Log In')
+    expect(btn.textContent).toBe('Iniciar Sesión')
   })
 
   it('renders register link', () => {
     setBody(LoginFormView())
     const link = document.getElementById('go-register')
     expect(link).not.toBeNull()
-    expect(link.textContent).toBe('Sign Up')
+    expect(link.textContent).toBe('Regístrate')
   })
 })
 
@@ -108,12 +108,12 @@ describe('LoginFormView form submission', () => {
     document.getElementById('login-form').dispatchEvent(new Event('submit', { cancelable: true }))
 
     const btn = document.getElementById('login-btn')
-    expect(btn.textContent).toBe('Processing...')
+    expect(btn.textContent).toBe('Procesando...')
     expect(btn.disabled).toBe(true)
 
     resolveLogin({ token: 'abc' })
     await vi.waitFor(() => {
-      expect(btn.textContent).toBe('Log In')
+      expect(btn.textContent).toBe('Iniciar Sesión')
       expect(btn.disabled).toBe(false)
     })
   })

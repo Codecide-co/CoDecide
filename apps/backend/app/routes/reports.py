@@ -5,6 +5,7 @@ Handles CRUD operations for reports, status transitions, voting, and comments.
 """
 
 from flask import Blueprint, jsonify, request
+from flask_babel import gettext
 
 from app.middleware.auth import admin_required, login_required
 from app.mongodb.attachment import Attachment
@@ -71,7 +72,7 @@ def create_report():
     schema = CreateReportSchema()
     errors = schema.validate(request.json)
     if errors:
-        return jsonify({"error": "Validation failed", "details": errors}), 400
+        return jsonify({"error": gettext("Validation failed"), "details": errors}), 400
 
     try:
         data = schema.load(request.json)
@@ -159,7 +160,7 @@ def update_status(report_id: int):
     schema = StatusUpdateSchema()
     errors = schema.validate(request.json)
     if errors:
-        return jsonify({"error": "Validation failed", "details": errors}), 400
+        return jsonify({"error": gettext("Validation failed"), "details": errors}), 400
 
     try:
         data = schema.load(request.json)
@@ -193,7 +194,7 @@ def vote(report_id: int):
     schema = VoteSchema()
     errors = schema.validate(request.json)
     if errors:
-        return jsonify({"error": "Validation failed", "details": errors}), 400
+        return jsonify({"error": gettext("Validation failed"), "details": errors}), 400
 
     try:
         data = schema.load(request.json)
@@ -223,7 +224,7 @@ def add_comment(report_id: int):
     schema = CommentSchema()
     errors = schema.validate(request.json)
     if errors:
-        return jsonify({"error": "Validation failed", "details": errors}), 400
+        return jsonify({"error": gettext("Validation failed"), "details": errors}), 400
 
     try:
         data = schema.load(request.json)

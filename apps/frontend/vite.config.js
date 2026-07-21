@@ -21,6 +21,7 @@ export default defineConfig({
       '@store': resolve(__dirname, 'src/store'),
       '@router': resolve(__dirname, 'src/router'),
       '@core': resolve(__dirname, 'src/core'),
+      '@languages': resolve(__dirname, 'src/languages'),
     }
   }
 })

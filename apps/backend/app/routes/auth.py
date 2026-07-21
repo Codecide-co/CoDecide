@@ -7,6 +7,7 @@ Handles user registration, login, profile management, password changes, and logo
 from datetime import datetime, timezone
 
 from flask import Blueprint, jsonify, request
+from flask_babel import gettext
 from flask_jwt_extended import get_jwt
 
 from app.middleware.auth import login_required
@@ -37,7 +38,7 @@ def register():
     schema = RegisterSchema()
     errors = schema.validate(request.json)
     if errors:
-        return jsonify({"error": "Validation failed", "details": errors}), 400
+        return jsonify({"error": gettext("Validation failed"), "details": errors}), 400
 
     try:
         result = AuthService.register(**schema.load(request.json))
@@ -63,7 +64,7 @@ def login():
     schema = LoginSchema()
     errors = schema.validate(request.json)
     if errors:
-        return jsonify({"error": "Validation failed", "details": errors}), 400
+        return jsonify({"error": gettext("Validation failed"), "details": errors}), 400
 
     try:
         result = AuthService.login(**schema.load(request.json))
@@ -103,7 +104,7 @@ def update_profile():
     schema = UpdateProfileSchema()
     errors = schema.validate(request.json)
     if errors:
-        return jsonify({"error": "Validation failed", "details": errors}), 400
+        return jsonify({"error": gettext("Validation failed"), "details": errors}), 400
 
     try:
         data = schema.load(request.json)
@@ -128,7 +129,7 @@ def change_password():
     schema = ChangePasswordSchema()
     errors = schema.validate(request.json)
     if errors:
-        return jsonify({"error": "Validation failed", "details": errors}), 400
+        return jsonify({"error": gettext("Validation failed"), "details": errors}), 400
 
     try:
         data = schema.load(request.json)
@@ -137,7 +138,7 @@ def change_password():
             current_password=data["current_password"],
             new_password=data["new_password"],
         )
-        return jsonify({"message": "Password updated successfully"}), 200
+        return jsonify({"message": gettext("Password updated successfully")}), 200
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
 
@@ -157,7 +158,7 @@ def upload_avatar():
     """
 
     if "file" not in request.files:
-        return jsonify({"error": "No file provided"}), 400
+        return jsonify({"error": gettext("No file provided")}), 400
 
     try:
         user = AvatarService.upload_avatar(
@@ -186,4 +187,4 @@ def logout():
     expires_at = datetime.fromtimestamp(get_jwt()["exp"], tz=timezone.utc)
     AuthService.revoke_token(jti, expires_at)
 
-    return jsonify({"message": "Logged out successfully"}), 200
+    return jsonify({"message": gettext("Logged out successfully")}), 200

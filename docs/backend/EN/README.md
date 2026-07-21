@@ -68,6 +68,10 @@ apps/backend/
     │   ├── report_schema.py
     │   └── user_schema.py
     │
+    ├── translations/               # i18n translation files
+    │   ├── es/LC_MESSAGES/messages.po  # Spanish (default)
+    │   └── en/LC_MESSAGES/messages.po  # English
+    │
     ├── middleware/                  # Security decorators
     │   └── auth.py                 # @login_required, @admin_required
     │
@@ -166,10 +170,66 @@ cd apps/backend
 pip install -r requirements.txt
 cp .env.example .env
 flask db upgrade
+pybabel compile -d app/translations   # Compile i18n translations
 python run.py
 ```
 
 Server at `http://localhost:5000`.
+
+---
+
+## Internationalization (i18n)
+
+The backend uses **Flask-Babel** to respond in Spanish or English.
+
+### Default behavior
+
+The server always responds in **Spanish** unless told otherwise.
+
+### How to switch language
+
+1. **Query param** — any endpoint accepts `?lang=en` or `?lang=es`:
+   ```bash
+   curl http://localhost:5000/api/hello?lang=en
+   ```
+
+2. **Persistent cookie** — `POST /api/language` saves the language to a cookie:
+   ```bash
+   curl -X POST http://localhost:5000/api/language \
+     -H "Content-Type: application/json" \
+     -d '{"language": "en"}'
+   ```
+
+### Locale resolution order
+
+1. `?lang=` in the URL
+2. `language` cookie
+3. `es` (Spanish) default
+
+### How to add or modify translations
+
+1. Mark strings in code with `gettext()` or `lazy_gettext()`:
+   ```python
+   from flask_babel import gettext
+   raise ValueError(gettext("User not found"))
+   ```
+
+2. Extract strings to `.pot` file:
+   ```bash
+   pybabel extract -F babel.cfg -o app/translations/messages.pot --no-wrap app
+   ```
+
+3. Update `.po` files for each language:
+   ```bash
+   pybabel update -i app/translations/messages.pot -d app/translations --no-wrap
+   ```
+
+4. Edit `app/translations/es/LC_MESSAGES/messages.po` or `app/translations/en/LC_MESSAGES/messages.po` with missing translations.
+
+5. Compile `.mo` files:
+   ```bash
+   pybabel compile -d app/translations
+   ```
 
 ---
 

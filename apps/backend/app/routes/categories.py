@@ -5,6 +5,7 @@ Handles listing and creating report categories.
 """
 
 from flask import Blueprint, jsonify, request
+from flask_babel import gettext
 from marshmallow import Schema, fields, validate
 
 from app.extensions import db
@@ -54,12 +55,12 @@ def create_category():
     schema = CreateCategorySchema()
     errors = schema.validate(request.json)
     if errors:
-        return jsonify({"error": "Validation failed", "details": errors}), 400
+        return jsonify({"error": gettext("Validation failed"), "details": errors}), 400
 
     data = schema.load(request.json)
     existing = Category.query.filter_by(name=data["name"]).first()
     if existing:
-        return jsonify({"error": "Category already exists"}), 409
+        return jsonify({"error": gettext("Category already exists")}), 409
 
     category = Category(name=data["name"], type=data["type"], description=data.get("description"))
     db.session.add(category)

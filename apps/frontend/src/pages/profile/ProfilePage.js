@@ -9,6 +9,8 @@ import { PersonalInfo } from "@components/profile/PersonalInfo";
 import { ProfileReports } from "@components/profile/ProfileReports";
 import { SecuritySection } from "@components/profile/SecuritySection";
 import { fetchMyReports } from "@services/reports.service";
+import { t } from "@core/i18n";
+import { toast } from "@core/toast";
 
 export function ProfilePageView() {
   return `
@@ -84,13 +86,13 @@ export function initProfilePage() {
   function openEditProfileModal() {
     if (!user) return;
     openModal({
-      title: "Edit Profile",
-      submitLabel: "Save Changes",
+      title: `${t("profile.edit_title")}`,
+      submitLabel: `${t("profile.edit_submit")}`,
       content: `
         <form id="edit-profile-form">
-          <div class="form-group"><label for="edit-name">Name</label><input id="edit-name" name="name" value="${user.name || ""}" required minlength="2"></div>
-          <div class="form-group"><label for="edit-apartment">Apartment</label><input id="edit-apartment" name="apartment" value="${user.apartment || ""}"></div>
-          <div class="form-group"><label for="edit-tower">Tower</label><input id="edit-tower" name="tower" value="${user.tower || ""}"></div>
+          <div class="form-group"><label for="edit-name">${t("profile.edit_name")}</label><input id="edit-name" name="name" value="${user.name || ""}" required minlength="2"></div>
+          <div class="form-group"><label for="edit-apartment">${t("profile.edit_apartment")}</label><input id="edit-apartment" name="apartment" value="${user.apartment || ""}"></div>
+          <div class="form-group"><label for="edit-tower">${t("profile.edit_tower")}</label><input id="edit-tower" name="tower" value="${user.tower || ""}"></div>
         </form>
       `,
       onSubmit: async (formData) => {
@@ -105,25 +107,29 @@ export function initProfilePage() {
 
   function openChangePasswordModal() {
     openModal({
-      title: "Change Password",
-      submitLabel: "Update Password",
+      title: `${t("profile.change_pw_title")}`,
+      submitLabel: `${t("profile.change_pw_submit")}`,
       content: `
         <form id="change-password-form">
-          <div class="form-group"><label for="cp-current">Current Password</label>
+          <div class="form-group"><label for="cp-current">${t("profile.change_pw_current")}</label>
           <input id="cp-current" name="current_password" type="password" required></div>
-          <div class="form-group"><label for="cp-new">New Password</label>
+          <div class="form-group"><label for="cp-new">${t("profile.change_pw_new")}</label>
           <input id="cp-new" name="new_password" type="password" required minlength="6"></div>
-          <div class="form-group"><label for="cp-confirm">Confirm New Password</label>
+          <div class="form-group"><label for="cp-confirm">${t("profile.change_pw_confirm")}</label>
           <input id="cp-confirm" type="password" required minlength="6"></div>
         </form>
       `,
       onSubmit: async (formData) => {
+        if (!formData.current_password) throw new Error(t("validator.password_required"));
+        if (!formData.new_password) throw new Error(t("validator.password_required"));
         const confirm = document.getElementById("cp-confirm")?.value;
-        if (formData.new_password !== confirm) throw new Error("Passwords do not match");
+        if (!confirm) throw new Error(t("validator.password_confirm"));
+        if (formData.new_password !== confirm) throw new Error(t("profile.change_pw_mismatch"));
         await postApiData("/auth/change-password", {
           current_password: formData.current_password,
           new_password: formData.new_password,
         });
+        toast(t("profile.change_pw_success"), "success");
       },
     });
   }
@@ -146,6 +152,6 @@ export function initProfilePage() {
     })
     .catch(() => {
       const container = document.getElementById("profile-content");
-      if (container) container.innerHTML = '<p class="text-red-500 text-center py-12">Could not load profile.</p>';
+      if (container) container.innerHTML = `<p class="text-red-500 text-center py-12">${t("profile.not_found")}</p>`;
     });
 }

@@ -1,10 +1,12 @@
+import { t } from "@core/i18n";
+
 export function FileUploadView({ id, label, multiple = true, accept = "image/*" }) {
   return `
     <div>
       <label for="${id}">${label}</label>
       <div class="file-upload-custom">
-        <button type="button" class="file-upload-btn" data-for="${id}">Choose file</button>
-        <span class="file-upload-text" id="${id}-text">No file chosen</span>
+        <button type="button" class="file-upload-btn" data-for="${id}">${t("file.choose")}</button>
+        <span class="file-upload-text" id="${id}-text">${t("file.no_chosen")}</span>
       </div>
       <input id="${id}" name="${id}" type="file" accept="${accept}" ${multiple ? "multiple" : ""} hidden>
       <div id="${id}-preview" class="file-preview-grid"></div>
@@ -39,7 +41,7 @@ export function initFileUpload(id) {
 
       const removeBtn = document.createElement("button");
       removeBtn.type = "button";
-      removeBtn.setAttribute("aria-label", `Remove ${file.name}`);
+      removeBtn.setAttribute("aria-label", t("file.remove", { name: file.name }));
       removeBtn.textContent = "×";
       removeBtn.addEventListener("click", () => {
         files.splice(index, 1);
@@ -62,8 +64,10 @@ export function initFileUpload(id) {
     files = [...files, ...newFiles];
     input.value = "";
     textEl.textContent = files.length
-      ? `${files.length} file${files.length > 1 ? "s" : ""} selected`
-      : "No file chosen";
+      ? (files.length === 1
+          ? t("file.count", { count: files.length }) + t("file.selected")
+          : t("file.count_plural", { count: files.length }) + t("file.selected"))
+      : t("file.no_chosen");
     render();
   });
 

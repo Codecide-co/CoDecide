@@ -43,14 +43,14 @@ describe('validateLoginForm', () => {
   it('returns errors for empty fields', () => {
     const result = validateLoginForm({ email: '', password: '' })
     expect(result.isValid).toBe(false)
-    expect(result.errors.email).toBe('An email address is required')
-    expect(result.errors.password).toBe('The password is required')
+    expect(result.errors.email).toBe('El correo electrónico es obligatorio')
+    expect(result.errors.password).toBe('La contraseña es obligatoria')
   })
 
   it('returns error for invalid email format', () => {
     const result = validateLoginForm({ email: 'notanemail', password: 'secret' })
     expect(result.isValid).toBe(false)
-    expect(result.errors.email).toBe('Enter a valid email address')
+    expect(result.errors.email).toBe('Ingresa un correo electrónico válido')
     expect(result.errors.password).toBeUndefined()
   })
 
@@ -63,13 +63,13 @@ describe('validateLoginForm', () => {
   it('returns error for whitespace-only email', () => {
     const result = validateLoginForm({ email: '   ', password: 'secret' })
     expect(result.isValid).toBe(false)
-    expect(result.errors.email).toBe('An email address is required')
+    expect(result.errors.email).toBe('El correo electrónico es obligatorio')
   })
 
   it('returns error for missing password', () => {
     const result = validateLoginForm({ email: 'user@example.com' })
     expect(result.isValid).toBe(false)
-    expect(result.errors.password).toBe('The password is required')
+    expect(result.errors.password).toBe('La contraseña es obligatoria')
   })
 })
 
@@ -99,12 +99,12 @@ describe('validateRegisterForm', () => {
       confirmPassword: '',
     })
     expect(result.isValid).toBe(false)
-    expect(result.errors.name).toBe('The name is required')
-    expect(result.errors.email).toBe('An email address is required')
-    expect(result.errors.tower).toBe('The tower is required')
-    expect(result.errors.apartment).toBe('The apartment is required')
-    expect(result.errors.password).toBe('The password is required')
-    expect(result.errors.confirmPassword).toBe('Confirm your password')
+    expect(result.errors.name).toBe('El nombre es obligatorio')
+    expect(result.errors.email).toBe('El correo electrónico es obligatorio')
+    expect(result.errors.tower).toBe('La torre es obligatoria')
+    expect(result.errors.apartment).toBe('El apartamento es obligatorio')
+    expect(result.errors.password).toBe('La contraseña es obligatoria')
+    expect(result.errors.confirmPassword).toBe('Confirma tu contraseña')
   })
 
   it('returns error when passwords do not match', () => {
@@ -113,7 +113,7 @@ describe('validateRegisterForm', () => {
       confirmPassword: 'different',
     })
     expect(result.isValid).toBe(false)
-    expect(result.errors.confirmPassword).toBe('The passwords do not match ')
+    expect(result.errors.confirmPassword).toBe('Las contraseñas no coinciden')
   })
 
   it('returns error when password is too short', () => {
@@ -123,7 +123,7 @@ describe('validateRegisterForm', () => {
       confirmPassword: '12345',
     })
     expect(result.isValid).toBe(false)
-    expect(result.errors.password).toBe('The password must be at least 6 characters long')
+    expect(result.errors.password).toBe('La contraseña debe tener al menos 6 caracteres')
   })
 
   it('returns error for invalid email format', () => {
@@ -132,7 +132,7 @@ describe('validateRegisterForm', () => {
       email: 'bademail',
     })
     expect(result.isValid).toBe(false)
-    expect(result.errors.email).toBe('Enter a valid email address')
+    expect(result.errors.email).toBe('Ingresa un correo electrónico válido')
   })
 
   it('returns error when name is whitespace only', () => {
@@ -141,7 +141,7 @@ describe('validateRegisterForm', () => {
       name: '   ',
     })
     expect(result.isValid).toBe(false)
-    expect(result.errors.name).toBe('The name is required')
+    expect(result.errors.name).toBe('El nombre es obligatorio')
   })
 
   it('returns error when tower is whitespace only', () => {
@@ -150,6 +150,6 @@ describe('validateRegisterForm', () => {
       tower: '   ',
     })
     expect(result.isValid).toBe(false)
-    expect(result.errors.tower).toBe('The tower is required')
+    expect(result.errors.tower).toBe('La torre es obligatoria')
   })
 })

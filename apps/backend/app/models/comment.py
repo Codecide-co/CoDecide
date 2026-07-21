@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 
+from flask_babel import lazy_gettext
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.extensions import db
@@ -52,7 +53,7 @@ class Comment(db.Model):
             "updated_at": self.updated_at.isoformat(),
         }
         if hide_author:
-            result["author_name"] = "Anonymous"
+            result["author_name"] = lazy_gettext("Anonymous")
         else:
             result["user_id"] = self.user_id
             result["author_name"] = self.author.name if self.author else None

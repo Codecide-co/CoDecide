@@ -1,9 +1,11 @@
+import { t } from "@core/i18n";
+
 export function Pagination({ page, totalPages, onPrev, onNext }) {
   return `
     <div class="flex items-center justify-center gap-4 mt-6">
-      <button id="btn-prev" ${page <= 1 ? "disabled" : ""}>← Previous</button>
-      <span>Page ${page} of ${totalPages}</span>
-      <button id="btn-next" ${page >= totalPages ? "disabled" : ""}>Next →</button>
+      <button id="btn-prev" ${page <= 1 ? "disabled" : ""}>${t("admin.pagination.prev")}</button>
+      <span>${t("admin.pagination.info", { page, total: totalPages })}</span>
+      <button id="btn-next" ${page >= totalPages ? "disabled" : ""}>${t("admin.pagination.next")}</button>
     </div>
   `;
 }

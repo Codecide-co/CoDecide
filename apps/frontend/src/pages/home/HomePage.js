@@ -4,6 +4,7 @@ import { SidebarHome } from "@/layouts/Sidebar";
 import { fetchMyReports } from "@services/reports.service";
 import { fetchApiData, UPLOADS_BASE } from "@core/api";
 import { formatDate, navigateTo } from "@core/helpers";
+import { t } from "@core/i18n";
 
 export function HomePageView() {
   const user = authStore.user;
@@ -17,52 +18,49 @@ export function HomePageView() {
 
           <section class="home-welcome md:col-span-2 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <h2>Hi, ${user?.name || "User"}!</h2>
+              <h2>${t("home.greeting", { name: user?.name || t("header.user_fallback") })}</h2>
               <p class="mt-2 max-w-xl">
-                Welcome to CoDecide. Here you can report issues, 
-                track their progress, and get involved in your 
-                community.
+                ${t("home.welcome")}
               </p>
             </div>
             <div class="flex gap-3 flex-wrap">
-              ${user?.role !== "admin" ? '<a href="/reports/create" data-link class="home-cta-btn">+ New Report</a>' : ""}
-              <a href="/reports" data-link class="home-cta-btn">View All Reports</a>
+              ${user?.role !== "admin" ? `<a href="/reports/create" data-link class="home-cta-btn">${t("home.new_report")}</a>` : ""}
+              <a href="/reports" data-link class="home-cta-btn">${t("home.view_all")}</a>
             </div>
           </section>
 
           <section class="home-card md:row-span-2">
-            <h3 class="home-section-title">My Recent Reports</h3>
+            <h3 class="home-section-title">${t("home.recent_reports")}</h3>
             <div id="reports-content" class="space-y-2">
-              <p class="text-slate-400 text-sm text-center py-8">Loading...</p>
+              <p class="text-slate-400 text-sm text-center py-8">${t("home.loading")}</p>
             </div>
           </section>
 
           <section class="home-card">
-            <h3 class="home-section-title">Official Announcements</h3>
+            <h3 class="home-section-title">${t("home.announcements")}</h3>
             <div id="comunicados-content" class="grid grid-cols-1 gap-3">
-              <p class="text-slate-400 text-sm text-center py-8">Loading...</p>
+              <p class="text-slate-400 text-sm text-center py-8">${t("home.loading")}</p>
             </div>
           </section>
 
           <section class="home-card">
-            <h3 class="home-section-title">Community Summary</h3>
+            <h3 class="home-section-title">${t("home.summary")}</h3>
             <div class="grid grid-cols-2 gap-3">
               <div class="home-stat-card">
                 <div class="home-stat-value">—</div>
-                <div class="h
-                ome-stat-label">Total Reports</div>
+                <div class="home-stat-label">${t("home.total_reports")}</div>
               </div>
               <div class="home-stat-card">
                 <div class="home-stat-value">—</div>
-                <div class="home-stat-label">Resolved</div>
+                <div class="home-stat-label">${t("home.resolved")}</div>
               </div>
               <div class="home-stat-card">
                 <div class="home-stat-value">—</div>
-                <div class="home-stat-label">In Progress</div>
+                <div class="home-stat-label">${t("home.in_progress")}</div>
               </div>
               <div class="home-stat-card">
                 <div class="home-stat-value">—</div>
-                <div class="home-stat-label">Pending</div>
+                <div class="home-stat-label">${t("home.pending")}</div>
               </div>
             </div>
           </section>
@@ -83,7 +81,7 @@ export function initHomePage() {
         const container = document.getElementById("reports-content");
         if (!container) return;
         if (!reports || reports.length === 0) {
-          container.innerHTML = `<p class="text-slate-400 text-sm text-center py-8">No reports yet. Create your first one!</p>`;
+          container.innerHTML = `<p class="text-slate-400 text-sm text-center py-8">${t("home.no_reports")}</p>`;
           return;
         }
         container.innerHTML = reports
@@ -106,7 +104,7 @@ export function initHomePage() {
                 <span class="home-status-badge ${r.status}">${r.status.replace("_", " ")}</span>
               </div>
               <span class="home-report-id">#${r.tracking_number || r.id}</span>
-              ${r.is_anonymous ? `<span class="anonymous-badge">Anonymous<span class="anonymous-tooltip">The author&#39;s identity is hidden for this report.</span></span>` : ""}
+              ${r.is_anonymous ? `<span class="anonymous-badge">${t("home.anonymous_badge")}<span class="anonymous-tooltip">${t("home.anonymous_tooltip")}</span></span>` : ""}
             </div>
           </div>
         `,
@@ -137,7 +135,7 @@ export function initHomePage() {
       })
       .catch(() => {
         document.getElementById("reports-content").innerHTML =
-          `<p class="text-slate-400 text-sm text-center py-8">Could not load reports.</p>`;
+          `<p class="text-slate-400 text-sm text-center py-8">${t("home.load_error")}</p>`;
       });
   }
 
@@ -158,7 +156,7 @@ export function initHomePage() {
       const container = document.getElementById("comunicados-content");
       if (!container) return;
       if (!comunicados || comunicados.length === 0) {
-        container.innerHTML = `<p class="text-slate-400 text-sm text-center py-8">No announcements yet.</p>`;
+        container.innerHTML = `<p class="text-slate-400 text-sm text-center py-8">${t("home.no_announcements")}</p>`;
         return;
       }
       container.innerHTML = comunicados

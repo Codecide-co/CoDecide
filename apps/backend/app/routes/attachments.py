@@ -8,6 +8,7 @@ and serving uploaded files.
 import os
 
 from flask import Blueprint, current_app, jsonify, request, send_from_directory
+from flask_babel import gettext
 
 from app.middleware.auth import login_required
 from app.mongodb.attachment import Attachment
@@ -34,13 +35,13 @@ def upload_attachment():
     """
 
     if "file" not in request.files:
-        return jsonify({"error": "No file provided"}), 400
+        return jsonify({"error": gettext("No file provided")}), 400
 
     file = request.files["file"]
     report_id = request.form.get("report_id", type=int)
 
     if not report_id:
-        return jsonify({"error": "report_id is required"}), 400
+        return jsonify({"error": gettext("report_id is required")}), 400
 
     try:
         result = AttachmentService.upload(
@@ -68,7 +69,7 @@ def get_attachment(attachment_id: str):
 
     attachment = Attachment.find_by_id(attachment_id)
     if not attachment:
-        return jsonify({"error": "Attachment not found"}), 404
+        return jsonify({"error": gettext("Attachment not found")}), 404
     return jsonify(Attachment.to_dict(attachment)), 200
 
 
@@ -90,13 +91,13 @@ def serve_attachment_file(attachment_id: str):
 
     attachment = Attachment.find_by_id(attachment_id)
     if not attachment:
-        return jsonify({"error": "Attachment not found"}), 404
+        return jsonify({"error": gettext("Attachment not found")}), 404
 
     file_url = attachment.get("file_url", "")
     filename = file_url.rsplit("/", 1)[-1] if "/" in file_url else file_url
 
     if ".." in filename or "/" in filename or os.path.isabs(filename):
-        return jsonify({"error": "Invalid file path"}), 400
+        return jsonify({"error": gettext("Invalid file path")}), 400
 
     upload_folder = current_app.config["UPLOAD_FOLDER"]
 

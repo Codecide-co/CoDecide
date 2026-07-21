@@ -1,11 +1,12 @@
 import { SelectView } from "@components/ui/Select";
+import { t } from "@core/i18n";
 
 export function CategoryPickerView() {
   return SelectView({
     id: "category",
     label: "Category",
     options: [],
-    placeholder: "Loading categories...",
+    placeholder: `${t("category.loading")}`,
     disabled: true,
   });
 }
@@ -16,6 +17,6 @@ export function initCategoryPicker(categories) {
 
   select.disabled = false;
   select.innerHTML =
-    `<option value="" selected disabled>Select a category</option>` +
+    `<option value="" selected disabled>${t("category.select")}</option>` +
     categories.map((cat) => `<option value="${cat.id}">${cat.name}</option>`).join("");
 }

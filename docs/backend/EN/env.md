@@ -129,3 +129,23 @@ Filesystem path where uploaded files (images, PDFs, videos) are stored. Created 
 | **Example** | `MAX_FILE_SIZE_MB=32` |
 
 Maximum allowed file size in megabytes for uploads. Used by both the HTTP layer (Flask) and the explicit validation in `AttachmentService`.
+
+---
+
+## Internationalization configuration (hardcoded in `app/config.py`)
+
+These values are defined directly in the code (`app/config.py`) and have no associated environment variable. They can be overridden in `Config` if needed.
+
+### `BABEL_DEFAULT_LOCALE`
+
+| | |
+|---|---|
+| **Default** | `"es"` |
+| **Description** | Default backend language. The server always responds in Spanish unless `?lang=en` or a `language=en` cookie is sent. |
+
+### `JSON_AS_ASCII`
+
+| | |
+|---|---|
+| **Default** | `False` |
+| **Description** | When `False`, Flask does not escape Unicode characters (accents, ñs) in JSON responses, so they appear as `"Anónimo"` instead of `"An\u00f3nimo"`.

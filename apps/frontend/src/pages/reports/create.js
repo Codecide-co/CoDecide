@@ -7,6 +7,7 @@ import { validateReportForm, DESCRIPTION_MAX_LENGTH } from "@core/validators";
 import { createReport } from "@services/reports.service";
 import { uploadAttachment } from "@services/attachments.service";
 import { getCategories } from "@services/categories.service";
+import { t } from "@core/i18n";
 
 let isSubmitting = false;
 
@@ -19,22 +20,22 @@ export function CreateReportView() {
         <section class="report-page create-report-section">
 
         <header>
-            <h2>New Report</h2>
-            <p>Describe the issue so your community can take action.</p>
+            <h2>${t("report.new.title")}</h2>
+            <p>${t("report.new.subtitle")}</p>
         </header>
 
         <form id="create-report-form" novalidate>
 
             <div>
-                <label for="title">Title</label>
-                <input id="title" name="title" type="text" placeholder="e.g. Water leak in parking lot">
+                <label for="title">${t("report.new.title_label")}</label>
+                <input id="title" name="title" type="text" placeholder="${t("report.new.title_placeholder")}">
                 <small id="title-error"></small>
             </div>
 
             ${TextAreaView({
               id: "description",
-              label: "Description",
-              placeholder: "Give as much detail as possible...",
+              label: t("report.new.desc_label"),
+              placeholder: t("report.new.desc_placeholder"),
               maxLength: DESCRIPTION_MAX_LENGTH,
             })}
 
@@ -42,7 +43,7 @@ export function CreateReportView() {
 
             ${FileUploadView({
               id: "photos",
-              label: "Photos (optional)",
+              label: t("report.new.photos_label"),
               multiple: true,
               accept: ".png,.jpg,.jpeg,.gif,.webp,.pdf,.doc,.docx,.mp4,.mov,.avi",
             })}
@@ -50,15 +51,15 @@ export function CreateReportView() {
             <div class="anonymous-checkbox-wrap">
                 <label for="anonymous">
                     <input id="anonymous" name="anonymous" type="checkbox">
-                    Submit anonymously
-                    <span class="anonymous-tooltip">Your name and personal details will not be displayed with this report. Community members and authorities will see the issue without knowing who submitted it.</span>
+                    ${t("report.new.anonymous_label")}
+                    <span class="anonymous-tooltip">${t("report.new.anonymous_tooltip")}</span>
                 </label>
             </div>
 
             <div id="submit-error" role="alert"></div>
 
             <button id="submit-btn" type="submit">
-                Submit Report
+                ${t("report.new.submit")}
             </button>
 
         </form>
@@ -97,7 +98,7 @@ export function initCreateReportView(onSuccess) {
   function setLoading(loading) {
     isSubmitting = loading;
     submitBtn.disabled = loading;
-    submitBtn.textContent = loading ? "Submitting..." : "Submit Report";
+    submitBtn.textContent = loading ? t("report.new.submitting") : t("report.new.submit");
   }
 
   form.addEventListener("submit", async (event) => {
@@ -133,7 +134,7 @@ export function initCreateReportView(onSuccess) {
       const files = fileUpload.getFiles();
       let uploadedPhotos = [];
       if (files.length > 0) {
-        submitBtn.textContent = "Uploading photos...";
+        submitBtn.textContent = t("report.new.uploading");
         const results = await Promise.allSettled(
           files.map((f) => uploadAttachment(report.id, f))
         );
@@ -151,7 +152,7 @@ export function initCreateReportView(onSuccess) {
       if (typeof onSuccess === "function") onSuccess(report, uploadedPhotos);
     } catch (error) {
       setLoading(false);
-      submitError.textContent = error.message || "Something went wrong submitting your report. Please try again.";
+      submitError.textContent = error.message || t("report.new.error");
     }
   });
 }

@@ -1,5 +1,6 @@
 import { UPLOADS_BASE } from "@core/api";
 import { patchApiData, postFormData } from "@core/api";
+import { t } from "@core/i18n";
 
 const AVATARS_PER_PAGE = 30;
 const TOTAL_AVATARS = 150;
@@ -45,23 +46,23 @@ function render() {
   dialog.innerHTML = `
     <div class="avatar-modal-content">
       <div class="avatar-modal-header">
-        <h3 class="avatar-modal-title">Change profile picture</h3>
+        <h3 class="avatar-modal-title">${t("profile.avatar_title")}</h3>
         <button class="modal-close" id="avatar-modal-close">&times;</button>
       </div>
       <div class="avatar-modal-tabs">
-        <button class="avatar-tab ${currentTab === "gallery" ? "active" : ""}" data-tab="gallery">Gallery</button>
-        <button class="avatar-tab ${currentTab === "upload" ? "active" : ""}" data-tab="upload">Upload</button>
+        <button class="avatar-tab ${currentTab === "gallery" ? "active" : ""}" data-tab="gallery">${t("profile.avatar_gallery")}</button>
+        <button class="avatar-tab ${currentTab === "upload" ? "active" : ""}" data-tab="upload">${t("profile.avatar_upload")}</button>
       </div>
       <div class="avatar-modal-body">
         ${currentTab === "gallery" ? renderGallery() : renderUpload()}
       </div>
       <div class="avatar-modal-preview">
-        ${selectedUrl ? `<img src="${UPLOADS_BASE}${selectedUrl}" alt="Preview" class="avatar-preview-img" />` : '<div class="avatar-preview-empty">No avatar selected</div>'}
+        ${selectedUrl ? `<img src="${UPLOADS_BASE}${selectedUrl}" alt="Preview" class="avatar-preview-img" />` : `<div class="avatar-preview-empty">${t("profile.avatar_no_selection")}</div>`}
       </div>
       <p id="avatar-modal-error" class="modal-error hidden"></p>
       <div class="avatar-modal-footer">
-        <button class="modal-btn modal-btn-cancel" id="avatar-modal-cancel">Cancel</button>
-        <button class="modal-btn modal-btn-primary" id="avatar-modal-save" ${canSave() ? "" : "disabled"}>Save</button>
+        <button class="modal-btn modal-btn-cancel" id="avatar-modal-cancel">${t("profile.avatar_cancel")}</button>
+        <button class="modal-btn modal-btn-primary" id="avatar-modal-save" ${canSave() ? "" : "disabled"}>${t("profile.avatar_save")}</button>
       </div>
     </div>
   `;
@@ -88,9 +89,9 @@ function renderGallery() {
   return `
     <div class="avatar-gallery-grid">${grid}</div>
     <div class="avatar-gallery-pagination">
-      <button class="avatar-page-btn" id="avatar-page-prev" ${currentPage <= 1 ? "disabled" : ""}>&larr; Previous</button>
-      <span class="avatar-page-info">${currentPage} / ${totalPages}</span>
-      <button class="avatar-page-btn" id="avatar-page-next" ${currentPage >= totalPages ? "disabled" : ""}>Next &rarr;</button>
+      <button class="avatar-page-btn" id="avatar-page-prev" ${currentPage <= 1 ? "disabled" : ""}>${t("profile.avatar_prev")}</button>
+      <span class="avatar-page-info">${currentPage}${t("profile.avatar_separator")}${totalPages}</span>
+      <button class="avatar-page-btn" id="avatar-page-next" ${currentPage >= totalPages ? "disabled" : ""}>${t("profile.avatar_next")}</button>
     </div>
   `;
 }
@@ -103,8 +104,8 @@ function renderUpload() {
           ? `<img src="${URL.createObjectURL(uploadFile)}" alt="Upload preview" class="avatar-upload-preview" />`
           : `<div class="avatar-upload-placeholder">
               <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="avatar-upload-icon"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-              <span>Click to upload</span>
-              <span class="avatar-upload-hint">PNG, JPG, JPEG, SVG, GIF</span>
+              <span>${t("profile.avatar_click_upload")}</span>
+              <span class="avatar-upload-hint">${t("profile.avatar_hint")}</span>
             </div>`}
       </label>
       <input type="file" id="avatar-file-input" accept=".png,.jpg,.jpeg,.svg,.gif" hidden />
@@ -152,14 +153,14 @@ function bindEvents() {
     const errorEl = document.getElementById("avatar-modal-error");
 
     if (!ext || !allowed.includes(ext)) {
-      errorEl.textContent = "File type not allowed. Allowed: PNG, JPG, JPEG, SVG, GIF";
+      errorEl.textContent = t("profile.avatar_type_error");
       errorEl.classList.remove("hidden");
       fileInput.value = "";
       return;
     }
 
     if (file.size > 16 * 1024 * 1024) {
-      errorEl.textContent = "File exceeds 16 MB limit";
+      errorEl.textContent = t("profile.avatar_size_error");
       errorEl.classList.remove("hidden");
       fileInput.value = "";
       return;
@@ -193,7 +194,7 @@ async function handleSave() {
   const btn = document.getElementById("avatar-modal-save");
   const errorEl = document.getElementById("avatar-modal-error");
   btn.disabled = true;
-  btn.textContent = "Saving...";
+  btn.textContent = t("profile.avatar_saving");
   errorEl?.classList.add("hidden");
 
   try {
@@ -206,17 +207,17 @@ async function handleSave() {
       formData.append("file", uploadFile);
       result = await postFormData("/auth/me/avatar", formData);
     } else {
-      throw new Error("No avatar selected");
+      throw new Error(t("profile.avatar_no_selection"));
     }
 
     if (onSaveCallback) onSaveCallback(result);
     closeAvatarModal();
   } catch (err) {
     if (errorEl) {
-      errorEl.textContent = err.message || "Something went wrong";
+      errorEl.textContent = err.message || t("profile.avatar_error");
       errorEl.classList.remove("hidden");
     }
     btn.disabled = false;
-    btn.textContent = "Save";
+    btn.textContent = t("profile.avatar_save");
   }
 }
