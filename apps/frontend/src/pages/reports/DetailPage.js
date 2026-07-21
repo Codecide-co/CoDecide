@@ -83,13 +83,24 @@ function renderReport(report, reportId) {
       ${report.comments && report.comments.length > 0 ? `
       <div class="report-detail-comments">
         <h4>Comments (${report.comments.length})</h4>
-        ${report.comments.map(c => `
+        ${report.comments.map(c => {
+          const avatarUrl = c.author_avatar_url ? `${UPLOADS_BASE}${c.author_avatar_url}` : null;
+          const initial = (c.author_name || "A")[0].toUpperCase();
+          return `
           <div class="report-detail-comment">
-            <strong>${escapeHtml(c.author_name || "Anonymous")}</strong>
+            <div class="comment-header">
+              <div class="comment-author">
+                ${avatarUrl
+                  ? `<img src="${avatarUrl}" alt="${escapeHtml(c.author_name || "Anonymous")}" class="comment-avatar" />`
+                  : `<span class="comment-avatar comment-avatar-initial">${initial}</span>`
+                }
+                <strong>${escapeHtml(c.author_name || "Anonymous")}</strong>
+              </div>
+              <small>${formatDate(c.created_at, "datetime")}</small>
+            </div>
             <p>${escapeHtml(c.body)}</p>
-            <small>${formatDate(c.created_at, "datetime")}</small>
-          </div>
-        `).join("")}
+          </div>`;
+        }).join("")}
       </div>` : ""}
 
       <div class="report-detail-add-comment">
@@ -128,13 +139,24 @@ function initCommentForm(reportId) {
         const newCommentsHtml = `
           <div class="report-detail-comments">
             <h4>Comments (${detail.comments.length})</h4>
-            ${detail.comments.map(c => `
+            ${detail.comments.map(c => {
+              const avatarUrl = c.author_avatar_url ? `${UPLOADS_BASE}${c.author_avatar_url}` : null;
+              const initial = (c.author_name || "A")[0].toUpperCase();
+              return `
               <div class="report-detail-comment">
-                <strong>${escapeHtml(c.author_name || "Anonymous")}</strong>
+                <div class="comment-header">
+                  <div class="comment-author">
+                    ${avatarUrl
+                      ? `<img src="${avatarUrl}" alt="${escapeHtml(c.author_name || "Anonymous")}" class="comment-avatar" />`
+                      : `<span class="comment-avatar comment-avatar-initial">${initial}</span>`
+                    }
+                    <strong>${escapeHtml(c.author_name || "Anonymous")}</strong>
+                  </div>
+                  <small>${formatDate(c.created_at, "datetime")}</small>
+                </div>
                 <p>${escapeHtml(c.body)}</p>
-                <small>${formatDate(c.created_at, "datetime")}</small>
-              </div>
-            `).join("")}
+              </div>`;
+            }).join("")}
           </div>
         `;
         if (commentsSection) {

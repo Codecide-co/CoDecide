@@ -122,6 +122,7 @@ def get_report(report_id: int):
                 **({} if report.is_anonymous else {
                     "user_id": c.user_id,
                     "author_name": c.author.name if c.author else None,
+                    "author_avatar_url": c.author.avatar_url if c.author else None,
                 }),
             }
             for c in report.comments

@@ -39,7 +39,7 @@ export function SuccessPageView() {
           <p><strong>Title:</strong> ${escapeHtml(report.title)}</p>
           <p><strong>Category:</strong> ${escapeHtml(report.category_name)}</p>
           <p><strong>Anonymous:</strong> ${report.is_anonymous ? "Yes" : "No"}</p>
-          ${report.description ? `<p><strong>Description:</strong> ${escapeHtml(report.description)}</p>` : ""}
+          ${report.description ? `<p style="overflow-wrap: break-word; word-break: break-word;"><strong>Description:</strong> ${escapeHtml(report.description)}</p>` : ""}
           ${photoHtml}
         </div>
         <div class="flex gap-3 justify-center">

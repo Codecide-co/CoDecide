@@ -148,15 +148,16 @@ Obtiene detalle de un reporte, incluyendo votos y comentarios.
       "created_at": "2026-07-11T14:00:00"
     }
   ],
-  "comments": [
-    {
-      "id": 1,
-      "body": "Ya avise al administrador",
-      "user_id": 2,
-      "author_name": "Maria Lopez",
-      "created_at": "2026-07-11T13:00:00"
-    }
-  ]
+    "comments": [
+      {
+        "id": 1,
+        "body": "Ya avise al administrador",
+        "user_id": 2,
+        "author_name": "Maria Lopez",
+        "author_avatar_url": "/static/avatars/avatar42.svg",
+        "created_at": "2026-07-11T13:00:00"
+      }
+    ]
 }
 ```
 
@@ -234,6 +235,8 @@ Agrega un comentario a un reporte.
   "body": "Ya avise al administrador",
   "user_id": 1,
   "report_id": 1,
+  "author_name": "Juan Perez",
+  "author_avatar_url": "/static/avatars/avatar42.svg",
   "created_at": "2026-07-11T12:00:00",
   "updated_at": "2026-07-11T12:00:00"
 }

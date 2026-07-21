@@ -3,7 +3,7 @@ import { HeaderHome } from "@/layouts/Header";
 import { SidebarHome } from "@/layouts/Sidebar";
 import { fetchMyReports } from "@services/reports.service";
 import { fetchApiData, UPLOADS_BASE } from "@core/api";
-import { formatDate } from "@core/helpers";
+import { formatDate, navigateTo } from "@core/helpers";
 
 export function HomePageView() {
   const user = authStore.user;
@@ -113,6 +113,12 @@ export function initHomePage() {
           )
           .join("");
 
+        container.querySelectorAll(".home-report-item").forEach((el, i) => {
+          const report = reports[i];
+          if (!report) return;
+          el.addEventListener("click", () => navigateTo(`/reports/${report.id}`));
+        });
+
         reports.slice(0, 5).forEach((r) => {
           fetchApiData(`/reports/${r.id}`)
             .then((detail) => {
@@ -150,7 +156,11 @@ export function initHomePage() {
   fetchApiData("/comunicados")
     .then((comunicados) => {
       const container = document.getElementById("comunicados-content");
-      if (!container || !comunicados || comunicados.length === 0) return;
+      if (!container) return;
+      if (!comunicados || comunicados.length === 0) {
+        container.innerHTML = `<p class="text-slate-400 text-sm text-center py-8">No announcements yet.</p>`;
+        return;
+      }
       container.innerHTML = comunicados
         .slice(0, 1)
         .map(
