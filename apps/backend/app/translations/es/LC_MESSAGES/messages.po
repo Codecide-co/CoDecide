@@ -1,0 +1,168 @@
+# Spanish translations for PROJECT.
+# Copyright (C) 2026 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-07-20 10:19-0500\n"
+"PO-Revision-Date: 2026-07-20 10:10-0500\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: es\n"
+"Language-Team: es <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: app/__init__.py:60
+msgid "Token has been revoked"
+msgstr "El token ha sido revocado"
+
+#: app/__init__.py:64
+msgid "Token has expired"
+msgstr "El token ha expirado"
+
+#: app/__init__.py:68
+msgid "Invalid token"
+msgstr "Token inválido"
+
+#: app/__init__.py:74
+msgid "Invalid language"
+msgstr "Idioma inválido"
+
+#: app/__init__.py:75
+msgid "Language changed successfully"
+msgstr "Idioma cambiado exitosamente"
+
+#: app/middleware/auth.py:38 app/middleware/auth.py:64 app/routes/admin.py:50
+#: app/services/auth_service.py:109 app/services/auth_service.py:131
+#: app/services/auth_service.py:157 app/services/avatar_service.py:59
+#: app/services/report_service.py:55
+msgid "User not found"
+msgstr "Usuario no encontrado"
+
+#: app/middleware/auth.py:66
+msgid "Admin access required"
+msgstr "Acceso de administrador requerido"
+
+#: app/models/comment.py:56 app/models/report.py:84
+msgid "Anonymous"
+msgstr "Anónimo"
+
+#: app/routes/admin.py:62
+msgid "User deleted"
+msgstr "Usuario eliminado"
+
+#: app/routes/admin.py:102 app/services/attachment_service.py:57
+#: app/services/report_service.py:170 app/services/report_service.py:196
+#: app/services/report_service.py:252 app/services/report_service.py:295
+msgid "Report not found"
+msgstr "Reporte no encontrado"
+
+#: app/routes/admin.py:106
+msgid "user_id is required"
+msgstr "user_id es requerido"
+
+#: app/routes/admin.py:110
+msgid "Assignee not found"
+msgstr "Asignado no encontrado"
+
+#: app/routes/attachments.py:38 app/routes/auth.py:161
+#: app/services/attachment_service.py:53
+msgid "No file provided"
+msgstr "No se proporcionó ningún archivo"
+
+#: app/routes/attachments.py:44
+msgid "report_id is required"
+msgstr "report_id es requerido"
+
+#: app/routes/attachments.py:72 app/routes/attachments.py:94
+msgid "Attachment not found"
+msgstr "Archivo adjunto no encontrado"
+
+#: app/routes/attachments.py:100
+msgid "Invalid file path"
+msgstr "Ruta de archivo inválida"
+
+#: app/routes/auth.py:41 app/routes/auth.py:67 app/routes/auth.py:107
+#: app/routes/auth.py:132 app/routes/categories.py:58 app/routes/reports.py:75
+#: app/routes/reports.py:163 app/routes/reports.py:197
+#: app/routes/reports.py:227
+msgid "Validation failed"
+msgstr "Validación fallida"
+
+#: app/routes/auth.py:141
+msgid "Password updated successfully"
+msgstr "Contraseña actualizada exitosamente"
+
+#: app/routes/auth.py:190
+msgid "Logged out successfully"
+msgstr "Sesión cerrada exitosamente"
+
+#: app/routes/categories.py:63
+msgid "Category already exists"
+msgstr "La categoría ya existe"
+
+#: app/routes/comunicados.py:46
+msgid "title and body are required"
+msgstr "título y cuerpo son requeridos"
+
+#: app/services/attachment_service.py:60
+msgid "File type not allowed"
+msgstr "Tipo de archivo no permitido"
+
+#: app/services/attachment_service.py:68 app/services/avatar_service.py:55
+#, python-format
+msgid "File exceeds %(limit)s MB limit"
+msgstr "El archivo excede el límite de %(limit)s MB"
+
+#: app/services/auth_service.py:50
+msgid "Email already registered"
+msgstr "El correo ya está registrado"
+
+#: app/services/auth_service.py:85
+msgid "Invalid email or password"
+msgstr "Correo o contraseña inválidos"
+
+#: app/services/auth_service.py:160
+msgid "Current password is incorrect"
+msgstr "La contraseña actual es incorrecta"
+
+#: app/services/avatar_service.py:41
+msgid "No file selected"
+msgstr "Ningún archivo seleccionado"
+
+#: app/services/avatar_service.py:46
+#, python-format
+msgid "File type not allowed. Allowed: %(extensions)s"
+msgstr "Tipo de archivo no permitido. Permitidos: %(extensions)s"
+
+#: app/services/report_service.py:57
+msgid "Admins cannot create reports"
+msgstr "Los administradores no pueden crear reportes"
+
+#: app/services/report_service.py:61
+msgid "Category not found"
+msgstr "Categoría no encontrada"
+
+#: app/services/report_service.py:207
+#, python-format
+msgid "Invalid transition from %(status)s to %(new_status)s"
+msgstr "Transición inválida de %(status)s a %(new_status)s"
+
+#: app/services/report_service.py:256
+msgid "Admins cannot vote"
+msgstr "Los administradores no pueden votar"
+
+#: app/services/report_service.py:259
+msgid "Cannot vote on own report"
+msgstr "No puedes votar tu propio reporte"
+
+#: app/services/report_service.py:264
+msgid "Already voted with the same type"
+msgstr "Ya has votado con el mismo tipo"
+

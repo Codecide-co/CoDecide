@@ -1,0 +1,157 @@
+import { authStore } from "@store/auth.store";
+import { HeaderHome } from "@/layouts/Header";
+import { SidebarHome } from "@/layouts/Sidebar";
+import { fetchApiData, patchApiData, postApiData } from "@core/api";
+import { openModal } from "@components/ui/Modal";
+import { openAvatarModal } from "@components/profile/AvatarModal";
+import { ProfileCard } from "@components/profile/ProfileCard";
+import { PersonalInfo } from "@components/profile/PersonalInfo";
+import { ProfileReports } from "@components/profile/ProfileReports";
+import { SecuritySection } from "@components/profile/SecuritySection";
+import { fetchMyReports } from "@services/reports.service";
+import { t } from "@core/i18n";
+import { toast } from "@core/toast";
+
+export function ProfilePageView() {
+  return `
+    ${HeaderHome()}
+    <div class="auth-layout flex flex-row">
+      ${SidebarHome()}
+      <main class="container-home container-home--profile">
+        <div id="profile-content" class="flex flex-col items-center justify-center">${renderSkeletons()}</div>
+      </main>
+    </div>
+  `;
+}
+
+function renderSkeletons() {
+  return `
+    <div class="max-w-6xl mx-auto p-6">
+      <div class="profile-skeleton-card"><div class="skeleton-avatar"></div>
+      <div class="skeleton-line w-40 mx-auto mt-4"></div>
+      <div class="skeleton-line w-60 mx-auto mt-2"></div></div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+        <div class="profile-skeleton-card"><div class="skeleton-line w-48 mb-4"></div>
+        <div class="grid grid-cols-2 gap-3"><div class="skeleton-block h-16"></div>
+        <div class="skeleton-block h-16"></div><div class="skeleton-block h-16"></div>
+        <div class="skeleton-block h-16"></div></div></div>
+        <div class="profile-skeleton-card"><div class="skeleton-line w-36 mb-4"></div>
+        <div class="skeleton-block h-16 mb-3"></div>
+        <div class="skeleton-block h-16 mb-3"></div></div>
+      </div>
+      <div class="profile-skeleton-card mt-6 h-20"></div>
+    </div>
+  `;
+}
+
+export function initProfilePage() {
+  let user = null;
+  let reports = [];
+  let reportsLoading = true;
+
+  function renderContent() {
+    return `
+      <div class="max-w-6xl mx-auto p-6">
+        ${ProfileCard(user)}
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+          ${PersonalInfo(user)}
+          ${ProfileReports({ reports, loading: reportsLoading })}
+        </div>
+        ${SecuritySection()}
+      </div>
+    `;
+  }
+
+  function bindListeners() {
+    document.getElementById("btn-edit-profile")?.addEventListener("click", openEditProfileModal);
+    document.getElementById("btn-change-password")?.addEventListener("click", openChangePasswordModal);
+    document.getElementById("profile-avatar-trigger")?.addEventListener("click", openAvatarProfileModal);
+  }
+
+  function openAvatarProfileModal() {
+    openAvatarModal({
+      currentAvatarUrl: user?.avatar_url || null,
+      onSave: (updatedUser) => {
+        user = updatedUser;
+        authStore.user = updatedUser;
+        const container = document.getElementById("profile-content");
+        if (container) {
+          container.innerHTML = renderContent();
+          bindListeners();
+        }
+      },
+    });
+  }
+
+  function openEditProfileModal() {
+    if (!user) return;
+    openModal({
+      title: `${t("profile.edit_title")}`,
+      submitLabel: `${t("profile.edit_submit")}`,
+      content: `
+        <form id="edit-profile-form">
+          <div class="form-group"><label for="edit-name">${t("profile.edit_name")}</label><input id="edit-name" name="name" value="${user.name || ""}" required minlength="2"></div>
+          <div class="form-group"><label for="edit-apartment">${t("profile.edit_apartment")}</label><input id="edit-apartment" name="apartment" value="${user.apartment || ""}"></div>
+          <div class="form-group"><label for="edit-tower">${t("profile.edit_tower")}</label><input id="edit-tower" name="tower" value="${user.tower || ""}"></div>
+        </form>
+      `,
+      onSubmit: async (formData) => {
+        const updated = await patchApiData("/auth/me", formData);
+        user = updated;
+        authStore.user = updated;
+        document.getElementById("profile-content").innerHTML = renderContent();
+        bindListeners();
+      },
+    });
+  }
+
+  function openChangePasswordModal() {
+    openModal({
+      title: `${t("profile.change_pw_title")}`,
+      submitLabel: `${t("profile.change_pw_submit")}`,
+      content: `
+        <form id="change-password-form">
+          <div class="form-group"><label for="cp-current">${t("profile.change_pw_current")}</label>
+          <input id="cp-current" name="current_password" type="password" required></div>
+          <div class="form-group"><label for="cp-new">${t("profile.change_pw_new")}</label>
+          <input id="cp-new" name="new_password" type="password" required minlength="6"></div>
+          <div class="form-group"><label for="cp-confirm">${t("profile.change_pw_confirm")}</label>
+          <input id="cp-confirm" type="password" required minlength="6"></div>
+        </form>
+      `,
+      onSubmit: async (formData) => {
+        if (!formData.current_password) throw new Error(t("validator.password_required"));
+        if (!formData.new_password) throw new Error(t("validator.password_required"));
+        const confirm = document.getElementById("cp-confirm")?.value;
+        if (!confirm) throw new Error(t("validator.password_confirm"));
+        if (formData.new_password !== confirm) throw new Error(t("profile.change_pw_mismatch"));
+        await postApiData("/auth/change-password", {
+          current_password: formData.current_password,
+          new_password: formData.new_password,
+        });
+        toast(t("profile.change_pw_success"), "success");
+      },
+    });
+  }
+
+  fetchApiData("/auth/me")
+    .then((data) => {
+      user = data;
+      authStore.user = data;
+
+      fetchMyReports(user.id)
+        .then((r) => { reports = r; reportsLoading = false; })
+        .catch(() => { reportsLoading = false; })
+        .finally(() => {
+          const container = document.getElementById("profile-content");
+          if (container) {
+            container.innerHTML = renderContent();
+            bindListeners();
+          }
+        });
+    })
+    .catch(() => {
+      const container = document.getElementById("profile-content");
+      if (container) container.innerHTML = `<p class="text-red-500 text-center py-12">${t("profile.not_found")}</p>`;
+    });
+}

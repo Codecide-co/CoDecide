@@ -1,0 +1,59 @@
+.header-home {
+  background: var(--color-navy);        
+  backdrop-filter: blur(12px);          
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 60px;
+  display: flex;
+  align-items: center;
+}
+
+.header-icon {
+  color: #FFFFFF;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: opacity 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 16px;
+}
+
+.header-icon:hover {
+  opacity: 0.8;
+}
+
+.header-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.header-username {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sidebar-toggle-btn {
+  background: none; border: none; color: white;
+  font-size: 1.5rem; cursor: pointer;
+  width: 60px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-toggle-btn:hover {
+  transform: scale(1.15);
+}

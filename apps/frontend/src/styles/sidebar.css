@@ -1,0 +1,118 @@
+.sidebar-home {
+  width: 220px;
+  height: calc(100vh - 60px);
+  background: var(--color-navy);
+  padding: 1.5rem 0;
+  flex-shrink: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: fixed;
+  left: 0;
+  top: 60px;
+  z-index: 50;
+  transition: width 0.35s ease, padding 0.35s ease;
+}
+
+.auth-layout {
+  min-height: calc(100vh - 60px);
+  padding: 60px 0 0 220px;
+  transition: padding 0.35s ease;
+}
+
+.auth-layout:has(#sidebar[data-collapsed]) {
+  padding: 60px 0 0 60px;
+}
+
+.auth-layout:has(#sidebar[data-collapsed]) .sidebar-home {
+  width: 60px;
+  padding: 1.5rem 0;
+}
+
+.auth-layout:has(#sidebar[data-collapsed]) .sidebar-home nav ul li a {
+  padding: 11px 0;
+  justify-content: center;
+}
+
+.auth-layout:has(#sidebar[data-collapsed]) .sidebar-label {
+  display: none;
+}
+
+.auth-layout:has(#sidebar[data-collapsed]) .sidebar-home nav ul li a.active::after {
+  content: "";
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-blue-primary);
+}
+
+.sidebar-home nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar-home nav ul li a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 24px;
+  color: #94A3B8;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  border-left: 3px solid transparent;
+  white-space: nowrap;
+  position: relative;
+}
+
+.sidebar-home nav ul li a:hover,
+.sidebar-home nav ul li a.active {
+  color: #fff;
+  background: linear-gradient(90deg, rgba(37,99,235,0.12) 0%, transparent 100%);
+  border-left-color: var(--color-blue-primary);
+}
+
+
+#sidebar-logout {
+  color: #FCA5A5;
+  margin-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding-top: 16px;
+}
+
+#sidebar-logout:hover {
+  color: #FEE2E2 !important;
+  background: linear-gradient(90deg, rgba(239,68,68,0.12) 0%, transparent 100%) !important;
+  border-left-color: #EF4444 !important;
+}
+
+.sidebar-home nav ul li a img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.sidebar-divider {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  margin: 8px 24px;
+}
+
+#sidebar-lang {
+  color: #94A3B8;
+  cursor: pointer;
+}
+
+#sidebar-lang:hover {
+  color: #fff;
+  background: linear-gradient(90deg, rgba(37,99,235,0.12) 0%, transparent 100%);
+  border-left-color: var(--color-blue-primary);
+}

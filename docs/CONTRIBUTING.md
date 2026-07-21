@@ -5,14 +5,11 @@
 ```
 main ────────────── releases only
   └── dev ────────── integration branch
-        ├── frontend ── frontend-specific work
-        │     ├── feature/login-form
-        │     ├── fix/report-card-height
-        │     └── refactor/router-middleware
-        └── backend ─── backend-specific work
-              ├── feature/auth-jwt
-              ├── fix/pagination-offset
-              └── refactor/db-session
+        ├── feat/new-feature
+        ├── fix/bug-description
+        ├── refactor/code-change
+        ├── docs/documentation-update
+        └── chore/tooling-upgrade
 ```
 
 ### Branch Naming Convention
@@ -23,7 +20,7 @@ main ────────────── releases only
 
 | Type | Description | Example |
 |------|-------------|---------|
-| `feature/` or `feat/` | New functionality | `feature/report-voting` |
+| `feat/` | New functionality | `feat/report-voting` |
 | `fix/` | Bug fix | `fix/login-redirect-loop` |
 | `refactor/` | Code restructuring without behavior change | `refactor/extract-report-service` |
 | `chore/` | Tooling, dependencies, config | `chore/upgrade-vite` |
@@ -35,8 +32,8 @@ Use **kebab-case** for the description. Keep it short but meaningful.
 
 - **Never push directly to `main`.** All changes to `main` must come from a pull request.
 - **Never push directly to `dev`.** All changes to `dev` must come from a pull request.
-- `frontend` and `backend` branches receive PRs from feature/fix branches.
-- Feature branches branch off `frontend` or `backend`, never off `dev` directly.
+- All branches are created directly from `dev`, never from `main`.
+- Branch names must use the `<type>/<description>` format with kebab-case.
 - Any commit pushed directly to `main` will be deleted.
 
 ---
@@ -135,25 +132,23 @@ fix(styles): fix style
 
 ## Pull Request Workflow
 
-1. Create a feature/fix branch from `frontend` or `backend`:
+1. Create a branch from `dev`:
 
    ```bash
-   git checkout frontend
-   git pull
-   git checkout -b feature/report-voting
+   git checkout dev
+   git pull origin dev
+   git checkout -b feat/report-voting
    ```
 
 2. Commit following the Conventional Commits format.
 
-3. Push and open a PR targeting `frontend` or `backend` (never `dev` or `main`).
+3. Push and open a PR targeting `dev` (never `main` directly).
 
 4. Ensure the PR description explains **what** and **why**.
 
-5. After review and approval, the branch is merged into the target branch.
+5. After review and approval, the branch is merged into `dev`.
 
-6. Periodically, `frontend` and `backend` are merged into `dev` for integration testing.
-
-7. When `dev` is stable, a PR is opened from `dev` to `main` for release.
+6. When `dev` is stable, a PR is opened from `dev` to `main` for release.
 
 ### PR Title Format
 

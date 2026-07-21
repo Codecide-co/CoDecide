@@ -1,0 +1,29 @@
+@import "tailwindcss";
+@import "./root.css";
+@import "./auth.css";
+@import "./FooterLanding.css";
+@import "./HeaderLanding.css";
+@import "./Landing.css";
+@import "./home.css";
+@import "./HeaderHome.css";
+@import "./profile.css";
+@import "./sidebar.css";
+@import "./report.css";
+@import "./announcements.css";
+@import "./viewReports.css";
+@import "./admin.css";
+@import "./stats.css";
+@import "./responsive.css";
+@import "./modal.css";
+
+@layer base {
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+}
+
+html {
+    scroll-behavior: smooth;
+}

@@ -1,0 +1,70 @@
+:root {
+  /* Brand Colors */
+  --color-navy: #0D1B2A;
+  --color-navy-secondary: #1B263B;
+  --color-blue-primary: #2563EB;
+  --color-blue-primary-hover: #1D4EDB;
+  --color-blue-gray: #64748B;
+
+  /* Neutral Colors */
+  --color-background: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-border: #E2E8F0;
+
+  --color-text-blue: #1a3055;
+  --color-text-white: #f5f5f5;
+  --color-text-gray: #64748B;
+
+  /* Global Status */
+  --color-success: #22C55E;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+  --color-info: #0EA5E9;
+
+  /* Categories */
+  --category-infrastructure: #F97316;
+  --category-security: #DC2626;
+  --category-community: #8B5CF6;
+  --category-cleaning: #10B981;
+  --category-lighting: #EAB308;
+  --category-water: #06B6D4;
+  --category-electricity: #FB923C;
+  --category-pets: #EC4899;
+  --category-gardens: #16A34A;
+  --category-other: #94A3B8;
+
+  /* Priorities */
+  --priority-high-bg: #FEE2E2;
+  --priority-high-text: #B91C1C;
+
+  --priority-medium-bg: #FEF3C7;
+  --priority-medium-text: #92400E;
+
+  --priority-low-bg: #DCFCE7;
+  --priority-low-text: #166534;
+
+  /* Report Status */
+  --status-pending: #F59E0B;
+  --status-review: #3B82F6;
+  --status-progress: #8B5CF6;
+  --status-resolved: #22C55E;
+  --status-closed: #64748B;
+
+  /* Voting */
+  --vote-up: #2563EB;
+  --vote-down: #CBD5E1;
+
+  /* Gradient */
+  --gradient-brand: linear-gradient(
+    90deg,
+    #0D1B2A 0%,
+    #2563EB 100%
+  );
+
+  /* Dark Mode */
+  --dark-background: #0F172A;
+  --dark-surface: #1E293B;
+  --dark-text: #F8FAFC;
+  --dark-text-secondary: #94A3B8;
+  --dark-border: #334155;
+}

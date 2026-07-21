@@ -1,4 +1,4 @@
-<h1 align="center">CokeDecide</h1>
+<h1 align="center">CoDecide</h1>
 
 <p align="center">
   <a href="https://git-scm.com/"><img src="https://img.shields.io/badge/Monorepo-111111?style=for-the-badge"></a>
@@ -6,6 +6,10 @@
 </p>
 
 ---
+
+<p align="center">
+  <img src=".github/images/preview.png" alt="CoDecide Preview Image" width="800" />
+</p>
 
 <p align="center">
   Portal comunitario para reportar y dar seguimiento a problemas del vecindario<br>
@@ -16,7 +20,7 @@
 
 ## Tabla de Contenido
 
-- [Badges](#badges)
+- [Tecnologías y otros](#tecnologías-y-otros)
 - [Categorías del Proyecto](#categorías-del-proyecto)
 - [Estructura](#estructura)
 - [Inicio Rápido](#inicio-rápido)
@@ -28,7 +32,7 @@
 
 <div align="center">
 
-## Badges
+## Tecnologías y otros
 
 ### Build & Tooling
 
@@ -68,16 +72,18 @@
 ## Estructura
 
 ```
-CokeDecide/
+CoDecide/
 ├── apps/
 │   ├── frontend/       # Vite + Vanilla JS SPA
 │   └── backend/        # Flask REST API (MySQL + MongoDB)
 ├── docs/
-│   ├── frontend/       # Documentación de arquitectura frontend (EN/ES)
-│   └── backend/        # Documentación de arquitectura backend (EN/ES)
-├── docs/
-│   ├── CONTRIBUTING.md     # Estrategia de ramas, convención de commits, flujo PR (EN)
-│   └── CONTRIBUTING.es.md  # Mismo contenido en español
+│   ├── CONTRIBUTING.md      # Estrategia de ramas, convención de commits, flujo PR (EN)
+│   ├── CONTRIBUTING.es.md   # Mismo contenido en español
+│   ├── get-started/         # Guías de inicio rápido (EN/ES)
+│   ├── frontend/            # Documentación de arquitectura frontend (EN/ES)
+│   ├── backend/             # Documentación de arquitectura backend (EN/ES)
+│   └── bug-report/          # Plantillas y guía de issues de bug (EN/ES)
+├── LICENSE
 ├── .gitignore
 ├── README.md
 └── README.es.md
@@ -85,23 +91,10 @@ CokeDecide/
 
 ## Inicio Rápido
 
-```bash
-# Clonar el repositorio y cambiar a la rama dev
-git clone https://github.com/Zerik-Official/CokeDecide.git
-cd CokeDecide
-git checkout dev
-git pull origin dev
+Consulta la guía de [Primeros Pasos](/docs/get-started/ES.md) para instrucciones detalladas de configuración para Windows y Linux.
 
-# Frontend
-cd apps/frontend
-npm install
-npm run dev
-
-# Backend
-cd apps/backend
-pip install -r requirements.txt
-flask run
-```
+- **[Primeros Pasos (Español)](/docs/get-started/ES.md)**
+- **[Get Started (English)](/docs/get-started/EN.md)**
 
 ## Equipo
 
@@ -129,15 +122,17 @@ flask run
 
 | Nombre | Clan | GitHub |
 |--------|------|--------|
-| Gustavo Guzman | Micaela | [Zerik-Official](https://github.com/Zerik-Official) |
+| Gustavo Guzmán | Micaela | [Zerik-Official](https://github.com/Zerik-Official) |
 
 ## Documentación
 
-| Idioma | Frontend | Backend |
-|--------|----------|---------|
-| Inglés | [Architecture](docs/frontend/EN/) | [Architecture](docs/backend/EN/) |
-| Español | [Arquitectura](docs/frontend/ES/) | [Arquitectura](docs/backend/ES/) |
+| Idioma | Primeros Pasos | Frontend | Backend |
+|--------|----------------|----------|---------|
+| Inglés | [Guide](docs/get-started/EN.md) | [Architecture](docs/frontend/EN/) | [Architecture](docs/backend/EN/) |
+| Español | [Guía](docs/get-started/ES.md) | [Arquitectura](docs/frontend/ES/) | [Arquitectura](docs/backend/ES/) |
 
 ## Contribuir
 
 Ver [CONTRIBUTING.md](docs/CONTRIBUTING.md) para la estrategia de ramas, convención de commits y flujo de PR.
+
+Ver la [Guía de Issues de Bug](docs/bug-report/README.md) para cómo crear y formatear reportes de bug.
