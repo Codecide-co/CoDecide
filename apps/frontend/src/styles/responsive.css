@@ -122,31 +122,6 @@
     padding: 2rem 1rem;
   }
 
-  .about-left {
-    flex-direction: row;
-    gap: 0.5rem;
-    min-width: auto;
-    margin-bottom: 1rem;
-  }
-
-  .about-letra {
-    font-size: 1.2rem;
-  }
-
-  .about-layout {
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .about-card {
-    padding: 1.25rem;
-    max-width: 100%;
-  }
-
-  .about-card-values {
-    grid-template-columns: 1fr;
-  }
-
   /* Header Home */
   .header-home {
     padding: 0 0.5rem;

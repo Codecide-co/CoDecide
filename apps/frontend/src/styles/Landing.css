@@ -255,9 +255,14 @@
   border-radius: 20px 0 0 20px;
 }
 
-.landing-report-card:nth-child(1)::before { background: linear-gradient(180deg, #2563EB, #60A5FA); }
-.landing-report-card:nth-child(2)::before { background: linear-gradient(180deg, #16A34A, #4ADE80); }
-.landing-report-card:nth-child(3)::before { background: linear-gradient(180deg, #A78BFA, #F0ABFC); }
+.landing-report-card:nth-child(1)::before,
+.landing-report-card:nth-child(4)::before { background: linear-gradient(180deg, #2563EB, #60A5FA); }
+
+.landing-report-card:nth-child(2)::before,
+.landing-report-card:nth-child(5)::before { background: linear-gradient(180deg, #16A34A, #4ADE80); }
+
+.landing-report-card:nth-child(3)::before,
+.landing-report-card:nth-child(6)::before { background: linear-gradient(180deg, #A78BFA, #F0ABFC); }
 
 .landing-report-card-img {
   width: 100%;
@@ -323,34 +328,30 @@
   color: var(--color-text-blue);
 }
 
-.landing-report-card:nth-child(1) .landing-report-card-field:nth-child(4) p {
+.landing-report-card-field:nth-child(2) p {
+  display: inline-block;
+  padding: 0.2rem 0.7rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.landing-report-card:nth-child(1) .landing-report-card-field:nth-child(2) p,
+.landing-report-card:nth-child(4) .landing-report-card-field:nth-child(2) p {
   background: #DBEAFE;
   color: #1D4ED8;
-  display: inline-block;
-  padding: 0.2rem 0.7rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
 }
 
-.landing-report-card:nth-child(2) .landing-report-card-field:nth-child(4) p {
+.landing-report-card:nth-child(2) .landing-report-card-field:nth-child(2) p,
+.landing-report-card:nth-child(5) .landing-report-card-field:nth-child(2) p {
   background: #DCFCE7;
   color: #15803D;
-  display: inline-block;
-  padding: 0.2rem 0.7rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
 }
 
-.landing-report-card:nth-child(3) .landing-report-card-field:nth-child(4) p {
+.landing-report-card:nth-child(3) .landing-report-card-field:nth-child(2) p,
+.landing-report-card:nth-child(6) .landing-report-card-field:nth-child(2) p {
   background: #FEF3C7;
   color: #92400E;
-  display: inline-block;
-  padding: 0.2rem 0.7rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
 }
 
 .landing-explore-dots {
@@ -1251,9 +1252,16 @@
   .about-letra {
     font-size: 1.5rem;
   }
+  .about-right {
+    align-items: center;
+  }
+  .about-us-wrap {
+    align-self: center;
+  }
   .about-wave-box {
     max-width: 100%;
-    height: 200px;
+    aspect-ratio: 480 / 320;
+    margin: 0 auto;
   }
   .about-dot-label {
     font-size: 0.6rem;
@@ -1264,14 +1272,37 @@
   .about-card-values {
     grid-template-columns: 1fr;
   }
+  .about-cards-box {
+    min-height: 180px;
+  }
 }
 
 @media (max-width: 480px) {
   .about-wave-box {
-    height: 200px;
+    aspect-ratio: 480 / 320;
+    max-width: 100%;
   }
-  .about-dot[data-a="2"] { left: 14%; top: 16%; }
-  .about-dot[data-a="3"] { left: 28%; top: 28%; }
-  .about-dot[data-a="4"] { left: 42%; top: 42%; }
-  .about-dot[data-a="5"] { left: 56%; top: 56%; }
+  .about-dot-label {
+    font-size: 0.55rem;
+    white-space: normal;
+    max-width: 60px;
+    text-align: center;
+    line-height: 1.2;
+  }
+  .about-dot-ring {
+    width: 16px;
+    height: 16px;
+  }
+  .about-dot-ring::after {
+    inset: 4px;
+  }
+  .about-card {
+    padding: 1.25rem;
+  }
+  .about-card-title {
+    font-size: 1.1rem;
+  }
+  .about-card-text {
+    font-size: 0.85rem;
+  }
 }
